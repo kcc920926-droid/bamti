@@ -7,8 +7,12 @@
   });
   const v = '?v=' + (globalThis.__bamtiV || (globalThis.__bamtiV = String(performance.timeOrigin | 0)));
   if (!globalThis.BAMTI?.SIGNALS) {
+    await load('/src/i18n/messages.js' + v);
+    await load('/src/i18n/i18n.js' + v);
     await load('/src/core/context.js' + v);
     await load('/src/core/signals.js' + v);
+    await load('/src/prose/english-rules.js' + v);
+    await load('/src/prose/prose.js' + v);
     await load('/src/core/score.js' + v);
   }
   globalThis.__bamti = () => {

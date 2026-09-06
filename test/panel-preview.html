@@ -12,12 +12,13 @@
 /* 엔진은 항상 최신으로 — 정적 <script src> 는 캐시에 물려 옛 시그널로 채점한다 */
 const __v = '?v=' + Date.now();
 const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
-const __engine = __load('/src/core/context.js').then(() => __load('/src/core/signals.js')).then(() => __load('/src/core/score.js'));
+const __engine = __load('/src/i18n/messages.js').then(() => __load('/src/i18n/i18n.js')).then(() => __load('/src/core/context.js')).then(() => __load('/src/core/signals.js')).then(() => __load('/src/prose/english-rules.js')).then(() => __load('/src/prose/prose.js')).then(() => __load('/src/core/score.js'));
 </script>
 <script>
 /* ── chrome.* 심 ── 패널이 호출하는 최소 API만 흉내낸다 */
 const TARGETS = Object.fromEntries(Object.entries({
   'slop픽스처': '/test/fixtures/slop.html',
+  'prose-bilingual': '/test/fixtures/prose-bilingual.html',
   'gpt_sol_5.6': '/asset/gpt_sol_5.6/index.html',
   'qwen_3.8': '/asset/qwen_3.8/index.html',
   'basecamp': '/test/mirror/basecamp.html',
@@ -30,7 +31,7 @@ for (const k of Object.keys(TARGETS)) pick.append(new Option(k, k, false, k === 
 pick.onchange = () => { location.hash = pick.value; location.reload(); };
 
 let frame = null;
-function scanIframe(url) {
+function scanIframe(url, locale) {
   return new Promise(async res => {
     await __engine;
     if (frame) frame.remove();
@@ -46,7 +47,7 @@ function scanIframe(url) {
       BAMTI._nodes = new Map();
       const t0 = performance.now();
       const r = BAMTI.run({ doc: d, els, cs, svgs: [...d.querySelectorAll('svg')], rawText,
-                            text: rawText.toLowerCase(), title: d.title, url, host: 'localhost', truncated: 0 });
+                            text: rawText.toLowerCase(), title: d.title, url, host: 'localhost', truncated: 0, locale });
       r.ms = Math.round(performance.now() - t0);
       res(r);
     }, 400);
@@ -57,8 +58,8 @@ function scanIframe(url) {
 const listeners = [];
 globalThis.chrome = {
   storage: { session: { get: async () => ({ bamtiTarget: 1 }) },
-             local:   { get: async () => ({}), set: async () => {} } },
-  runtime: { onMessage: { addListener: fn => listeners.push(fn) } },
+             local:   (() => { const m = JSON.parse(localStorage.getItem('bamtiPreviewSettings') || '{}'); return { get: async k => (typeof k === 'string' ? { [k]: m[k] } : { ...m }), set: async o => { Object.assign(m, o); localStorage.setItem('bamtiPreviewSettings', JSON.stringify(m)); } }; })() },
+  runtime: { onMessage: { addListener: fn => listeners.push(fn) }, getManifest: () => ({ version: 'preview' }), id: 'preview' },
   scripting: { executeScript: async () => [] },
   extension: { isAllowedFileSchemeAccess: cb => cb(true) },
   permissions: (() => { const g = new Set(); return {
@@ -75,7 +76,7 @@ globalThis.chrome = {
     create: async o => console.log('tabs.create', o.url),
     query: async () => [{ id: 1, url: TARGETS[current] }],
     sendMessage: async (_tab, msg) => {
-      if (msg.type === 'bamti:scan')  return { ok: true, report: await scanIframe(TARGETS[current]) };
+      if (msg.type === 'bamti:scan')  return { ok: true, report: await scanIframe(TARGETS[current], msg.locale) };
       if (msg.type === 'bamti:highlight') { globalThis.__lastMsg = msg; return { ok: true }; }
       if (msg.type === 'bamti:highlight-all') { globalThis.__lastMsg = msg; return { ok: true, n: msg.items.length }; }
       if (msg.type === 'bamti:clear') { globalThis.__lastMsg = msg; return { ok: true }; }
@@ -88,12 +89,13 @@ globalThis.chrome = {
 /* panel.html 을 실시간으로 가져와 <header>…</main> 만 꺼내 주입한 뒤 panel.js 로드.
    스냅샷이 아니라서 panel.html 을 고치면 프리뷰도 즉시 따라온다. */
 (async () => {
+  await __engine;
   const html = await (await fetch('/src/panel/panel.html?x=' + Date.now())).text();
   const part = html.match(/<header>[\s\S]*?<\/main>/);
   if (!part) { document.body.textContent = 'panel.html 에서 <header>…</main> 을 찾지 못함'; return; }
   document.getElementById('panel-root').outerHTML = part[0];
   const sc = document.createElement('script');
-  sc.src = '/src/panel/panel.js?x=' + Date.now();
+  sc.src = '/src/panel/bootstrap.js?x=' + Date.now();
   document.body.append(sc);
 })();
 </script>

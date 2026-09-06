@@ -10,15 +10,16 @@
   B._nodes = new Map();
 
   /* ── 스캔 컨텍스트: 비싼 연산은 여기서 한 번만 ─────────────── */
-  function buildCtx() {
-    return B.prepareContext({ doc: document });
+  function buildCtx(locale) {
+    return B.prepareContext({ doc: document, locale });
   }
 
-  B.scan = function scan() {
+  B.scan = function scan(locale = 'ko') {
+    B.I18N.setLocale(locale);
     clearHighlights();
     B._nodes.clear();
     const t0 = performance.now();
-    const ctx = buildCtx();
+    const ctx = buildCtx(B.I18N.locale);
     const report = B.run(ctx);
     report.ms = Math.round(performance.now() - t0);
     report.domSize = ctx.els.length;
@@ -28,7 +29,7 @@
 
   /* ── 오버레이 레이어 ──────────────────────────────────────── */
   const LAYER_ID = 'bamti-overlay-' + Math.random().toString(36).slice(2, 7);
-  const CAT_COLOR = { unfinished: '#e11d48', visual: '#7c3aed', structure: '#d97706', toolchain: '#0891b2', taste: '#71717a' };
+  const CAT_COLOR = { unfinished: '#e11d48', visual: '#7c3aed', structure: '#d97706', toolchain: '#0891b2', taste: '#71717a', prose: '#0f766e' };
   let layer = null, boxes = [], raf = 0, wired = false;
 
   function ensureLayer() {
@@ -120,7 +121,7 @@
   if (!B._wired && globalThis.chrome?.runtime?.onMessage) {
     B._wired = true;
     chrome.runtime.onMessage.addListener((msg, _sender, respond) => {
-      if (msg?.type === 'bamti:scan')          { respond({ ok: true, report: B.scan() }); return true; }
+      if (msg?.type === 'bamti:scan')          { respond({ ok: true, report: B.scan(msg.locale) }); return true; }
       if (msg?.type === 'bamti:highlight-all') { respond({ ok: true, n: B.highlightAll(msg.items || []) }); return true; }
       if (msg?.type === 'bamti:highlight')     { respond({ ok: true, n: B.highlight(msg.signalId, msg.meta) }); return true; }
       if (msg?.type === 'bamti:clear')         { B.clearHighlights(); respond({ ok: true }); return true; }

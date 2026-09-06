@@ -1,0 +1,7 @@
+{
+  "extensionName": { "message": "밤티 — AI Slop Detector" },
+  "extensionDescription": { "message": "페이지의 UI 패턴과 한국어·영어 문체 신호를 검사하고, 근거와 개선 방향을 제안합니다." },
+  "actionTitle": { "message": "밤티로 스캔 (Alt+Shift+B · Mac은 Control+Shift+B)" },
+  "scanCommand": { "message": "현재 페이지 밤티 스캔" },
+  "blockedPage": { "message": "이 페이지는 스캔할 수 없습니다. 크롬 내부 페이지와 웹스토어는 확장 프로그램이 접근하지 못합니다." }
+}

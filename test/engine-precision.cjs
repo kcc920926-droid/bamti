@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
-const sources = ['context', 'signals', 'score'].map(name => fs.readFileSync(path.join(root, 'src/core', `${name}.js`), 'utf8'));
+const sources = ['i18n/messages', 'i18n/i18n', 'core/context', 'core/signals', 'prose/english-rules', 'prose/prose', 'core/score'].map(name => fs.readFileSync(path.join(root, 'src', `${name}.js`), 'utf8'));
 const chrome = '<title>Example interface</title><link rel="icon" href="https://example.test/favicon.ico"><meta name="description" content="Example"><meta property="og:title" content="Example"><meta property="og:image" content="example.png">';
 const style = '<style>body{font:16px Arial;margin:24px}button,input,select{min-width:40px;min-height:30px}section{padding:50px}h1{font-size:40px}</style>';
 const shell = body => `<!doctype html><html><head>${chrome}${style}</head><body>${body}</body></html>`;
@@ -86,7 +86,7 @@ const shell = body => `<!doctype html><html><head>${chrome}${style}</head><body>
         await live.waitForTimeout(2000);
         for (const source of sources) await live.evaluate(source);
         const report = await live.evaluate(() => { BAMTI._nodes = new Map(); return BAMTI.run({ doc: document }); });
-        console.log(JSON.stringify({ url, title: report.title, score: report.score, type: report.pageType, signals: tells(report), references: report.taste.map(s => s.id), errors: report.errors }, null, 2));
+        console.log(JSON.stringify({ url, title: report.title, score: report.score, type: report.pageType, signals: tells(report), references: report.taste.map(s => s.id), prose: { status: report.prose.status, blocks: report.prose.inspectedBlocks, signals: report.prose.signals.map(s => s.id), limited: report.prose.limited }, errors: report.errors }, null, 2));
         await live.close();
       }
     }

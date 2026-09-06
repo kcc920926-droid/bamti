@@ -12,12 +12,14 @@
   <div class="brand">밤티</div>
   <div class="hbtns">
     <button id="showall" class="txt" hidden title="모든 지문을 다시 표시">전체 표시</button>
+    <button id="copy" class="txt" title="리포트를 JSON으로 복사 — 에이전트 대화창에 붙이세요">JSON 복사</button>
     <button id="overlay" class="txt" disabled aria-pressed="true" title="페이지에 지문 위치 표시 켬/끔">위치 표시 켬</button>
     <button id="rescan" class="txt" title="현재 탭 다시 스캔">↻ 다시 스캔</button>
   </div>
 </header>
 
 <main id="main">
+  <label class="language-picker" for="language">언어 <select id="language"><option value="auto">브라우저 언어</option><option value="ko">한국어</option><option value="en">English</option></select></label>
   <p id="status" class="status" role="status" aria-live="polite">현재 페이지를 확인하고 있습니다.</p>
   <div id="empty" class="state">
     <img class="empty-art" src="../../asset/illustrations/bamti-inspector.png" width="160" height="160" alt="" decoding="async">
@@ -48,6 +50,7 @@
     </section>
 
     <p id="coverage" class="notice" hidden></p>
+    <button id="jumpprose" class="pill prose-jump">문체 검사 보기</button>
     <section class="results-tools" aria-label="결과 탐색">
       <div class="results-heading"><h1>개선할 부분 찾기</h1><button id="copyreport" class="pill">전체 제안 복사</button></div>
       <label class="search-label" for="search">발견 항목 검색</label>
@@ -58,15 +61,32 @@
     </section>
     <div id="noresults" class="noresults" hidden><p id="noresultsmsg"></p><button id="clearsearch" class="pill">검색·필터 초기화</button></div>
     <section id="list" class="list" aria-label="발견 항목과 개선 방향"></section>
+    <details id="prosegroup" class="prosegroup" open>
+      <summary id="prosesummary">문체 검사 · 한국어 / 영어</summary>
+      <p id="prosenote" class="prose-note"></p>
+      <p id="prosestatus" class="prose-status" role="status"></p>
+      <div id="proselist"></div>
+    </details>
     <details id="tastegroup" class="tastegroup" hidden><summary id="tastesummary"></summary><p class="taste-help">폰트·팔레트·라이브러리·취향처럼 일반적인 디자인 선택입니다. AI 생성 근거가 아니며 점수에서 제외됩니다.</p><div id="tastelist"></div></details>
 
     <footer class="foot">
       밤티는 “AI가 썼다”고 단정하지 않습니다. 발견된 <b>지문의 개수와 근거</b>만 보여줍니다.
     </footer>
   </div>
-  <details class="diagnostics"><summary>도움말·진단 정보</summary><p>아이콘 또는 단축키로 스캔을 시작하세요. 자동 스캔은 패널이 열려 있고 접근 권한이 있을 때 동작합니다.</p><button id="shortcuts" class="pill">단축키 설정</button><div id="diag" class="diag"></div></details>
+  <details id="bridge" class="bridge">
+    <summary><span id="bridgestate" data-state="off">에이전트: 꺼짐</span></summary>
+    <div class="bridgebody">
+      <p>로컬 에이전트(<code>bamti-mcp</code>)와 WebSocket으로 연결합니다. 스캔마다 리포트가 자동 전송되고, 에이전트가 스캔·표시를 요청할 수 있습니다.</p>
+      <label>포트 <input id="bport" type="number" min="1" max="65535" value="8765"></label>
+      <label>토큰 <input id="btoken" type="text" autocomplete="off" placeholder="bamti-mcp 가 출력한 토큰"></label>
+      <button id="bconnect">연결</button>
+    </div>
+  </details>
+  <details class="diagnostics"><summary>도움말·진단 정보</summary><p>아이콘 또는 단축키로 스캔을 시작하세요. 자동 스캔은 패널이 열려 있고 접근 권한이 있을 때 동작합니다.</p><button id="shortcuts" class="pill">단축키 설정</button>  <div id="diag" class="diag"></div></details>
 </main>
 
-<script src="panel.js"></script>
+<script src="../i18n/messages.js"></script>
+<script src="../i18n/i18n.js"></script>
+<script src="bootstrap.js"></script>
 </body>
 </html>

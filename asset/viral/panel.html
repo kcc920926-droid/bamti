@@ -1,0 +1,28 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>밤티 실제 패널 렌더</title><link rel="stylesheet" href="/src/panel/panel.css"><div id="panel-root"></div>
+<script>
+// Only browser transport is simulated. Panel UI, report, scan and highlights are production code.
+const target = () => parent.document.getElementById('site').contentWindow;
+const tab = () => ({id:1,windowId:7,url:target().location.href});
+const noop = {addListener:()=>{}};
+globalThis.chrome = {
+  storage:{session:{get:async()=>({bamtiTarget:1})},local:{get:async()=>({bamtiOverlay:false,bamtiLanguage:localStorage.getItem('bamtiDemoLanguage')||'ko'}),set:async o=>{if(o.bamtiLanguage)localStorage.setItem('bamtiDemoLanguage',o.bamtiLanguage);}}},
+  runtime:{onMessage:noop,id:'demo',getManifest:()=>({version:'demo'}),getURL:p=>'/'+p},
+  windows:{getCurrent:async()=>({id:7})},permissions:{contains:async()=>true,request:async()=>true},
+  scripting:{executeScript:async()=>[]},extension:{isAllowedFileSchemeAccess:cb=>cb(true)},
+  tabs:{onActivated:noop,onUpdated:noop,onRemoved:noop,get:async()=>tab(),query:async()=>[tab()],create:async()=>{},sendMessage:async(_id,msg)=>{
+    await parent.demoReady;
+    const B=target().BAMTI;
+    if(msg.type==='bamti:scan')return {ok:true,report:parent.scanDemo(msg.locale)};
+    if(msg.type==='bamti:highlight')return {ok:true,n:B.highlight(msg.signalId,msg.meta)};
+    if(msg.type==='bamti:highlight-all')return {ok:true,n:B.highlightAll(msg.items)};
+    if(msg.type==='bamti:clear')B.clearHighlights();
+    return {ok:true};
+  }},
+};
+(async()=>{
+  await parent.demoReady;
+  const html=await(await fetch('/src/panel/panel.html')).text();
+  document.getElementById('panel-root').outerHTML=html.match(/<header>[\s\S]*?<\/main>/)[0];
+  for (const file of ['src/i18n/messages.js','src/i18n/i18n.js','src/panel/bootstrap.js']) await new Promise((yes,no)=>{const script=document.createElement('script');script.src='/'+file;script.onload=yes;script.onerror=no;document.body.append(script);});
+})();
+</script></html>

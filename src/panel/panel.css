@@ -16,6 +16,11 @@ header {
   padding:10px 14px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:2;
 }
 .brand { font-weight:700; letter-spacing:-.02em; }
+.language-picker { display:flex; justify-content:flex-end; align-items:center; gap:8px; padding:7px 14px; font-size:12px; border-bottom:1px solid var(--line); color:var(--dim); }
+.language-picker select { font:inherit; color:var(--fg); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:5px; max-width:170px; }
+header { flex-wrap:wrap; gap:8px; }
+.hbtns { flex-wrap:wrap; }
+html[lang="en"] .body p::before { content:'Suggestion'; }
 header button {
   border:1px solid var(--line); background:transparent; color:var(--fg);
   min-width:34px; min-height:34px; border-radius:6px; cursor:pointer; font-size:14px;
@@ -184,3 +189,29 @@ body { overflow-wrap:anywhere; }
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation:none !important; scroll-behavior:auto !important; }
 }
+
+/* 에이전트 브리지 */
+.bridge { border-top:1px dashed var(--line); font-size:11px; color:var(--dim); }
+.bridge summary { padding:6px 14px; cursor:pointer; list-style:none; }
+.bridge summary::-webkit-details-marker { display:none; }
+.bridge summary::before { content:'●'; margin-right:6px; color:var(--dim); }
+.bridge [data-state="on"]   { color:var(--ok); }
+.bridge [data-state="wait"] { color:var(--warn); }
+.bridge [data-state="err"]  { color:var(--hot); }
+.bridge summary:has([data-state="on"])::before   { color:var(--ok); }
+.bridge summary:has([data-state="wait"])::before { color:var(--warn); }
+.bridge summary:has([data-state="err"])::before  { color:var(--hot); }
+.bridgebody { padding:0 14px 10px; display:grid; gap:6px; }
+.bridgebody p { margin:0 0 4px; }
+.bridgebody label { display:flex; align-items:center; gap:8px; }
+.bridgebody input { flex:1; font:inherit; font-size:11px; padding:3px 6px; border:1px solid var(--line); border-radius:5px; background:var(--bg); color:var(--fg); }
+.bridgebody button { justify-self:start; border:1px solid var(--line); background:var(--card); color:var(--fg); border-radius:6px; padding:4px 10px; font:inherit; font-size:11px; cursor:pointer; }
+main > .bridge { margin-top:auto; }
+main > .diag { margin-top:0; }
+.prosegroup { margin-top: 18px; border: 1px solid #99c8bd; border-radius: 10px; padding: 12px; }
+.prose-jump { margin: 4px 0 12px; color: #0f766e; }
+.prosegroup > summary { cursor: pointer; font-weight: 700; color: #0f766e; }
+.prose-note, .prose-status { font-size: 12px; line-height: 1.6; color: #666; margin: 10px 0; }
+.prose-examples { padding-left: 18px; margin: 10px 0; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.prose-examples li + li { margin-top: 8px; }
+.prose-source { display: block; margin: 10px 0; color: #0f766e; font-size: 11px; overflow-wrap: anywhere; }

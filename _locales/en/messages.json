@@ -1,0 +1,7 @@
+{
+  "extensionName": { "message": "Bamti — AI Slop Detector" },
+  "extensionDescription": { "message": "Review UI patterns, unfinished details and Korean/English writing style. Get evidence and suggestions before publishing." },
+  "actionTitle": { "message": "Scan with Bamti (Alt+Shift+B; Control+Shift+B on Mac)" },
+  "scanCommand": { "message": "Scan this page with Bamti" },
+  "blockedPage": { "message": "This page cannot be scanned. Extensions cannot access internal browser pages or the Chrome Web Store." }
+}

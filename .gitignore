@@ -7,3 +7,6 @@ node_modules/
 *.crx
 test-results/
 playwright-report/
+mcp/node_modules/
+asset/*/node_modules/
+.DS_Store

@@ -6,7 +6,7 @@ b{color:#fff}.ok{color:#4ade80}.ng{color:#f87171}pre{white-space:pre-wrap}</styl
 /* 엔진은 항상 최신으로 — 정적 <script src> 는 브라우저 캐시에 물려 옛 시그널로 채점하는 사고가 났다 */
 const __v = '?v=' + Date.now();
 const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
-const __engine = __load('/src/core/context.js').then(() => __load('/src/core/signals.js')).then(() => __load('/src/core/score.js'));
+const __engine = __load('/src/i18n/messages.js').then(() => __load('/src/i18n/i18n.js')).then(() => __load('/src/core/context.js')).then(() => __load('/src/core/signals.js')).then(() => __load('/src/prose/english-rules.js')).then(() => __load('/src/prose/prose.js')).then(() => __load('/src/core/score.js'));
 </script>
 <script>
 /* 기대치: AI 후보와 사람 사이트는 티가 안 나야 하고(<30), 슬롭 픽스처는 잡혀야 한다(>=50) */

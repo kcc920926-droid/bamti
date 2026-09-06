@@ -7,6 +7,7 @@
  */
 (() => {
   const B = (globalThis.BAMTI ||= {});
+  const tr = B.I18N.t;
 
   /* ── Tailwind 기본 팔레트 (커스텀 안 하면 그대로 남는 값들) ───────── */
   const TW_HEX = `
@@ -80,21 +81,21 @@
     /* ═══ 🎨 시각 ═══════════════════════════════════════════════ */
     {
       id: 'gradient-text-heading', cat: 'visual', weight: 10,
-      label: '그라디언트 텍스트 헤드라인',
-      hint: 'AI 생성 랜딩페이지에서 가장 흔한 단일 지문입니다. 헤드라인은 단색으로 두고, 강조가 필요하면 한 단어에만 색을 주세요.',
+      get label() { return tr('그라디언트 텍스트 헤드라인'); },
+      get hint() { return tr('AI 생성 랜딩페이지에서 가장 흔한 단일 지문입니다. 헤드라인은 단색으로 두고, 강조가 필요하면 한 단어에만 색을 주세요.'); },
       detect(ctx) {
         const hit = ctx.els.filter(el => {
           if (!el.matches('h1,h2,h3') && !el.closest('h1,h2,h3')) return false;
           const cs = ctx.cs(el);
           return cs.backgroundImage.includes('gradient(') && (cs.backgroundClip === 'text' || cs.webkitBackgroundClip === 'text');
         });
-        return hit.length ? { ev: `${hit.length}개 요소가 background-clip:text 그라디언트`, nodes: hit } : null;
+        return hit.length ? { ev: tr`${hit.length}개 요소가 background-clip:text 그라디언트`, nodes: hit } : null;
       }
     },
     {
       id: 'purple-blue-gradient', cat: 'visual', weight: 10,
-      label: '보라→파랑 그라디언트',
-      hint: '2023년 이후 AI 생성 페이지의 사실상 기본값입니다. 브랜드 컬러 하나를 정하고 그 명도 변주로 대체하세요.',
+      get label() { return tr('보라→파랑 그라디언트'); },
+      get hint() { return tr('2023년 이후 AI 생성 페이지의 사실상 기본값입니다. 브랜드 컬러 하나를 정하고 그 명도 변주로 대체하세요.'); },
       detect(ctx) {
         const hit = ctx.els.filter(el => {
           const bg = ctx.cs(el).backgroundImage;
@@ -102,13 +103,13 @@
           const cs = allRgb(bg);
           return cs.some(isPurple) && cs.some(c => isBlue(c) || isPink(c));
         });
-        return hit.length ? { ev: `${hit.length}개 요소에 보라-파랑/핑크 그라디언트`, nodes: hit } : null;
+        return hit.length ? { ev: tr`${hit.length}개 요소에 보라-파랑/핑크 그라디언트`, nodes: hit } : null;
       }
     },
     {
       id: 'tailwind-stock-palette', kind: 'taste', cat: 'visual', weight: 8,
-      label: 'Tailwind 기본 팔레트 그대로',
-      hint: '공개 팔레트와 겹치는 색입니다. 정상적인 디자인 시스템에서도 사용하므로 AI 생성이나 미완성의 근거로 채점하지 않습니다. 브랜드와 맞는지만 검토하세요.',
+      get label() { return tr('Tailwind 기본 팔레트 그대로'); },
+      get hint() { return tr('공개 팔레트와 겹치는 색입니다. 정상적인 디자인 시스템에서도 사용하므로 AI 생성이나 미완성의 근거로 채점하지 않습니다. 브랜드와 맞는지만 검토하세요.'); },
       detect(ctx) {
         const used = new Map();
         for (const el of ctx.els) {
@@ -133,13 +134,13 @@
         if (nodes.length < 3) nodes = nodes.concat(pick('color').filter(el => el.children.length === 0));   // 글자색으로 쓴 경우
         if (nodes.length < 3) nodes = nodes.concat(pick('borderTopColor'));
         nodes = [...new Set(nodes)].slice(0, 40);
-        return { ev: `유채색 ${used.size}종 중 ${stock.length}종이 Tailwind 기본값 (${Math.round(ratio*100)}%)`, nodes };
+        return { ev: tr`유채색 ${used.size}종 중 ${stock.length}종이 Tailwind 기본값 (${Math.round(ratio*100)}%)`, nodes };
       }
     },
     {
       id: 'no-custom-typeface', kind: 'taste', scope: 'page', cat: 'visual', weight: 6,
-      label: '커스텀 폰트 없음 (Inter/시스템 폰트만)',
-      hint: '시스템 폰트는 속도와 가독성을 위한 정상적인 선택입니다. 제목과 본문의 위계가 부족할 때만 크기·굵기를 검토하세요.',
+      get label() { return tr('커스텀 폰트 없음 (Inter/시스템 폰트만)'); },
+      get hint() { return tr('시스템 폰트는 속도와 가독성을 위한 정상적인 선택입니다. 제목과 본문의 위계가 부족할 때만 크기·굵기를 검토하세요.'); },
       detect(ctx) {
         const fams = new Set();
         for (const el of ctx.els.slice(0, 1200)) {
@@ -149,14 +150,14 @@
         const generic = /^(inter|ui-sans-serif|system-ui|-apple-system|blinkmacsystemfont|segoe ui|roboto|helvetica|arial|sans-serif|geist)$/;
         const custom = [...fams].filter(f => !generic.test(f));
         return custom.length === 0
-          ? { ev: `사용 폰트 전부 기본 스택 (${[...fams].slice(0,3).join(', ')})` }
+          ? { ev: tr`사용 폰트 전부 기본 스택 (${[...fams].slice(0,3).join(', ')})` }
           : null;
       }
     },
     {
       id: 'single-radius', kind: 'taste', cat: 'visual', weight: 5,
-      label: '모든 모서리 반경이 동일',
-      hint: '같은 반경을 반복하는 것은 일관된 디자인 토큰일 수 있습니다. 다른 역할의 요소가 실제로 구분되지 않을 때만 바꾸세요.',
+      get label() { return tr('모든 모서리 반경이 동일'); },
+      get hint() { return tr('같은 반경을 반복하는 것은 일관된 디자인 토큰일 수 있습니다. 다른 역할의 요소가 실제로 구분되지 않을 때만 바꾸세요.'); },
       detect(ctx) {
         const radii = ctx.els
           .map(el => ctx.cs(el).borderTopLeftRadius)
@@ -165,27 +166,27 @@
         const m = mode(radii);
         if (m.count / m.total < .8) return null;
         const nodes = ctx.els.filter(el => ctx.cs(el).borderTopLeftRadius === m.value && el.offsetWidth > 40).slice(0, 24);
-        return { ev: `둥근 요소 ${m.total}개 중 ${m.count}개가 ${m.value}`, nodes };
+        return { ev: tr`둥근 요소 ${m.total}개 중 ${m.count}개가 ${m.value}`, nodes };
       }
     },
     {
       id: 'everything-centered', cat: 'visual', weight: 5,
-      label: '모든 것이 가운데 정렬',
-      hint: '히어로만 센터로 두고 나머지 섹션은 좌측 정렬로 바꾸면 리듬이 생깁니다.',
+      get label() { return tr('모든 것이 가운데 정렬'); },
+      get hint() { return tr('히어로만 센터로 두고 나머지 섹션은 좌측 정렬로 바꾸면 리듬이 생깁니다.'); },
       detect(ctx) {
         const blocks = ctx.els.filter(el => el.offsetHeight > 200 && el.children.length >= 2);
         if (blocks.length < 3) return null;
         const c = blocks.filter(el => ctx.cs(el).textAlign === 'center');
         return c.length / blocks.length >= .6
-          ? { ev: `주요 블록 ${blocks.length}개 중 ${c.length}개가 text-align:center`, nodes: c }
+          ? { ev: tr`주요 블록 ${blocks.length}개 중 ${c.length}개가 text-align:center`, nodes: c }
           : null;
       }
     },
 
     {
       id: 'eyebrow-microlabel', kind: 'taste', cat: 'visual', weight: 7,
-      label: '올캡스 자간 마이크로 레이블 (eyebrow)',
-      hint: '"INTERFACE INVENTORY · 2026" 류의 장식 레이블입니다. 정보를 거의 안 나르면서 헤드라인의 첫인상을 가로막습니다. 지우고 헤드라인부터 시작하세요. 꼭 필요한 정보면 헤드라인이나 본문 안으로 넣으세요.',
+      get label() { return tr('올캡스 자간 마이크로 레이블 (eyebrow)'); },
+      get hint() { return tr('"INTERFACE INVENTORY · 2026" 류의 장식 레이블입니다. 정보를 거의 안 나르면서 헤드라인의 첫인상을 가로막습니다. 지우고 헤드라인부터 시작하세요. 꼭 필요한 정보면 헤드라인이나 본문 안으로 넣으세요.'); },
       detect(ctx) {
         // 시맨틱 라벨은 장식이 아니라 라벨링이다 — 제외
         const SEMANTIC = /^(DT|TH|LABEL|LEGEND|CAPTION|OPTION|TIME|KBD)$/;
@@ -230,16 +231,16 @@
         const sample = eyebrows.slice(0, 3).map(e => `"${e.t.slice(0, 26)}"`).join(', ');
         const rest = micro.length - eyebrows.length;
         return {
-          ev: `헤드라인 위 ${eyebrows.length}개 — ${sample}`
-              + (rest > 0 ? ` · 마이크로 레이블 ${rest}개는 헤딩 앞이 아니라 제외` : ''),
+          ev: tr`헤드라인 위 ${eyebrows.length}개 — ${sample}`
+              + (rest > 0 ? tr` · 마이크로 레이블 ${rest}개는 헤딩 앞이 아니라 제외` : ''),
           nodes: eyebrows.map(e => e.el),
         };
       }
     },
     {
       id: 'headline-terminal-period', kind: 'taste', cat: 'visual', weight: 5,
-      label: '대제목 끝 마침표',
-      hint: '"Small parts. Clear systems." 처럼 짧은 대제목에 찍는 마침표는 편집디자인 흉내로 읽힙니다. 헤드라인은 문장이 아니라 표지라서 종지부가 필요 없습니다. 빼세요.',
+      get label() { return tr('대제목 끝 마침표'); },
+      get hint() { return tr('"Small parts. Clear systems." 처럼 짧은 대제목에 찍는 마침표는 편집디자인 흉내로 읽힙니다. 헤드라인은 문장이 아니라 표지라서 종지부가 필요 없습니다. 빼세요.'); },
       detect(ctx) {
         const ABBR = /\b(inc|ltd|co|corp|etc|vs|jr|sr|dr|mr|ms|st|no|ex|e\.g|i\.e)\.$/i;
         const hits = [];
@@ -259,7 +260,7 @@
         if (!hits.length) return null;
         return {
           ev: hits.slice(0, 3).map(t => `"${t.slice(0, 34)}"`).join(', ')
-              + (hits.length > 3 ? ` 외 ${hits.length - 3}개` : ''),
+              + (hits.length > 3 ? tr` 외 ${hits.length - 3}개` : ''),
           nodes: ctx.query('h1').filter(h =>
             hits.includes((h.innerText || h.textContent || '').replace(/\s+/g, ' ').trim())),
         };
@@ -268,8 +269,8 @@
 
     {
       id: 'value-sprawl', kind: 'taste', cat: 'visual', weight: 9,
-      label: '다양한 스타일 값 사용',
-      hint: '스타일 종류는 화면의 규모와 기능에 따라 늘어납니다. 이 개수로 AI 생성이나 시스템 부재를 판단하지 않습니다. 같은 역할의 요소끼리 비교할 때 참고하세요.',
+      get label() { return tr('다양한 스타일 값 사용'); },
+      get hint() { return tr('스타일 종류는 화면의 규모와 기능에 따라 늘어납니다. 이 개수로 AI 생성이나 시스템 부재를 판단하지 않습니다. 같은 역할의 요소끼리 비교할 때 참고하세요.'); },
       detect(ctx) {
         if (ctx.els.length < 120) return null;         // 너무 작은 페이지는 표본 부족
         const U = a => new Set(a).size;
@@ -298,13 +299,13 @@
             if (nodes.length >= 40) break;
           }
         }
-        return { ev: over.map(c => `${c.k} ${c.v}종`).join(' · ') + ` (기준 초과 ${over.length}/4)`, nodes: [...new Set(nodes)] };
+        return { ev: over.map(c => tr`${tr(c.k)} ${c.v}종`).join(' · ') + tr` (기준 초과 ${over.length}/4)`, nodes: [...new Set(nodes)] };
       }
     },
     {
       id: 'typeface-sprawl', kind: 'taste', cat: 'visual', weight: 6,
-      label: '폰트 패밀리 3종 이상',
-      hint: '여러 서체는 코드·다국어·브랜드 영역을 구분하기 위한 선택일 수 있습니다. 같은 역할의 텍스트에서 불필요하게 달라지는지만 확인하세요.',
+      get label() { return tr('폰트 패밀리 3종 이상'); },
+      get hint() { return tr('여러 서체는 코드·다국어·브랜드 영역을 구분하기 위한 선택일 수 있습니다. 같은 역할의 텍스트에서 불필요하게 달라지는지만 확인하세요.'); },
       detect(ctx) {
         const GENERIC = /^(ui-sans-serif|ui-serif|ui-monospace|system-ui|-apple-system|blinkmacsystemfont|sans-serif|serif|monospace|inherit|initial)$/;
         const fams = new Map();   // family → 표본 요소
@@ -313,7 +314,7 @@
           if (f && !GENERIC.test(f) && !fams.has(f) && (el.textContent || '').trim().length > 3) fams.set(f, el);
         }
         return fams.size >= 3
-          ? { ev: `${fams.size}종 — ${[...fams.keys()].slice(0, 4).join(', ')}`, nodes: [...fams.values()] }
+          ? { ev: tr`${fams.size}종 — ${[...fams.keys()].slice(0, 4).join(', ')}`, nodes: [...fams.values()] }
           : null;
       }
     },
@@ -321,8 +322,8 @@
     /* ═══ 🧱 구조 ═══════════════════════════════════════════════ */
     {
       id: 'three-col-feature-grid', cat: 'structure', weight: 7,
-      label: '3열 기능 그리드 (아이콘+제목+2줄)',
-      hint: '기능이 정말 3개라서 3개인지 확인하세요. 보통은 레이아웃이 개수를 정한 경우입니다.',
+      get label() { return tr('3열 기능 그리드 (아이콘+제목+2줄)'); },
+      get hint() { return tr('기능이 정말 3개라서 3개인지 확인하세요. 보통은 레이아웃이 개수를 정한 경우입니다.'); },
       detect(ctx) {
         const hit = ctx.els.filter(el => {
           const cs = ctx.cs(el);
@@ -333,13 +334,13 @@
           if (kids.length !== 3 && kids.length !== 6) return false;
           return kids.filter(k => k.querySelector('svg, img') && k.querySelector('h2,h3,h4')).length >= 2;
         });
-        return hit.length ? { ev: `3열 기능 그리드 ${hit.length}개`, nodes: hit } : null;
+        return hit.length ? { ev: tr`3열 기능 그리드 ${hit.length}개`, nodes: hit } : null;
       }
     },
     {
       id: 'uniform-section-rhythm', cat: 'structure', weight: 7,
-      label: '모든 섹션의 상하 여백이 동일',
-      hint: '섹션마다 중요도가 다른데 여백이 같으면 전부 똑같이 안 중요해 보입니다.',
+      get label() { return tr('모든 섹션의 상하 여백이 동일'); },
+      get hint() { return tr('섹션마다 중요도가 다른데 여백이 같으면 전부 똑같이 안 중요해 보입니다.'); },
       detect(ctx) {
         const secs = ctx.els.filter(el =>
           (el.tagName === 'SECTION' || el.parentElement?.tagName === 'MAIN' || el.parentElement === ctx.doc.body)
@@ -349,14 +350,14 @@
         const pads = secs.map(el => ctx.cs(el).paddingTop);
         const m = mode(pads.filter(p => p !== '0px'));
         return m.count >= 3 && m.count / secs.length >= .55
-          ? { ev: `섹션 ${secs.length}개 중 ${m.count}개가 padding-top:${m.value}`, nodes: secs }
+          ? { ev: tr`섹션 ${secs.length}개 중 ${m.count}개가 padding-top:${m.value}`, nodes: secs }
           : null;
       }
     },
     {
       id: 'canonical-section-order', cat: 'structure', weight: 8,
-      label: '정석 랜딩페이지 순서 (Features→Pricing→FAQ)',
-      hint: '이 순서 자체가 나쁘진 않지만, 방문자가 실제로 궁금해하는 순서인지 다시 보세요.',
+      get label() { return tr('정석 랜딩페이지 순서 (Features→Pricing→FAQ)'); },
+      get hint() { return tr('이 순서 자체가 나쁘진 않지만, 방문자가 실제로 궁금해하는 순서인지 다시 보세요.'); },
       detect(ctx) {
         const seq = ['features','기능','how it works','작동','pricing','요금','가격','testimonial','후기','faq','자주'];
         const found = [], nodes = [];
@@ -366,13 +367,13 @@
           if (i >= 0) { found.push(seq[i]); nodes.push(h); }
         }
         const uniq = [...new Set(found)];
-        return uniq.length >= 3 ? { ev: `정석 섹션 ${uniq.length}종 발견: ${uniq.join(' → ')}`, nodes } : null;
+        return uniq.length >= 3 ? { ev: tr`정석 섹션 ${uniq.length}종 발견: ${uniq.join(' → ')}`, nodes } : null;
       }
     },
     {
       id: 'three-tier-pricing', cat: 'structure', weight: 6,
-      label: '3단 요금제 + 가운데 "인기"',
-      hint: '실제 가격 정책이 정해지기 전이라면 요금 섹션은 아예 빼는 편이 신뢰에 낫습니다.',
+      get label() { return tr('3단 요금제 + 가운데 "인기"'); },
+      get hint() { return tr('실제 가격 정책이 정해지기 전이라면 요금 섹션은 아예 빼는 편이 신뢰에 낫습니다.'); },
       detect(ctx) {
         const sections = ctx.query('section').filter(sec =>
           ctx.query('h2,h3').some(h => sec.contains(h) && /^(pricing|plans|요금|요금제|가격)(\b|\s|$)/i.test(txt(h))));
@@ -386,13 +387,13 @@
             if (badge.test(txt(cards[1])) && !badge.test(txt(cards[0])) && !badge.test(txt(cards[2]))) nodes.push(cards[1]);
           }
         }
-        return nodes.length ? { ev: `가격·CTA가 있는 3개 요금 카드 중 가운데 추천 ${nodes.length}곳`, nodes } : null;
+        return nodes.length ? { ev: tr`가격·CTA가 있는 3개 요금 카드 중 가운데 추천 ${nodes.length}곳`, nodes } : null;
       }
     },
     {
       id: 'hero-badge-pill', cat: 'structure', weight: 5,
-      label: '히어로 상단 알약 뱃지',
-      hint: '"✨ Introducing…" 뱃지는 실제 공지가 있을 때만 쓰세요.',
+      get label() { return tr('히어로 상단 알약 뱃지'); },
+      get hint() { return tr('"✨ Introducing…" 뱃지는 실제 공지가 있을 때만 쓰세요.'); },
       detect(ctx) {
         const h1 = ctx.query('h1')[0];
         if (!h1) return null;
@@ -402,13 +403,13 @@
           const t = txt(el);
           return parseFloat(cs.borderTopLeftRadius) >= 999 && t.length > 0 && t.length < 60;
         });
-        return hit.length ? { ev: `히어로 상단 알약 요소: "${txt(hit[0]).slice(0,40)}"`, nodes: hit } : null;
+        return hit.length ? { ev: tr`히어로 상단 알약 요소: "${txt(hit[0]).slice(0,40)}"`, nodes: hit } : null;
       }
     },
     {
       id: 'fake-social-proof', cat: 'structure', weight: 7,
-      label: '검증 불가능한 사회적 증거',
-      hint: '"10,000+ 팀이 사용" 같은 숫자는 출처 링크가 없으면 오히려 신뢰를 깎습니다. 실제 고객 1곳이 낫습니다.',
+      get label() { return tr('검증 불가능한 사회적 증거'); },
+      get hint() { return tr('"10,000+ 팀이 사용" 같은 숫자는 출처 링크가 없으면 오히려 신뢰를 깎습니다. 실제 고객 1곳이 낫습니다.'); },
       detect(ctx) {
         const m = /(trusted by|loved by|join|used by|이상의|여 개[의]? 팀|명이 사용)[^.。\n]{0,40}?[\d,]{3,}\+?/i.exec(ctx.rawText)
                || /[\d,]{3,}\+\s*(users|teams|companies|developers|customers|명|팀|개 기업)/i.exec(ctx.rawText);
@@ -420,13 +421,13 @@
     },
     {
       id: 'generic-cta-copy', cat: 'structure', weight: 6,
-      label: '무색무취 CTA 문구',
-      hint: 'CTA는 "무엇을 얻는지"를 써야 합니다. "지금 시작하기" → "무료로 첫 리포트 받기".',
+      get label() { return tr('무색무취 CTA 문구'); },
+      get hint() { return tr('CTA는 "무엇을 얻는지"를 써야 합니다. "지금 시작하기" → "무료로 첫 리포트 받기".'); },
       detect(ctx) {
         const btns = ctx.query('a,button').filter(el => !el.closest('nav,footer,aside,[role="navigation"]'))
           .filter(el => GENERIC_CTA.some(g => txt(el) === g || txt(el).replace(/\s+/g,'') === g.replace(/\s+/g,'')));
         return btns.length
-          ? { ev: `${btns.length}개: ${[...new Set(btns.map(b => txt(b)))].slice(0,3).join(' / ')}`, nodes: btns }
+          ? { ev: tr`${btns.length}개: ${[...new Set(btns.map(b => txt(b)))].slice(0,3).join(' / ')}`, nodes: btns }
           : null;
       }
     },
@@ -434,8 +435,8 @@
     /* ═══ 🧱 구성 — 일반 페이지의 조립 방식 지문 ═══════════════════ */
     {
       id: 'section-template-repeat', cat: 'structure', weight: 6,
-      label: '같은 틀의 섹션 반복 (제목 + 설명 + 카드 그리드)',
-      hint: '섹션 3개 이상이 "h2 → p → 카드 그리드" 같은 동일한 틀입니다. 내용이 틀을 정한 게 아니라 틀에 내용을 부은 흔적이에요. 섹션마다 정보의 형태에 맞는 레이아웃을 고르세요 — 표, 한 장의 큰 이미지, 긴 글, 비교.',
+      get label() { return tr('같은 틀의 섹션 반복 (제목 + 설명 + 카드 그리드)'); },
+      get hint() { return tr('섹션 3개 이상이 "h2 → p → 카드 그리드" 같은 동일한 틀입니다. 내용이 틀을 정한 게 아니라 틀에 내용을 부은 흔적이에요. 섹션마다 정보의 형태에 맞는 레이아웃을 고르세요 — 표, 한 장의 큰 이미지, 긴 글, 비교.'); },
       detect(ctx) {
         const secs = ctx.els.filter(el =>
           (el.tagName === 'SECTION' || el.parentElement?.tagName === 'MAIN' || el.parentElement === ctx.doc.body)
@@ -460,13 +461,13 @@
         const hit = [...groups.entries()].filter(([k, arr]) => arr.length >= 3 && k.includes('grid'));
         if (!hit.length) return null;
         const [k, arr] = hit.sort((a, b) => b[1].length - a[1].length)[0];
-        return { ev: `섹션 ${arr.length}개가 같은 틀 (${k.replace(/\+/g, ' + ')})`, nodes: arr };
+        return { ev: tr`섹션 ${arr.length}개가 같은 틀 (${k.replace(/\+/g, ' + ')})`, nodes: arr };
       }
     },
     {
       id: 'card-clones', cat: 'structure', weight: 6,
-      label: '내용까지 균일한 카드 클론',
-      hint: '카드들의 구조가 같은 건 정상이지만, 글자 수까지 거의 같으면 내용이 채워 넣은 필러라는 뜻입니다. 실제 정보는 길이가 들쭉날쭉합니다. 카드마다 진짜 말할 게 있는지 확인하고, 없으면 카드 수를 줄이세요.',
+      get label() { return tr('내용까지 균일한 카드 클론'); },
+      get hint() { return tr('카드들의 구조가 같은 건 정상이지만, 글자 수까지 거의 같으면 내용이 채워 넣은 필러라는 뜻입니다. 실제 정보는 길이가 들쭉날쭉합니다. 카드마다 진짜 말할 게 있는지 확인하고, 없으면 카드 수를 줄이세요.'); },
       detect(ctx) {
         const isCard = el => el.querySelector('h2,h3,h4') && el.querySelector('p') && el.offsetHeight > 60;
         const anatomy = el => [...el.querySelectorAll('*')].slice(0, 12).map(x => x.tagName).filter(t => /^(SVG|IMG|H[2-4]|P|A|BUTTON|UL|SPAN)$/.test(t)).join(',');
@@ -487,13 +488,13 @@
           sets++; nodes.push(...cards);
         }
         if (nodes.length < 6) return null;
-        return { ev: `카드 ${nodes.length}개(${sets}묶음)가 구조·글자 수까지 균일`, nodes: nodes.slice(0, 30) };
+        return { ev: tr`카드 ${nodes.length}개(${sets}묶음)가 구조·글자 수까지 균일`, nodes: nodes.slice(0, 30) };
       }
     },
     {
       id: 'cta-banner', cat: 'structure', weight: 6,
-      label: '푸터 직전 CTA 배너 섹션',
-      hint: '"Ready to get started?" 배너는 모든 생성 페이지의 마지막 섹션입니다. 있어야 한다면 이 페이지에서만 할 수 있는 약속을 쓰세요. 아니면 빼고 푸터를 바로 붙이세요.',
+      get label() { return tr('푸터 직전 CTA 배너 섹션'); },
+      get hint() { return tr('"Ready to get started?" 배너는 모든 생성 페이지의 마지막 섹션입니다. 있어야 한다면 이 페이지에서만 할 수 있는 약속을 쓰세요. 아니면 빼고 푸터를 바로 붙이세요.'); },
       detect(ctx) {
         const secs = ctx.els.filter(el =>
           (el.tagName === 'SECTION' || el.parentElement?.tagName === 'MAIN' || el.parentElement === ctx.doc.body)
@@ -513,13 +514,13 @@
           let box = sec; while (box.children.length === 1) box = box.children[0];
           return ctx.cs(box).textAlign === 'center' || ctx.cs(sec).textAlign === 'center';
         });
-        return hit.length ? { ev: `강조 배경 + 가운데 정렬 + 버튼: "${txt(hit[0].querySelector('h2,h3')).slice(0, 40)}"`, nodes: hit } : null;
+        return hit.length ? { ev: tr`강조 배경 + 가운데 정렬 + 버튼: "${txt(hit[0].querySelector('h2,h3')).slice(0, 40)}"`, nodes: hit } : null;
       }
     },
     {
       id: 'icon-circle-badges', cat: 'toolchain', weight: 6,
-      label: '아이콘을 담은 원형 배지',
-      hint: '연한 배경의 원 안에 선 아이콘 — 생성 UI 기능 카드의 시그니처입니다. 아이콘을 원에서 꺼내 텍스트와 나란히 두거나, 아이콘 대신 실제 화면 조각을 쓰세요.',
+      get label() { return tr('아이콘을 담은 원형 배지'); },
+      get hint() { return tr('연한 배경의 원 안에 선 아이콘 — 생성 UI 기능 카드의 시그니처입니다. 아이콘을 원에서 꺼내 텍스트와 나란히 두거나, 아이콘 대신 실제 화면 조각을 쓰세요.'); },
       detect(ctx) {
         const hit = ctx.els.filter(el => {
           const w = el.offsetWidth, h = el.offsetHeight;
@@ -530,13 +531,13 @@
           if (!el.querySelector('svg') && !EMOJI.test(el.textContent || '')) return false;
           return cs.backgroundColor !== 'rgba(0, 0, 0, 0)';
         });
-        return hit.length >= 3 ? { ev: `원형 아이콘 배지 ${hit.length}개`, nodes: hit } : null;
+        return hit.length >= 3 ? { ev: tr`원형 아이콘 배지 ${hit.length}개`, nodes: hit } : null;
       }
     },
     {
       id: 'no-real-images', scope: 'page', cat: 'structure', weight: 7,
-      label: '실사 이미지가 한 장도 없음',
-      hint: '마케팅 페이지인데 사진·스크린샷이 없고 아이콘·그라디언트만 있습니다. 보여줄 실제 제품이 없을 때 나오는 형태예요. 실제 화면 캡처 한 장이 기능 카드 여섯 개보다 설득력 있습니다.',
+      get label() { return tr('실사 이미지가 한 장도 없음'); },
+      get hint() { return tr('마케팅 페이지인데 사진·스크린샷이 없고 아이콘·그라디언트만 있습니다. 보여줄 실제 제품이 없을 때 나오는 형태예요. 실제 화면 캡처 한 장이 기능 카드 여섯 개보다 설득력 있습니다.'); },
       detect(ctx) {
         if (!ctx.query('h1').length) return null;
         const marketing = ctx.query('h2,h3').some(h => /features|pricing|기능|요금|how it works|작동|testimonial|후기/i.test(txt(h)));
@@ -548,13 +549,13 @@
           const r = el.getBoundingClientRect();
           return Math.max(r.width, el.width || 0) >= 120;
         });
-        return real.length === 0 ? { ev: `120px 이상 이미지·영상 0개 (섹션 ${secs.length}개, svg/이모지만 사용)` } : null;
+        return real.length === 0 ? { ev: tr`120px 이상 이미지·영상 0개 (섹션 ${secs.length}개, svg/이모지만 사용)` } : null;
       }
     },
     {
       id: 'zigzag-features', cat: 'structure', weight: 5,
-      label: '가짜 미디어 지그재그 섹션',
-      hint: '이미지-글, 글-이미지를 번갈아 놓는 배치 자체는 흔합니다. 문제는 이미지 자리에 실제 이미지가 아닌 그라디언트 상자나 아이콘이 들어간 것 — 보여줄 게 없어서 배치만 흉내 낸 상태입니다.',
+      get label() { return tr('가짜 미디어 지그재그 섹션'); },
+      get hint() { return tr('이미지-글, 글-이미지를 번갈아 놓는 배치 자체는 흔합니다. 문제는 이미지 자리에 실제 이미지가 아닌 그라디언트 상자나 아이콘이 들어간 것 — 보여줄 게 없어서 배치만 흉내 낸 상태입니다.'); },
       detect(ctx) {
         const secs = ctx.els.filter(el => (el.tagName === 'SECTION' || el.parentElement?.tagName === 'MAIN' || el.parentElement === ctx.doc.body) && el.offsetHeight > 200);
         const rows = [];
@@ -573,15 +574,15 @@
         }
         if (rows.length < 2) return null;
         const alternates = rows.some((r, i) => i > 0 && r.media !== rows[i - 1].media);
-        return alternates ? { ev: `지그재그 ${rows.length}단, 미디어 칸이 전부 가짜(그라디언트/아이콘)`, nodes: rows.map(r => r.sec) } : null;
+        return alternates ? { ev: tr`지그재그 ${rows.length}단, 미디어 칸이 전부 가짜(그라디언트/아이콘)`, nodes: rows.map(r => r.sec) } : null;
       }
     },
 
     /* ═══ 🧟 미완성 (취향 아님 — 진짜 결함) ═════════════════════ */
     {
       id: 'dead-links', cat: 'unfinished', weight: 12,
-      label: '목적지가 비어 있는 링크',
-      hint: 'href만으로 동작 여부를 확정할 수 없습니다. 클릭 시 의도한 동작이 있는지 확인하고, 동작 버튼이면 button을, 이동 링크이면 실제 주소를 사용하세요.',
+      get label() { return tr('목적지가 비어 있는 링크'); },
+      get hint() { return tr('href만으로 동작 여부를 확정할 수 없습니다. 클릭 시 의도한 동작이 있는지 확인하고, 동작 버튼이면 button을, 이동 링크이면 실제 주소를 사용하세요.'); },
       detect(ctx) {
         const links = ctx.query('a[href]');
         const dead = links.filter(a => {
@@ -590,14 +591,14 @@
           return h === '' || h === '#' || /^javascript:\s*(void\s*\(\s*0\s*\)|;)\s*;?$/i.test(h);
         });
         return dead.length > 0
-          ? { ev: `보이는 링크 ${links.length}개 중 ${dead.length}개에 이동 주소 없음 · 클릭 동작은 미검증`, nodes: dead }
+          ? { ev: tr`보이는 링크 ${links.length}개 중 ${dead.length}개에 이동 주소 없음 · 클릭 동작은 미검증`, nodes: dead }
           : null;
       }
     },
     {
       id: 'placeholder-copy', cat: 'unfinished', weight: 12,
-      label: '플레이스홀더 문구가 남아있음',
-      hint: '실제 배포 전 반드시 제거. 검색엔진에도 그대로 색인됩니다.',
+      get label() { return tr('플레이스홀더 문구가 남아있음'); },
+      get hint() { return tr('실제 배포 전 반드시 제거. 검색엔진에도 그대로 색인됩니다.'); },
       detect(ctx) {
         // STRONG: 산문에 섞여 나와도 플레이스홀더가 확실한 것
         const STRONG = [/lorem\s+ipsum/i, /\bcompany name\b/i, /\byour name here\b/i,
@@ -623,18 +624,18 @@
     },
     {
       id: 'default-page-title', scope: 'page', cat: 'unfinished', weight: 10,
-      label: '기본 <title> 그대로',
-      hint: '브라우저 탭·검색결과·공유 카드에 전부 노출됩니다. 30초짜리 수정.',
+      get label() { return tr('기본 <title> 그대로'); },
+      get hint() { return tr('브라우저 탭·검색결과·공유 카드에 전부 노출됩니다. 30초짜리 수정.'); },
       detect(ctx) {
         const t = (ctx.title || '').trim().toLowerCase();
-        if (!t) return { ev: '<title>이 비어있음' };
-        return DEFAULT_TITLES.includes(t) ? { ev: `<title>이 "${ctx.title}"` } : null;
+        if (!t) return { ev: tr('<title>이 비어있음') };
+        return DEFAULT_TITLES.includes(t) ? { ev: tr`<title>이 "${ctx.title}"` } : null;
       }
     },
     {
       id: 'placeholder-images', cat: 'unfinished', weight: 9,
-      label: '더미 이미지 서비스 사용',
-      hint: '자리표시자용 이미지 서비스가 연결돼 있습니다. 실제 제품 화면인지 확인하세요. 일반 스톡 사진은 이 규칙에서 제외합니다.',
+      get label() { return tr('더미 이미지 서비스 사용'); },
+      get hint() { return tr('자리표시자용 이미지 서비스가 연결돼 있습니다. 실제 제품 화면인지 확인하세요. 일반 스톡 사진은 이 규칙에서 제외합니다.'); },
       detect(ctx) {
         const imgs = ctx.query('img');
         const hit = imgs.filter(i => {
@@ -645,40 +646,40 @@
         });
         if (!hit.length) return null;
         const hosts = [...new Set(hit.map(i => { try { return new URL(i.currentSrc || i.src).host; } catch { return '?'; } }))];
-        return { ev: `${hit.length}개 (${hosts.join(', ')})`, nodes: hit };
+        return { ev: tr`${hit.length}개 (${hosts.join(', ')})`, nodes: hit };
       }
     },
     {
       id: 'missing-favicon', scope: 'page', cat: 'unfinished', weight: 5,
-      label: '프레임워크 파비콘 경로',
-      hint: '시작 템플릿 이름이 남은 파비콘 경로입니다. 실제 아이콘을 확인해주세요. favicon.ico라는 파일명이나 link 태그 누락만으로 기본 아이콘을 판단하지 않습니다.',
+      get label() { return tr('프레임워크 파비콘 경로'); },
+      get hint() { return tr('시작 템플릿 이름이 남은 파비콘 경로입니다. 실제 아이콘을 확인해주세요. favicon.ico라는 파일명이나 link 태그 누락만으로 기본 아이콘을 판단하지 않습니다.'); },
       detect(ctx) {
         const l = ctx.doc.querySelector('link[rel~="icon"]');
         if (!l) return null; // /favicon.ico 자동 탐색은 DOM만으로 확인할 수 없다.
         const href = l.getAttribute('href') || '';
         let pathname;
         try { pathname = new URL(href, ctx.doc.baseURI).pathname; } catch { return null; }
-        return /\/(vite|next)\.svg$/i.test(pathname) ? { ev: `템플릿 이름이 남은 경로: ${pathname}`, } : null;
+        return /\/(vite|next)\.svg$/i.test(pathname) ? { ev: tr`템플릿 이름이 남은 경로: ${pathname}`, } : null;
       }
     },
     {
       id: 'no-meta-description', scope: 'page', cat: 'unfinished', weight: 6,
-      label: 'meta description / OG 태그 없음',
-      hint: '링크를 공유하면 미리보기가 비어서 나옵니다. 유입에 직접 영향.',
+      get label() { return tr('meta description / OG 태그 없음'); },
+      get hint() { return tr('링크를 공유하면 미리보기가 비어서 나옵니다. 유입에 직접 영향.'); },
       detect(ctx) {
         const miss = [];
         if (!ctx.doc.querySelector('meta[name="description"]')) miss.push('description');
         if (!ctx.doc.querySelector('meta[property="og:title"]')) miss.push('og:title');
         if (!ctx.doc.querySelector('meta[property="og:image"]')) miss.push('og:image');
-        return miss.length >= 2 ? { ev: `누락: ${miss.join(', ')}` } : null;
+        return miss.length >= 2 ? { ev: tr`누락: ${miss.join(', ')}` } : null;
       }
     },
 
     /* ═══ 🔧 툴체인 ═════════════════════════════════════════════ */
     {
       id: 'lucide-icons', kind: 'taste', cat: 'toolchain', weight: 6,
-      label: '24px 선형 아이콘 사용',
-      hint: '여러 아이콘 라이브러리가 같은 SVG 규격을 사용합니다. 이것만으로 Lucide 사용 여부나 AI 생성을 식별할 수 없습니다.',
+      get label() { return tr('24px 선형 아이콘 사용'); },
+      get hint() { return tr('여러 아이콘 라이브러리가 같은 SVG 규격을 사용합니다. 이것만으로 Lucide 사용 여부나 AI 생성을 식별할 수 없습니다.'); },
       detect(ctx) {
         const hit = ctx.svgs.filter(s =>
           s.getAttribute('stroke') === 'currentColor' &&
@@ -686,47 +687,47 @@
           String(s.getAttribute('stroke-width')) === '2' &&
           (s.getAttribute('viewBox') || '').trim() === '0 0 24 24'
         );
-        return hit.length >= 3 ? { ev: `24px · stroke-width=2인 선형 SVG ${hit.length}개`, nodes: hit } : null;
+        return hit.length >= 3 ? { ev: tr`24px · stroke-width=2인 선형 SVG ${hit.length}개`, nodes: hit } : null;
       }
     },
     {
       id: 'emoji-as-icons', cat: 'toolchain', weight: 6,
-      label: '이모지를 아이콘으로 사용',
-      hint: '🚀⚡✨ 는 플랫폼마다 다르게 렌더링되고 디자인 통제가 안 됩니다. 아이콘 세트로 교체하세요.',
+      get label() { return tr('이모지를 아이콘으로 사용'); },
+      get hint() { return tr('🚀⚡✨ 는 플랫폼마다 다르게 렌더링되고 디자인 통제가 안 됩니다. 아이콘 세트로 교체하세요.'); },
       detect(ctx) {
         const hit = ctx.els.filter(el => el.children.length === 0 && EMOJI.test(el.textContent || ''));
-        return hit.length >= 3 ? { ev: `이모지 단독 요소 ${hit.length}개`, nodes: hit } : null;
+        return hit.length >= 3 ? { ev: tr`이모지 단독 요소 ${hit.length}개`, nodes: hit } : null;
       }
     },
     {
       id: 'shadcn-defaults', kind: 'taste', cat: 'toolchain', weight: 7,
-      label: '컴포넌트 라이브러리 속성 사용',
-      hint: 'data-slot·Radix 속성은 기능과 접근성을 위한 구현 흔적입니다. 테마 수정 여부나 제작자를 알 수 없으므로 점수에서 제외합니다.',
+      get label() { return tr('컴포넌트 라이브러리 속성 사용'); },
+      get hint() { return tr('data-slot·Radix 속성은 기능과 접근성을 위한 구현 흔적입니다. 테마 수정 여부나 제작자를 알 수 없으므로 점수에서 제외합니다.'); },
       detect(ctx) {
         const slotEls = ctx.query('[data-slot]');
         const radixEls = ctx.query('[data-radix-collection-item],[data-state][data-orientation]');
         return (slotEls.length + radixEls.length) >= 3
-          ? { ev: `data-slot ${slotEls.length}개 / Radix 속성 ${radixEls.length}개`, nodes: [...slotEls, ...radixEls].slice(0, 30) } : null;
+          ? { ev: tr`data-slot ${slotEls.length}개 / Radix 속성 ${radixEls.length}개`, nodes: [...slotEls, ...radixEls].slice(0, 30) } : null;
       }
     },
     {
       id: 'unused-dark-toggle', kind: 'taste', cat: 'toolchain', weight: 3,
-      label: '아무도 요청 안 한 다크모드 토글',
-      hint: '유지비가 두 배입니다. 실사용 데이터 없으면 v1에서 빼세요.',
+      get label() { return tr('아무도 요청 안 한 다크모드 토글'); },
+      get hint() { return tr('유지비가 두 배입니다. 실사용 데이터 없으면 v1에서 빼세요.'); },
       detect(ctx) {
         const hit = ctx.query('button,[role="switch"]').filter(el => {
           const s = (el.getAttribute('aria-label') || '') + ' ' + txt(el) + ' ' + (el.className?.baseVal || el.className || '');
           return /dark|theme|모드 전환|다크/i.test(String(s));
         });
-        return hit.length ? { ev: '테마 토글 존재', nodes: hit } : null;
+        return hit.length ? { ev: tr('테마 토글 존재'), nodes: hit } : null;
       }
     },
   ];
 
   B.CATS = {
-    visual:     { icon: '🎨', name: '시각 지문',   desc: '화면에서 발견한 시각 패턴' },
-    structure:  { icon: '🧱', name: '구조 지문',   desc: '반복되는 랜딩 구성' },
-    unfinished: { icon: '🧟', name: '미완성 흔적', desc: '배포 전 확인할 항목' },
-    toolchain:  { icon: '🔧', name: '툴체인 흔적', desc: '아이콘·컴포넌트 패턴' },
+    visual:     { icon: '🎨', get name() { return tr('시각 지문'); },   get desc() { return tr('화면에서 발견한 시각 패턴'); } },
+    structure:  { icon: '🧱', get name() { return tr('구조 지문'); },   get desc() { return tr('반복되는 랜딩 구성'); } },
+    unfinished: { icon: '🧟', get name() { return tr('미완성 흔적'); }, get desc() { return tr('배포 전 확인할 항목'); } },
+    toolchain:  { icon: '🔧', get name() { return tr('툴체인 흔적'); }, get desc() { return tr('아이콘·컴포넌트 패턴'); } },
   };
 })();

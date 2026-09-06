@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "밤티 — AI Slop Detector",
+  "name": "__MSG_extensionName__",
+  "default_locale": "en",
   "version": "0.1.0",
-  "description": "이 페이지, AI가 만든 티 납니까? UI 지문을 스캔해 개선 방향을 제안합니다.",
+  "description": "__MSG_extensionDescription__",
   "permissions": [
     "activeTab",
     "scripting",
@@ -20,7 +21,7 @@
       "48": "icons/bamti-48.png",
       "128": "icons/bamti-128.png"
     },
-    "default_title": "밤티로 스캔 (Alt+Shift+B · Mac은 control+Shift+B)"
+    "default_title": "__MSG_actionTitle__"
   },
   "side_panel": {
     "default_path": "src/panel/panel.html"
@@ -31,7 +32,7 @@
         "default": "Alt+Shift+B",
         "mac": "MacCtrl+Shift+B"
       },
-      "description": "현재 페이지 밤티 스캔"
+      "description": "__MSG_scanCommand__"
     }
   },
   "icons": {

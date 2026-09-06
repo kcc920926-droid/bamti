@@ -4,6 +4,7 @@
  */
 (() => {
   const B = (globalThis.BAMTI ||= {});
+  const tr = B.I18N.t;
   const SKIP = /^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT|HEAD|META|LINK)$/i;
   B.prepareContext = function prepareContext(input) {
     if (input._prepared) return input;
@@ -61,10 +62,10 @@
       || (widgets > 0 && buttons >= 3 && headings.length <= 4)
       || (customElements >= 20 && search > 0 && buttons >= 3));
     const pageType = landing
-      ? { key: 'landing', label: '소개·랜딩 페이지', reason: `마케팅 섹션 ${marketing}종` }
+      ? { key: 'landing', label: tr('소개·랜딩 페이지'), reason: tr`마케팅 섹션 ${marketing}종` }
       : application
-        ? { key: 'application', label: '서비스·도구 화면', reason: `입력 ${fields}개 · 버튼 ${buttons}개` }
-        : { key: 'general', label: '일반 페이지', reason: '특정 화면 유형의 근거 부족' };
+        ? { key: 'application', label: tr('서비스·도구 화면'), reason: tr`입력 ${fields}개 · 버튼 ${buttons}개` }
+        : { key: 'general', label: tr('일반 페이지'), reason: tr('특정 화면 유형의 근거 부족') };
     const truncated = stack.length ? visited + stack.length : 0;
     return { ...input, _prepared: true, doc, els, cs, query, rawText,
       text: rawText.toLowerCase(), title: doc.title,

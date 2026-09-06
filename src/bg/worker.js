@@ -22,7 +22,7 @@ function trigger(tab) {
   const scannable = !url || /^(https?|file):/.test(url);
   chrome.storage.session.set(scannable
       ? { bamtiTarget: tab.id, bamtiError: null }
-      : { bamtiTarget: null, bamtiError: '이 페이지는 스캔할 수 없습니다. 크롬 내부 페이지(chrome://, 웹스토어 등)는 확장 프로그램이 접근하지 못합니다.' })
+      : { bamtiTarget: null, bamtiError: chrome.i18n.getMessage('blockedPage') })
     .then(() => chrome.runtime.sendMessage({ type: 'bamti:trigger', tabId: scannable ? tab.id : null }))
     .catch(() => {});
 }

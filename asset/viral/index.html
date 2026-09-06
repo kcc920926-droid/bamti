@@ -1,0 +1,21 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>밤티 — 배포 전 UI 체크</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f1ed;color:#19191d;font-family:-apple-system,'Apple SD Gothic Neo',sans-serif}.poster{width:1800px;padding:42px 54px 28px}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}.eyebrow{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:650;margin-bottom:17px}.eyebrow img{width:32px;height:32px}.eyebrow span{font-size:13px;color:#77777b;border-left:1px solid #c9c9ca;padding-left:13px;margin-left:2px}h1{font-size:66px;letter-spacing:-3px;line-height:1.17;margin:0;font-weight:800}h1 em{font-style:normal;color:#df2450}.intro .aside{display:flex;align-items:center;gap:23px}.aside img{width:158px;height:158px;object-fit:contain}.aside p{font-size:20px;line-height:1.65;letter-spacing:-.6px;margin:0}.aside b{color:#df2450}.browser{overflow:hidden;border:1px solid #c7c7ca;border-radius:15px;background:white;box-shadow:0 22px 55px #24242a16}.toolbar{height:57px;display:flex;align-items:center;gap:20px;padding:0 22px;background:#e8e8eb;border-bottom:1px solid #d1d1d6;font-size:13px;color:#67676d}.dots{display:flex;gap:7px}.dots i{width:10px;height:10px;border-radius:50%;background:#c1c1c8}.address{background:#f8f8fa;border-radius:7px;padding:9px 16px;flex:1;display:flex;gap:12px}.address span{color:#92929a}.toolmark{display:flex;gap:8px;align-items:center;color:#26262b;font-weight:650}.toolmark img{width:25px;height:25px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 470px;height:920px}.workspace iframe{border:0;width:100%;height:100%;display:block}#panel{border-left:1px solid #d4d4d8}.footer{display:flex;justify-content:space-between;align-items:center;margin-top:22px;font-size:14px;color:#77777d}.footer strong{color:#29292f;font-size:16px}.footer span:last-child{font-size:12px}.shotlabel{background:#fff0f4;border:1px solid #f6b6c6;color:#c41a43;padding:6px 11px;border-radius:5px;font-size:12px;font-weight:650}
+</style></head><body><main class="poster"><div class="intro"><div><div class="eyebrow"><img src="/icons/bamti-48.png" alt="">밤티<span>배포 전 UI 체크</span></div><h1>AI가 만든 내 사이트,<br><em>배포해도 괜찮을까?</em></h1></div><div class="aside"><p>익숙한 AI UI 패턴부터<br>놓치기 쉬운 <b>미완성 흔적</b>까지.<br>클릭 한 번으로 확인하세요.</p><img src="/asset/illustrations/bamti-inspector.png" alt=""></div></div>
+<div class="browser"><div class="toolbar"><div class="dots"><i></i><i></i><i></i></div><span>← &nbsp; → &nbsp; ↻</span><div class="address"><span>⌘</span>localhost / nexus-ai-demo<span>촬영용 예시 페이지</span></div><span class="shotlabel">실제 로컬 엔진 검사</span><div class="toolmark"><img src="/icons/bamti-32.png" alt="">밤티</div></div><div class="workspace"><iframe id="site" title="의도적으로 UI 패턴과 미완성 흔적을 넣은 예시" src="slop-demo.html"></iframe><iframe id="panel" title="밤티 실제 패널" src="panel.html"></iframe></div></div>
+<div class="footer"><strong>만드는 건 AI에게. &nbsp;배포 전 점검은 밤티에게.</strong><span>가상 사이트 · 실제 규칙 분석 · 패턴 점수는 AI 생성 확률이 아닙니다.</span></div></main>
+<style>.poster{width:1600px;padding:34px 44px 25px}.intro{margin-bottom:28px}h1{font-size:58px}.aside img{width:126px;height:126px}.aside p{font-size:18px}.workspace{height:980px}.footer{font-size:13px}.footer strong{font-size:15px}</style>
+<script>
+window.demoReady = new Promise((resolve, reject) => {
+  document.getElementById('site').addEventListener('load', async () => {
+    try {
+      const w = document.getElementById('site').contentWindow;
+      for (const file of ['src/i18n/messages.js','src/i18n/i18n.js','src/core/context.js','src/core/signals.js','src/prose/english-rules.js', 'src/prose/prose.js', 'src/core/score.js','src/scan/scan.js']) {
+        await new Promise((yes,no) => { const s=w.document.createElement('script');s.src='/'+file;s.onload=yes;s.onerror=no;w.document.head.append(s); });
+      }
+      window.scanDemo = locale => { window.demoReport=w.BAMTI.scan(locale);return window.demoReport; };
+      resolve();
+    } catch(error) { reject(error); }
+  });
+});
+</script></body></html>
