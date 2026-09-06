@@ -20,6 +20,23 @@
 
 <main id="main">
   <label class="language-picker" for="language">언어 <select id="language"><option value="auto">브라우저 언어</option><option value="ko">한국어</option><option value="en">English</option></select></label>
+  <details id="siteaccess" class="site-access">
+    <summary><span>자동 스캔 허용 사이트</span> <span id="siteaccess-count">…</span></summary>
+    <div class="site-access-body">
+      <p>패널이 열려 있을 때 허용된 사이트를 자동으로 다시 검사합니다. 모든 포트에 적용됩니다.</p>
+      <p>*.*는 모든 HTTP·HTTPS 사이트를 허용합니다. 로컬 파일·브라우저 내부 페이지는 포함하지 않습니다.</p>
+      <form id="siteaccess-form">
+        <label for="siteaccess-input">도메인 또는 와일드카드</label>
+        <input id="siteaccess-input" type="text" placeholder="example.com, *.example.com, *.*" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="siteaccess-preview">
+        <p id="siteaccess-preview" aria-live="polite"></p>
+        <button class="pill" type="submit">추가·권한 요청</button>
+      </form>
+      <p id="siteaccess-status" role="status" aria-live="polite"></p>
+      <p id="siteaccess-empty" hidden>항상 허용된 사이트가 없습니다.</p>
+      <ul id="siteaccess-list"></ul>
+      <button id="siteaccess-refresh" type="button" class="pill">목록 새로고침</button>
+    </div>
+  </details>
   <p id="status" class="status" role="status" aria-live="polite">현재 페이지를 확인하고 있습니다.</p>
   <div id="empty" class="state">
     <img class="empty-art" src="../../asset/illustrations/bamti-inspector.png" width="160" height="160" alt="" decoding="async">

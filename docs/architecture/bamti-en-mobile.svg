@@ -33,7 +33,7 @@
 <g data-box="38,713,284,97">
 <rect x="38" y="713" width="284" height="97" rx="12" class="node"/>
 <text x="54" y="741" class="node-title" font-size="16"><tspan x="54" dy="0">UI checks</tspan></text>
-<text x="54" y="766" class="secondary" font-size="13"><tspan x="54" dy="0">23 scored rules + 10 references</tspan><tspan x="54" dy="19">Pattern score ≠ AI probability</tspan></text>
+<text x="54" y="766" class="secondary" font-size="13"><tspan x="54" dy="0">24 scored rules + 10 references</tspan><tspan x="54" dy="19">Pattern score ≠ AI probability</tspan></text>
 </g>
 <g data-box="38,822,284,97">
 <rect x="38" y="822" width="284" height="97" rx="12" class="node"/>

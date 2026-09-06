@@ -22,11 +22,20 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 
 | 결과 | 읽는 방법 |
 |---|---|
-| UI 패턴 | 23개 가중치 규칙으로 계산. 0–100은 AI 생성 확률이나 디자인 품질 점수가 아님 |
+| UI 패턴 | 24개 가중치 규칙으로 계산. 0–100은 AI 생성 확률이나 디자인 품질 점수가 아님 |
 | 참고 패턴 | 폰트·팔레트·라이브러리 등 정상적인 선택도 포함. 10종, 점수 제외 |
 | 한·영 문체 | 한국어 13패턴과 영어 어휘 39규칙. 반복·밀집을 검토하며 UI 점수와 분리 |
 | 근거와 위치 | 원문·개선 방향을 읽고 **이 항목만 표시**로 요소나 문단 확인 |
 | 복사 | 개별 제안, 전체 제안, JSON 리포트 복사. JSON에는 요소 셀렉터·HTML 일부 포함 |
+
+**0점은 현재 규칙이 놓친 패턴이 없다는 보장이 아닙니다.** 엔진은 정해진 시그니처를
+검사하며, 화면 인상을 평가하는 LLM은 아직 연결되지 않았습니다. 분모가 전체 규칙의
+가중치 합이므로 새 규칙을 추가하면 같은 페이지의 점수도 달라질 수 있습니다.
+
+`glass-panel-overuse`는 5개 이상의 독립적인 큰 반투명 콘텐츠 패널에 블러 ≥8px와
+모서리 ≥16px가 반복되고, 콘텐츠 제목의 70% 이상이 그 안에 있을 때 제안합니다.
+단일 블러 헤더·작은 카드·중첩 컨테이너·피드·서비스 화면은 이 규칙에서 제외합니다.
+임계값은 휴리스틱이며, AI 작성 여부를 검증한 통계적 분류기가 아닙니다.
 
 문체 검사는 한국어 **im-not-ai**의 규칙 일부와 영어 **slop-gate**의 어휘 매칭을
 브라우저용으로 적용한 것입니다. 전체 LLM 윤문 엔진이나 학습된 작성자 판별 모델이 아닙니다.
@@ -46,6 +55,25 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 - 페이지 변경 중인 패널에서는 낡은 결과의 복사·위치 표시를 막습니다.
 - 임의의 DOM 변경을 항상 감시하는 기능은 아닙니다. HMR만 일어난 경우 **다시 스캔**이 필요할 수 있습니다.
 - 로컬 파일 접근과 선택형 호스트 권한은 서로 다른 설정입니다.
+
+패널 상단 **자동 스캔 허용 사이트**에서 목록을 추가·삭제할 수 있습니다.
+
+| 입력 | 허용 범위 |
+|---|---|
+| `*.*` 또는 `*` | 모든 HTTP·HTTPS 사이트 |
+| `example.com` | 해당 도메인만, HTTP·HTTPS |
+| `*.example.com` | 해당 도메인과 모든 하위 도메인, HTTP·HTTPS |
+| `https://*.example.com/*` | 위 범위를 HTTPS로 한정 |
+| `localhost` | 로컬 개발 서버의 모든 포트, HTTP·HTTPS |
+
+추가 시 Chrome에 선택 권한을 요청합니다. 거절하면 목록은 변경하지 않습니다.
+목록은 저장된 문자열이 아니라 **Chrome이 실제로 허용한 범위**이며, 재시작 후에도 유지됩니다.
+호스트 단위 기능이므로 입력에 경로·포트를 넣을 수 없고, 모든 포트에 적용됩니다.
+`*.*`는 로컬 파일이나 브라우저 내부 페이지를 포함하지 않습니다.
+범위를 삭제해도 다른 와일드카드가 같은 사이트를 포함하면 계속 허용됩니다.
+현재 사이트의 **자동 스캔 허용됨** 버튼은 이 목록을 엽니다.
+권한의 원리는 Chrome 공식 [매치 패턴](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns)과
+[선택 권한 API](https://developer.chrome.com/docs/extensions/reference/api/permissions)를 따릅니다.
 
 ## 로컬 MCP 연결
 
@@ -161,9 +189,10 @@ npx playwright install chromium
 
 | 명령 | 범위 |
 |---|---|
-| `node test/engine-precision.cjs` | UI 오탐·누락 19검사 |
+| `node test/engine-precision.cjs` | UI 오탐·누락 31검사, `--live`로 공개 URL 추가 확인 |
 | `node test/prose.cjs` | 한영 문체·제외 영역·패널 47검사 |
 | `node test/panel-ux.cjs` | 사용성·권한 오류·화면 크기·14개 UI 코퍼스 |
+| `node test/site-access.cjs` | 와일드카드 입력·권한 승인/거절·삭제·동기화·한영 UI |
 | `node test/i18n.cjs` | 한영 전환, 네이티브 확장 메타데이터·저장 |
 | `node test/icons.cjs` | 아이콘·서비스 워커 로드 |
 | `BAMTI_PORT=18766 node mcp/e2e.mjs` | 별도 테스트 포트에서 모의 패널과 MCP 왕복 로그 |
@@ -212,5 +241,19 @@ Reports may include page text and HTML excerpts. The optional agent receives
 those reports; any subsequent model sharing depends on the agent configuration.
 Reports are in-memory snapshots, not durable history. Verify their URL and time.
 LLM visual review and OAuth are not implemented.
+
+A zero score only means the current rules found no scored patterns. The new
+glass-panel rule checks repeated large translucent, blurred, rounded content
+surfaces, not AI authorship. Thresholds are heuristic, and scores are not
+calibrated probabilities or directly comparable across different rule versions.
+
+Open **Auto-scan allowed sites** to manage persistent Chrome host access.
+Use `*.*` for all HTTP/HTTPS sites, `*.example.com` for a domain and its subdomains,
+or `https://*.example.com/*` for HTTPS only. Bare domains cover both schemes.
+All ports are included; explicit ports and paths are not accepted. Access requires
+Chrome permission approval and remains unchanged if declined. The list reflects
+actual grants, including changes made outside the panel. Removing one scope does
+not override other overlapping grants. Auto-scan still requires an open panel;
+`*.*` does not include local files or internal browser pages.
 
 [English diagram](architecture/bamti-en.svg) · [Detailed writing limits](../src/prose/README.md) · [MIT notices](../THIRD_PARTY_NOTICES.md)

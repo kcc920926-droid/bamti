@@ -62,10 +62,23 @@ globalThis.chrome = {
   runtime: { onMessage: { addListener: fn => listeners.push(fn) }, getManifest: () => ({ version: 'preview' }), id: 'preview' },
   scripting: { executeScript: async () => [] },
   extension: { isAllowedFileSchemeAccess: cb => cb(true) },
-  permissions: (() => { const g = new Set(); return {
-    contains: async ({origins}) => origins.every(o => g.has(o)),
-    request:  async ({origins}) => { origins.forEach(o => g.add(o)); console.log('permissions.request', origins); return true; },
-    remove:   async ({origins}) => { origins.forEach(o => g.delete(o)); return true; },
+  permissions: (() => {
+    const g = new Set(JSON.parse(localStorage.getItem('bamtiPreviewOrigins') || '[]'));
+    const added = [], removed = [];
+    const save = () => localStorage.setItem('bamtiPreviewOrigins', JSON.stringify([...g]));
+    const covers = (grant, origin) => {
+      if (grant === origin || grant === '<all_urls>') return true;
+      const pattern = grant.match(/^(https?|\*):\/\/(.+)\/\*$/), target = origin.match(/^(https?):\/\/(.+)\/\*$/);
+      if (!pattern || !target || (pattern[1] !== '*' && pattern[1] !== target[1])) return false;
+      return pattern[2] === '*' || pattern[2] === target[2] || (pattern[2].startsWith('*.') && (target[2] === pattern[2].slice(2) || target[2].endsWith(pattern[2].slice(1))));
+    };
+    return {
+    getAll: async () => ({ origins: [...g], permissions: [] }),
+    onAdded: { addListener: fn => added.push(fn) },
+    onRemoved: { addListener: fn => removed.push(fn) },
+    contains: async ({origins}) => origins.every(o => [...g].some(grant => covers(grant, o))),
+    request:  async ({origins}) => { origins.forEach(o => g.add(o)); save(); added.forEach(fn => fn({origins})); return true; },
+    remove:   async ({origins}) => { origins.forEach(o => g.delete(o)); save(); removed.forEach(fn => fn({origins})); return true; },
   }; })(),
   windows: { getCurrent: async () => ({ id: 7 }) },
   tabs: {

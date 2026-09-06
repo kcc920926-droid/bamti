@@ -30,7 +30,7 @@ const esc = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('
     check('only the two real paragraphs are inspected', r.prose.inspectedBlocks === 2 && r.prose.signals.every(s => s.count === 1));
     check('Korean thresholds detect through/hype/connectors', ['A-2', 'D-4', 'H-1'].every(id => r.prose.signals.some(s => s.id === 'prose-ko-' + id)));
     check('English keeps exact upstream IDs in evidence', r.prose.signals.find(s => s.language === 'en').examples.some(e => e.ruleId === 'fast-paced-world'));
-    check('prose is excluded from all UI score accounting', r.prose.signals.every(s => s.weight === 0) && !r.signals.some(s => s.cat === 'prose') && r.totalSignals === 23);
+    check('prose is excluded from all UI score accounting', r.prose.signals.every(s => s.weight === 0) && !r.signals.some(s => s.cat === 'prose') && r.totalSignals === 24);
     const scoreWithoutProse = await page.evaluate(() => { const fn = BAMTI.scanProse; BAMTI.scanProse = () => ({ signals: [] }); const n = BAMTI.scan().score; BAMTI.scanProse = fn; return n; });
     check('enabling the new engine does not change UI score', scoreWithoutProse === r.score);
     const english = await page.evaluate(() => BAMTI.scan('en'));

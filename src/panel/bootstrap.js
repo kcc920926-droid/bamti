@@ -17,7 +17,13 @@
       language.disabled = false;
     }
   };
-  const script = document.createElement('script');
-  script.src = globalThis.chrome.runtime.getURL ? chrome.runtime.getURL('src/panel/panel.js') : '/src/panel/panel.js';
-  document.body.append(script);
+  for (const path of ['src/panel/site-access.js', 'src/panel/panel.js']) {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = globalThis.chrome.runtime.getURL ? chrome.runtime.getURL(path) : '/' + path;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.append(script);
+    });
+  }
 })();

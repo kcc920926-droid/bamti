@@ -34,7 +34,7 @@
 <g data-box="36,617,322,103">
 <rect x="36" y="617" width="322" height="103" rx="12" class="node"/>
 <text x="52" y="645" class="node-title" font-size="17"><tspan x="52" dy="0">UI 검사</tspan></text>
-<text x="52" y="672" class="secondary" font-size="14"><tspan x="52" dy="0">23종 점수 규칙 + 10종 참고</tspan><tspan x="52" dy="21">가중치 점수 ≠ AI 생성 확률</tspan></text>
+<text x="52" y="672" class="secondary" font-size="14"><tspan x="52" dy="0">24종 점수 규칙 + 10종 참고</tspan><tspan x="52" dy="21">가중치 점수 ≠ AI 생성 확률</tspan></text>
 </g>
 <g data-box="378,617,322,103">
 <rect x="378" y="617" width="322" height="103" rx="12" class="node"/>

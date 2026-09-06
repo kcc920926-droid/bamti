@@ -78,6 +78,35 @@
   /* ── 시그널 ───────────────────────────────────────────────────── */
   B.SIGNALS = [
 
+    {
+      id: 'glass-panel-overuse', cat: 'visual', weight: 6,
+      get label() { return tr('콘텐츠 전반에 반복되는 유리 패널'); },
+      get hint() { return tr('블러와 큰 둥근 모서리가 여러 콘텐츠 영역에 반복됩니다. 핵심 영역에만 효과를 남기고 설명·안내 영역은 단순한 배경으로 구분해보세요. 유리 효과 자체나 AI 제작 여부를 문제로 단정하지 않습니다.'); },
+      detect(ctx) {
+        const excluded = 'header,footer,nav,aside,[role="navigation"],[role="feed"],[role="menu"],[role="dialog"],[role="application"]';
+        const headings = ctx.query('h1,h2,h3,h4').filter(el => !el.closest(excluded));
+        const paragraphs = ctx.query('p').filter(el => !el.closest(excluded) && txt(el).length >= 20);
+        const candidates = ctx.els.filter(el => {
+          if (el.closest(excluded) || !/^(SECTION|ARTICLE|DIV|A|LI)$/.test(el.tagName)) return false;
+          const s = ctx.cs(el);
+          const blur = /blur\(([\d.]+)px\)/.exec(s.backdropFilter || s.webkitBackdropFilter || '');
+          if (!blur || +blur[1] < 8 || Math.min(...[s.borderTopLeftRadius, s.borderTopRightRadius, s.borderBottomLeftRadius, s.borderBottomRightRadius].map(parseFloat)) < 16) return false;
+          // Opaque panels hide the backdrop. Only translucent paint is relevant.
+          const alpha = s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)$/);
+          if (!alpha || +alpha[1] > .9) return false;
+          if (s.backgroundImage !== 'none' && !/rgba\(|transparent/.test(s.backgroundImage)) return false;
+          const r = el.getBoundingClientRect();
+          return r.width >= 200 && r.height >= 90 && headings.some(h => el.contains(h)) && paragraphs.some(p => el.contains(p));
+        });
+        // Nested shells are one panel, not multiple independent observations.
+        const nodes = candidates.filter(el => !candidates.some(parent => parent !== el && parent.contains(el)));
+        if (nodes.length < 5) return null;
+        const covered = headings.filter(h => nodes.some(panel => panel.contains(h))).length;
+        if (!headings.length || covered / headings.length < .7) return null;
+        return { ev: tr`큰 반투명 패널 ${nodes.length}개에 블러 ≥8px·모서리 ≥16px 반복 · 콘텐츠 제목 ${covered}/${headings.length}개 포함`, nodes };
+      }
+    },
+
     /* ═══ 🎨 시각 ═══════════════════════════════════════════════ */
     {
       id: 'gradient-text-heading', cat: 'visual', weight: 10,

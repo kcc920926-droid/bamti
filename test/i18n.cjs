@@ -33,7 +33,7 @@ const hangul = /[가-힣]/;
     const facts = r => [...r.signals, ...r.taste].map(s => [s.id, s.count, s.weight]);
     assert.deepEqual(facts(reports.korean), facts(reports.english));
     assert.deepEqual(reports.english.errors, []);
-    assert.equal(reports.definitions.length, 33);
+    assert.equal(reports.definitions.length, 34);
     for (const definition of reports.definitions) {
       assert(!hangul.test(definition.label), definition.id + ' label');
       assert(!hangul.test(definition.hint), definition.id + ' hint');
@@ -46,7 +46,7 @@ const hangul = /[가-힣]/;
       return { raw, translated: BAMTI.I18N.t`<title>이 "${raw}"` };
     });
     assert.equal(data.translated, `The <title> is "${data.raw}"`);
-    console.log('PASS: all 33 rule labels/hints, evidence, real overlays, unchanged scores and verbatim page data');
+    console.log('PASS: all 34 rule labels/hints, evidence, real overlays, unchanged scores and verbatim page data');
 
     for (const [locale, expected] of [['ko-KR', 'ko'], ['en-US', 'en'], ['en-GB', 'en'], ['fr-FR', 'en']]) {
       const page = await browser.newPage({ viewport: { width: 360, height: 1000 }, locale });

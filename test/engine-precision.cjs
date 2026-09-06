@@ -79,8 +79,37 @@ const shell = body => `<!doctype html><html><head>${chrome}${style}</head><body>
     r = await scan(`${ordinary}<div>${'<span style="display:block">Visible content</span>'.repeat(6010)}</div>`);
     check('large visible pages report a bounded, partial sample', r.domSize === 6000 && r.truncated > 0);
 
+    // Synthetic reproduction of Olvend's repeated glass surfaces, without its
+    // hostname, copy, brand, assets or canonical Features/Pricing headings.
+    const glassStyle = '<style>.glass{backdrop-filter:blur(18px);border-radius:24px;background:rgba(255,255,255,.6);min-height:120px;padding:24px;margin:12px}</style>';
+    const panels = (n, attrs = '') => Array.from({ length: n }, (_, i) => `<section class="glass" ${attrs}><h2>Tool ${i}</h2><p>This area explains a different tool and its actual behavior.</p></section>`).join('');
+    const hasGlass = report => tells(report).includes('glass-panel-overuse');
+    r = await scan(glassStyle + '<main>' + panels(7) + '</main>');
+    check('repeated glass content is found without any known hostname or marketing keywords', hasGlass(r) && r.signals.find(s => s.id === 'glass-panel-overuse').count === 7);
+    check('glass evidence includes locatable targets and actionable advice', r.signals.find(s => s.id === 'glass-panel-overuse').targets.length === 7 && r.errors.length === 0);
+    r = await scan(glassStyle + panels(4));
+    check('a few glass panels alone do not trigger the repeated-surface rule', !hasGlass(r));
+    r = await scan(glassStyle + panels(5));
+    check('five independent glass content panels reach the count boundary', hasGlass(r));
+    r = await scan(glassStyle + panels(5, 'style="background:white"'));
+    check('opaque backgrounds with invisible backdrop blur are excluded', !hasGlass(r));
+    r = await scan(glassStyle + panels(5, 'style="backdrop-filter:blur(2px)"'));
+    check('weak blur does not satisfy the compound style rule', !hasGlass(r));
+    r = await scan(glassStyle + panels(5, 'style="border-radius:4px"'));
+    check('blur alone without repeated large rounded surfaces is insufficient', !hasGlass(r));
+    r = await scan(glassStyle + panels(5) + Array.from({ length: 6 }, (_, i) => `<article><h2>Plain ${i}</h2><p>Unstyled content with another visual hierarchy.</p></article>`).join(''));
+    check('a minority of glass panels does not imply page-wide repetition', !hasGlass(r));
+    r = await scan(glassStyle + '<div class="glass"><h1>Container</h1>' + panels(6) + '</div>');
+    check('nested glass shells are not counted as independent panels', !hasGlass(r));
+    r = await scan(glassStyle + '<header>' + panels(6) + '</header><main><h1>Content</h1></main>');
+    check('frosted navigation is outside content-surface analysis', !hasGlass(r));
+    r = await scan(glassStyle + '<main>' + controls + '<h1>Library</h1><div role="feed">' + panels(6) + '</div></main>');
+    check('YouTube-like feed cards are excluded even if DOM classification is general', !hasGlass(r));
+    r = await scan(glassStyle + '<main>' + controls + '<h1>Library</h1><div role="feed">' + panels(6, 'hidden') + '</div></main>');
+    check('application scope explicitly excludes the glass repetition rule', r.pageType.key === 'application' && r.skipped.some(s => s.id === 'glass-panel-overuse') && !hasGlass(r));
+
     if (process.argv.includes('--live')) {
-      for (const url of ['https://www.youtube.com/', 'https://mix.olvend.com/']) {
+      for (const url of ['https://www.youtube.com/', 'https://mix.olvend.com/', 'https://olvend.com/']) {
         const live = await browser.newPage({ viewport: { width: 1440, height: 900 }, locale: 'ko-KR' });
         await live.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await live.waitForTimeout(2000);

@@ -207,19 +207,25 @@ function originPattern(url) {
 }
 
 let lastUrl = '';
+let allowRevision = 0;
+const siteAccess = BAMTI.SITES.mount({
+  onChange: () => refreshAllow(lastUrl),
+  onGranted: () => { if (currentTab) scan(currentTab, { auto: true }); },
+});
 async function refreshAllow(url) {
+  const ticket = ++allowRevision;
   const b = $('allow');
   const pat = originPattern(url);
   if (!pat) { b.hidden = true; return; }
   b.hidden = true;
   const has = await chrome.permissions.contains({ origins: [pat] }).catch(() => false);
-  if (url !== lastUrl) return;
+  if (url !== lastUrl || ticket !== allowRevision) return;
   b.hidden = false;
   b.dataset.pattern = pat;
   b.dataset.granted = has ? '1' : '0';
   b.textContent = has ? tr('자동 스캔 허용됨') : tr('이 사이트 항상 허용');
   b.title = has
-    ? tr`${pat} 는 클릭 없이 계속 스캔됩니다. 눌러서 해제.`
+    ? tr('허용 목록에서 권한을 관리합니다. 와일드카드는 여러 사이트에 적용됩니다.')
     : tr`${pat} 를 아이콘 클릭 없이 계속 스캔하려면 누르세요. 크롬 확인창이 한 번 뜹니다.`;
 }
 
@@ -229,13 +235,17 @@ $('allow').onclick = async () => {
   if (!pat) return;
   const tabId = currentTab;
   if (b.dataset.granted === '1') {
-    await chrome.permissions.remove({ origins: [pat] }).catch(() => {});
+    // An exact origin can be covered by a wildcard grant; it cannot be
+    // subtracted from that wildcard. Manage the actual granted scope instead.
+    siteAccess.open();
+    return;
   } else {
     const ok = await chrome.permissions.request({ origins: [pat] }).catch(() => false);
     if (ok && currentTab === tabId) scan(tabId, { auto: true });
     else if (!ok) announce(tr('권한을 변경하지 않았습니다. 아이콘으로 계속 스캔할 수 있어요.'));
   }
   refreshAllow(lastUrl);
+  siteAccess.refresh();
 };
 
 const blockedUrl = url => !!url && (!SCANNABLE.test(url) || /^https:\/\/(chromewebstore\.google\.com|chrome\.google\.com\/webstore)(\/|$)/i.test(url));

@@ -56,7 +56,7 @@
     const skipped = [];
     const marketingRules = new Set(['everything-centered', 'three-col-feature-grid', 'uniform-section-rhythm',
       'canonical-section-order', 'three-tier-pricing', 'hero-badge-pill', 'fake-social-proof', 'generic-cta-copy',
-      'section-template-repeat', 'card-clones', 'cta-banner', 'icon-circle-badges', 'no-real-images', 'zigzag-features']);
+      'section-template-repeat', 'card-clones', 'cta-banner', 'icon-circle-badges', 'no-real-images', 'zigzag-features', 'glass-panel-overuse']);
 
     for (const sig of B.SIGNALS) {
       if (ctx.pageType.key === 'application' && marketingRules.has(sig.id)) {
@@ -130,7 +130,9 @@
       scannedAt: new Date().toISOString(),
       score, band: band.key,
       bandLabel: score < 15 ? tr('검출 근거 적음') : band.label,
-      bandLine: ctx.pageType.key === 'application'
+      bandLine: score === 0
+        ? tr('현재 규칙에서 점수에 반영할 패턴을 찾지 못했습니다. AI 스타일이 없거나 완성도가 높다는 뜻은 아닙니다.')
+        : ctx.pageType.key === 'application'
         ? tr('도구 화면은 미완성 흔적 위주로 검사합니다. 낮은 점수로 완성도나 제작 방식을 판단할 수 없습니다.') : band.line,
       firedCount: tells.length, totalSignals: tellSigs.length,
       byCat, signals: tells, taste, prose, errors, skipped,

@@ -191,6 +191,19 @@ body { overflow-wrap:anywhere; }
 }
 
 /* 에이전트 브리지 */
+.site-access { margin:0 14px 8px; border:1px solid var(--line); border-radius:6px; font-size:12px; }
+.site-access summary { padding:10px; cursor:pointer; }
+.site-access-body { padding:0 10px 12px; }
+.site-access p { color:var(--dim); line-height:1.6; overflow-wrap:anywhere; }
+.site-access form { display:grid; gap:8px; }
+.site-access form button { justify-self:start; }
+.site-access input { width:100%; min-width:0; padding:9px; color:var(--fg); background:var(--bg); border:1px solid var(--line); border-radius:5px; font:inherit; }
+.site-access ul { list-style:none; padding:0; }
+.site-access li { display:flex; align-items:center; gap:8px; padding:10px 0; border-top:1px solid var(--line); }
+.site-access li div { flex:1; min-width:0; overflow-wrap:anywhere; }
+.site-access li small { display:block; color:var(--dim); margin-top:4px; }
+.site-access li button { flex-shrink:0; }
+#siteaccess-preview:empty, #siteaccess-status:empty { display:none; }
 .bridge { border-top:1px dashed var(--line); font-size:11px; color:var(--dim); }
 .bridge summary { padding:6px 14px; cursor:pointer; list-style:none; }
 .bridge summary::-webkit-details-marker { display:none; }

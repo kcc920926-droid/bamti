@@ -7,7 +7,10 @@ const noop = {addListener:()=>{}};
 globalThis.chrome = {
   storage:{session:{get:async()=>({bamtiTarget:1})},local:{get:async()=>({bamtiOverlay:false,bamtiLanguage:localStorage.getItem('bamtiDemoLanguage')||'ko'}),set:async o=>{if(o.bamtiLanguage)localStorage.setItem('bamtiDemoLanguage',o.bamtiLanguage);}}},
   runtime:{onMessage:noop,id:'demo',getManifest:()=>({version:'demo'}),getURL:p=>'/'+p},
-  windows:{getCurrent:async()=>({id:7})},permissions:{contains:async()=>true,request:async()=>true},
+  windows:{getCurrent:async()=>({id:7})},permissions:(()=>{
+    const grants=new Set([`${location.protocol}//${location.hostname}/*`]);
+    return {contains:async({origins})=>origins.every(o=>grants.has(o)),getAll:async()=>({origins:[...grants]}),request:async({origins})=>{origins.forEach(o=>grants.add(o));return true;},remove:async({origins})=>{origins.forEach(o=>grants.delete(o));return true;}};
+  })(),
   scripting:{executeScript:async()=>[]},extension:{isAllowedFileSchemeAccess:cb=>cb(true)},
   tabs:{onActivated:noop,onUpdated:noop,onRemoved:noop,get:async()=>tab(),query:async()=>[tab()],create:async()=>{},sendMessage:async(_id,msg)=>{
     await parent.demoReady;
