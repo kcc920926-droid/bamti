@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="2341" viewBox="0 0 360 2341" role="img" aria-labelledby="bamti-ko-m-title bamti-ko-m-desc" xml:lang="ko">
+<title id="bamti-ko-m-title">밤티, 어떻게 작동하나요?</title>
+<desc id="bamti-ko-m-desc">검사관처럼 페이지를 살피고, 고칠 곳에 포스트잇을 붙입니다. 코드에 있음: Chrome MV3 + 선택형 로컬 MCP. 관찰: 문체 47 / UI 정밀 19 검사 통과. MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증 요약에서 prose 누락: 문체는 full: true로 조회; 리포트는 메모리 스냅샷: 재시작 시 소실 · 연결 해제 시 오래될 수 있음; 6자리 HEX 기본 토큰: 요청 제한도 없어 인증 보강 필요</desc>
+<style>svg{--bg:#f7faf8;--card:#fff;--fg:#172e28;--muted:#52665d;--line:#cfddd5;--accent:#087254;--wash:#e7f3eb;--risk:#fff4e6;--risk-fg:#865020;--edge:#668375;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}@media(prefers-color-scheme:dark){svg{--bg:#101c17;--card:#192a22;--fg:#edf5ee;--muted:#bbcec0;--line:#3e5749;--accent:#80ddb0;--wash:#1d3829;--risk:#34291e;--risk-fg:#f0c691;--edge:#98b8a5}}text{fill:var(--fg)}.secondary{fill:var(--muted)}.accent,.kicker{fill:var(--accent)}.headline,.node-title,.section,.risk-title{font-weight:650}.kicker{letter-spacing:1.8px}.node{fill:var(--card);stroke:var(--line)}.source,.state{fill:var(--wash);stroke:var(--line)}.boundary{fill:none;stroke:var(--line)}.edge{fill:none;stroke:var(--edge);stroke-width:1.5;stroke-linejoin:round}.arrow{fill:var(--edge)}.label-bg{fill:var(--bg)}.edge-label,.center{text-anchor:middle}.edge-label{fill:var(--muted)}.risk{fill:var(--risk)}.risk-title{fill:var(--risk-fg)}.planned{fill:none;stroke:var(--edge);stroke-dasharray:5 5}</style>
+<defs><marker id="bamti-ko-m-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 1 L7 4 L0 7" class="arrow"/></marker></defs>
+<rect width="360" height="2341" fill="var(--bg)"/>
+<rect x="16" y="312" width="328" height="1051" rx="16" class="boundary"/>
+<text x="16" y="30" class="kicker" font-size="13"><tspan x="16" dy="0">BAMTI / ARCHITECTURE</tspan></text>
+<text x="16" y="70" class="headline" font-size="25"><tspan x="16" dy="0">밤티, 어떻게 작동하나요?</tspan></text>
+<text x="16" y="103" class="secondary" font-size="14"><tspan x="16" dy="0">검사관처럼 페이지를 살피고,</tspan><tspan x="16" dy="19">고칠 곳에 포스트잇을 붙입니다.</tspan></text>
+<rect x="16" y="150" width="328" height="82" rx="12" class="state"/>
+<text x="28" y="173" class="accent" font-size="13"><tspan x="28" dy="0">코드에 있음: Chrome MV3 + 선택형 로컬 MCP</tspan></text>
+<text x="28" y="195" class="secondary" font-size="13"><tspan x="28" dy="0">설치·실행은 별도 · 실제 사용자 연결 상태는 미</tspan><tspan x="28" dy="19">확인</tspan></text>
+<text x="16" y="266" class="section" font-size="15"><tspan x="16" dy="0">01 / 페이지에서 개선 방향까지</tspan></text>
+<text x="16" y="289" class="secondary" font-size="13"><tspan x="16" dy="0">현재 컴퓨터 · 검사에는 외부 추론 서버가 필요 없음</tspan></text>
+<g data-box="28,320,304,97">
+<rect x="28" y="320" width="304" height="97" rx="12" class="source"/>
+<text x="44" y="348" class="node-title" font-size="16"><tspan x="44" dy="0">원본 · 현재 웹페이지</tspan></text>
+<text x="44" y="373" class="secondary" font-size="13"><tspan x="44" dy="0">내 사이트 / 다른 사이트 / 로컬 HTML</tspan><tspan x="44" dy="19">렌더링된 DOM을 읽고, 원본은 수정하지 않음</tspan></text>
+</g>
+<path d="M 180 417 V 463" class="edge" marker-end="url(#bamti-ko-m-arrow)"/>
+<rect x="59" y="426" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="442" class="edge-label" font-size="13"><tspan x="180" dy="0">아이콘 / 단축키</tspan></text>
+<g data-box="28,463,304,135">
+<rect x="28" y="463" width="304" height="135" rx="12" class="node"/>
+<text x="44" y="491" class="node-title" font-size="16"><tspan x="44" dy="0">요청 · 패널 → 주입 스캐너</tspan></text>
+<text x="44" y="516" class="secondary" font-size="13"><tspan x="44" dy="0">서비스 워커가 패널을 열고, 패널이 검사를</tspan><tspan x="44" dy="19">요청</tspan><tspan x="44" dy="19">activeTab 또는 허용한 출처 · 숨겨진 DOM</tspan><tspan x="44" dy="19">제외</tspan></text>
+</g>
+<path d="M 180 598 V 644" class="edge" marker-end="url(#bamti-ko-m-arrow)"/>
+<rect x="59" y="607" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="623" class="edge-label" font-size="13"><tspan x="180" dy="0">같은 DOM, 서로 다른 검사</tspan></text>
+<g data-box="38,656,284,97">
+<rect x="38" y="656" width="284" height="97" rx="12" class="node"/>
+<text x="54" y="684" class="node-title" font-size="16"><tspan x="54" dy="0">UI 검사</tspan></text>
+<text x="54" y="709" class="secondary" font-size="13"><tspan x="54" dy="0">23종 점수 규칙 + 10종 참고</tspan><tspan x="54" dy="19">가중치 점수 ≠ AI 생성 확률</tspan></text>
+</g>
+<g data-box="38,765,284,97">
+<rect x="38" y="765" width="284" height="97" rx="12" class="node"/>
+<text x="54" y="793" class="node-title" font-size="16"><tspan x="54" dy="0">한·영 문체 검사</tspan></text>
+<text x="54" y="818" class="secondary" font-size="13"><tspan x="54" dy="0">한국어 13패턴 / 영어 39규칙</tspan><tspan x="54" dy="19">반복·밀집만 검토 · UI 점수 제외</tspan></text>
+</g>
+<rect x="28" y="644" width="304" height="230" rx="12" class="boundary"/>
+<path d="M 180 874 V 902" class="edge" marker-end="url(#bamti-ko-m-arrow)"/>
+<g data-box="28,902,304,116">
+<rect x="28" y="902" width="304" height="116" rx="12" class="source"/>
+<text x="44" y="930" class="node-title" font-size="16"><tspan x="44" dy="0">결과 · 사이드패널 + 하이라이트</tspan></text>
+<text x="44" y="955" class="secondary" font-size="13"><tspan x="44" dy="0">근거 → 개선 방향 → 해당 요소 / 문단 표시</tspan><tspan x="44" dy="19">전체 리포트: score · signals · taste ·</tspan><tspan x="44" dy="19">prose</tspan></text>
+</g>
+<path d="M 180 1018 V 1066" class="edge" marker-start="url(#bamti-ko-m-arrow)" marker-end="url(#bamti-ko-m-arrow)"/>
+<rect x="59" y="1028" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="1044" class="edge-label" font-size="13"><tspan x="180" dy="0">직접 켠 경우만 · WebSocket</tspan></text>
+<g data-box="28,1066,304,97">
+<rect x="28" y="1066" width="304" height="97" rx="12" class="node"/>
+<text x="44" y="1094" class="node-title" font-size="16"><tspan x="44" dy="0">선택 · 로컬 MCP 서버</tspan></text>
+<text x="44" y="1119" class="secondary" font-size="13"><tspan x="44" dy="0">127.0.0.1:8765 · 토큰 인증</tspan><tspan x="44" dy="19">마지막 리포트는 메모리에만</tspan></text>
+</g>
+<path d="M 180 1163 V 1207" class="edge" marker-start="url(#bamti-ko-m-arrow)" marker-end="url(#bamti-ko-m-arrow)"/>
+<rect x="59" y="1171" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="1187" class="edge-label" font-size="13"><tspan x="180" dy="0">MCP / stdio ↔</tspan></text>
+<g data-box="28,1207,304,97">
+<rect x="28" y="1207" width="304" height="97" rx="12" class="node"/>
+<text x="44" y="1235" class="node-title" font-size="16"><tspan x="44" dy="0">선택 · 개발 에이전트</tspan></text>
+<text x="44" y="1260" class="secondary" font-size="13"><tspan x="44" dy="0">스캔 요청 ↔ 리포트 조회</tspan><tspan x="44" dy="19">소스 수정은 에이전트 역할</tspan></text>
+</g>
+<text x="180" y="1329" class="center secondary" font-size="13"><tspan x="180" dy="0">수정 후 새로고침 → 패널 재검사</tspan><tspan x="180" dy="19">패널이 열려 있고 접근 권한이 있을 때</tspan></text>
+<text x="16" y="1386" class="node-title" font-size="16"><tspan x="16" dy="0">데이터의 주인</tspan></text>
+<text x="16" y="1412" class="secondary" font-size="13"><tspan x="16" dy="0">원본: 웹페이지 / 프로젝트 파일</tspan><tspan x="16" dy="19">설정: Chrome storage · 토큰 파일</tspan><tspan x="16" dy="19">파생 결과: 패널 / MCP 메모리, 영구 DB 없음</tspan></text>
+<text x="16" y="1479" class="accent" font-size="13"><tspan x="16" dy="0">MCP 연결 시 원문·HTML 일부도 리포트로 전달됩니다.</tspan><tspan x="16" dy="19">그 뒤 모델로 보내는지는 연결한 에이전트 설정에 따</tspan><tspan x="16" dy="19">릅니다.</tspan></text>
+<text x="16" y="1568" class="section" font-size="15"><tspan x="16" dy="0">02 / 잘 나눈 경계</tspan></text>
+<text x="16" y="1595" class="node-title" font-size="14"><tspan x="16" dy="0">로컬 우선</tspan></text>
+<text x="16" y="1615" class="secondary" font-size="13"><tspan x="16" dy="0">계정·LLM 없이 기본 검사</tspan></text>
+<text x="16" y="1650" class="node-title" font-size="14"><tspan x="16" dy="0">점수 분리</tspan></text>
+<text x="16" y="1670" class="secondary" font-size="13"><tspan x="16" dy="0">취향·문체로 UI 점수 부풀리지 않음</tspan></text>
+<text x="16" y="1705" class="node-title" font-size="14"><tspan x="16" dy="0">권한 범위</tspan></text>
+<text x="16" y="1725" class="secondary" font-size="13"><tspan x="16" dy="0">클릭 또는 사용자가 허용한 출처</tspan></text>
+<text x="16" y="1760" class="section" font-size="15"><tspan x="16" dy="0">03 / 지금 알아둘 한계</tspan></text>
+<rect x="16" y="1778" width="328" height="64" rx="8" class="risk"/>
+<text x="30" y="1801" class="risk-title" font-size="14"><tspan x="30" dy="0">요약에서 prose 누락</tspan></text>
+<text x="30" y="1823" class="secondary" font-size="13"><tspan x="30" dy="0">문체는 full: true로 조회</tspan></text>
+<rect x="16" y="1850" width="328" height="64" rx="8" class="risk"/>
+<text x="30" y="1873" class="risk-title" font-size="14"><tspan x="30" dy="0">리포트는 메모리 스냅샷</tspan></text>
+<text x="30" y="1895" class="secondary" font-size="13"><tspan x="30" dy="0">재시작 시 소실 · 연결 해제 시 오래될 수 있음</tspan></text>
+<rect x="16" y="1922" width="328" height="64" rx="8" class="risk"/>
+<text x="30" y="1945" class="risk-title" font-size="14"><tspan x="30" dy="0">6자리 HEX 기본 토큰</tspan></text>
+<text x="30" y="1967" class="secondary" font-size="13"><tspan x="30" dy="0">요청 제한도 없어 인증 보강 필요</tspan></text>
+<text x="16" y="2018" class="section" font-size="15"><tspan x="16" dy="0">04 / 다음 세 가지</tspan></text>
+<text x="16" y="2045" class="" font-size="13"><tspan x="16" dy="0">1  MCP 인증 길이·연결 제한 강화</tspan></text>
+<text x="16" y="2073" class="" font-size="13"><tspan x="16" dy="0">2  문체 요약 포함 + 낡은 리포트 표시</tspan></text>
+<text x="16" y="2101" class="" font-size="13"><tspan x="16" dy="0">3  실제 연결·단축키 + 장르별 오탐 검증</tspan></text>
+<rect x="16" y="2139" width="328" height="62" rx="10" class="planned"/>
+<text x="30" y="2162" class="secondary" font-size="13"><tspan x="30" dy="0">계획만 있음 · LLM 정밀 분석 / OAuth</tspan><tspan x="30" dy="19">현재 실행 경로와 연결되지 않음</tspan></text>
+<text x="16" y="2227" class="secondary" font-size="13"><tspan x="16" dy="0">관찰: 문체 47 / UI 정밀 19 검사 통과</tspan><tspan x="16" dy="19">MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증</tspan></text>
+<text x="16" y="2283" class="secondary" font-size="13"><tspan x="16" dy="0">소스 7e0f0a5 · 확인 2026-09-06 · 실선: 코드 경로</tspan><tspan x="16" dy="19">/ 점선: 계획</tspan></text>
+</svg>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="2588" viewBox="0 0 360 2588" role="img" aria-labelledby="bamti-en-m-title bamti-en-m-desc" xml:lang="en">
+<title id="bamti-en-m-title">How Bamti works</title>
+<desc id="bamti-en-m-desc">An inspector for your page, with sticky notes where you can improve. In code: Chrome MV3 + optional local MCP. Observed: 47 prose / 19 UI precision checks passed. Mock MCP round trips; live agent setup not verified Summary omits prose: Use full: true for writing results; Reports are memory snapshots: Lost on restart; may be stale after disconnect; Default token: 6 hex digits: No attempt limit; authentication needs hardening</desc>
+<style>svg{--bg:#f7faf8;--card:#fff;--fg:#172e28;--muted:#52665d;--line:#cfddd5;--accent:#087254;--wash:#e7f3eb;--risk:#fff4e6;--risk-fg:#865020;--edge:#668375;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}@media(prefers-color-scheme:dark){svg{--bg:#101c17;--card:#192a22;--fg:#edf5ee;--muted:#bbcec0;--line:#3e5749;--accent:#80ddb0;--wash:#1d3829;--risk:#34291e;--risk-fg:#f0c691;--edge:#98b8a5}}text{fill:var(--fg)}.secondary{fill:var(--muted)}.accent,.kicker{fill:var(--accent)}.headline,.node-title,.section,.risk-title{font-weight:650}.kicker{letter-spacing:1.8px}.node{fill:var(--card);stroke:var(--line)}.source,.state{fill:var(--wash);stroke:var(--line)}.boundary{fill:none;stroke:var(--line)}.edge{fill:none;stroke:var(--edge);stroke-width:1.5;stroke-linejoin:round}.arrow{fill:var(--edge)}.label-bg{fill:var(--bg)}.edge-label,.center{text-anchor:middle}.edge-label{fill:var(--muted)}.risk{fill:var(--risk)}.risk-title{fill:var(--risk-fg)}.planned{fill:none;stroke:var(--edge);stroke-dasharray:5 5}</style>
+<defs><marker id="bamti-en-m-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 1 L7 4 L0 7" class="arrow"/></marker></defs>
+<rect width="360" height="2588" fill="var(--bg)"/>
+<rect x="16" y="331" width="328" height="1127" rx="16" class="boundary"/>
+<text x="16" y="30" class="kicker" font-size="13"><tspan x="16" dy="0">BAMTI / ARCHITECTURE</tspan></text>
+<text x="16" y="70" class="headline" font-size="25"><tspan x="16" dy="0">How Bamti works</tspan></text>
+<text x="16" y="103" class="secondary" font-size="14"><tspan x="16" dy="0">An inspector for your page,</tspan><tspan x="16" dy="19">with sticky notes where you can improve.</tspan></text>
+<rect x="16" y="150" width="328" height="82" rx="12" class="state"/>
+<text x="28" y="173" class="accent" font-size="13"><tspan x="28" dy="0">In code: Chrome MV3 + optional local MCP</tspan></text>
+<text x="28" y="195" class="secondary" font-size="13"><tspan x="28" dy="0">Setup required · your live agent connection</tspan><tspan x="28" dy="19">is not verified</tspan></text>
+<text x="16" y="266" class="section" font-size="15"><tspan x="16" dy="0">01 / From a page to useful feedback</tspan></text>
+<text x="16" y="289" class="secondary" font-size="13"><tspan x="16" dy="0">This computer · no external inference server</tspan><tspan x="16" dy="19">needed to scan</tspan></text>
+<g data-box="28,339,304,116">
+<rect x="28" y="339" width="304" height="116" rx="12" class="source"/>
+<text x="44" y="367" class="node-title" font-size="16"><tspan x="44" dy="0">Source · current web page</tspan></text>
+<text x="44" y="392" class="secondary" font-size="13"><tspan x="44" dy="0">Your site / another site / local HTML</tspan><tspan x="44" dy="19">Reads rendered DOM; does not edit the</tspan><tspan x="44" dy="19">original</tspan></text>
+</g>
+<path d="M 180 455 V 501" class="edge" marker-end="url(#bamti-en-m-arrow)"/>
+<rect x="59" y="464" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="480" class="edge-label" font-size="13"><tspan x="180" dy="0">Click / shortcut</tspan></text>
+<g data-box="28,501,304,154">
+<rect x="28" y="501" width="304" height="154" rx="12" class="node"/>
+<text x="44" y="529" class="node-title" font-size="16"><tspan x="44" dy="0">Request · panel → injected</tspan><tspan x="44" dy="19">scanner</tspan></text>
+<text x="44" y="573" class="secondary" font-size="13"><tspan x="44" dy="0">The worker opens the panel; the panel</tspan><tspan x="44" dy="19">requests a scan</tspan><tspan x="44" dy="19">activeTab or an allowed origin ·</tspan><tspan x="44" dy="19">hidden DOM excluded</tspan></text>
+</g>
+<path d="M 180 655 V 701" class="edge" marker-end="url(#bamti-en-m-arrow)"/>
+<rect x="59" y="664" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="680" class="edge-label" font-size="13"><tspan x="180" dy="0">One DOM, two kinds of checks</tspan></text>
+<g data-box="38,713,284,97">
+<rect x="38" y="713" width="284" height="97" rx="12" class="node"/>
+<text x="54" y="741" class="node-title" font-size="16"><tspan x="54" dy="0">UI checks</tspan></text>
+<text x="54" y="766" class="secondary" font-size="13"><tspan x="54" dy="0">23 scored rules + 10 references</tspan><tspan x="54" dy="19">Pattern score ≠ AI probability</tspan></text>
+</g>
+<g data-box="38,822,284,97">
+<rect x="38" y="822" width="284" height="97" rx="12" class="node"/>
+<text x="54" y="850" class="node-title" font-size="16"><tspan x="54" dy="0">Writing-style checks</tspan></text>
+<text x="54" y="875" class="secondary" font-size="13"><tspan x="54" dy="0">Korean: 13 / English: 39 rules</tspan><tspan x="54" dy="19">Repetition &amp; clusters · not scored</tspan></text>
+</g>
+<rect x="28" y="701" width="304" height="230" rx="12" class="boundary"/>
+<path d="M 180 931 V 959" class="edge" marker-end="url(#bamti-en-m-arrow)"/>
+<g data-box="28,959,304,154">
+<rect x="28" y="959" width="304" height="154" rx="12" class="source"/>
+<text x="44" y="987" class="node-title" font-size="16"><tspan x="44" dy="0">Result · side panel +</tspan><tspan x="44" dy="19">highlights</tspan></text>
+<text x="44" y="1031" class="secondary" font-size="13"><tspan x="44" dy="0">Evidence → suggestion → element /</tspan><tspan x="44" dy="19">paragraph location</tspan><tspan x="44" dy="19">Full report: score · signals · taste ·</tspan><tspan x="44" dy="19">prose</tspan></text>
+</g>
+<path d="M 180 1113 V 1161" class="edge" marker-start="url(#bamti-en-m-arrow)" marker-end="url(#bamti-en-m-arrow)"/>
+<rect x="59" y="1123" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="1139" class="edge-label" font-size="13"><tspan x="180" dy="0">Explicit opt-in · WebSocket</tspan></text>
+<g data-box="28,1161,304,97">
+<rect x="28" y="1161" width="304" height="97" rx="12" class="node"/>
+<text x="44" y="1189" class="node-title" font-size="16"><tspan x="44" dy="0">Optional · local MCP server</tspan></text>
+<text x="44" y="1214" class="secondary" font-size="13"><tspan x="44" dy="0">127.0.0.1:8765 · token auth</tspan><tspan x="44" dy="19">Latest report held in memory</tspan></text>
+</g>
+<path d="M 180 1258 V 1302" class="edge" marker-start="url(#bamti-en-m-arrow)" marker-end="url(#bamti-en-m-arrow)"/>
+<rect x="59" y="1266" width="242" height="23" rx="0" class="label-bg"/>
+<text x="180" y="1282" class="edge-label" font-size="13"><tspan x="180" dy="0">MCP / stdio ↔</tspan></text>
+<g data-box="28,1302,304,97">
+<rect x="28" y="1302" width="304" height="97" rx="12" class="node"/>
+<text x="44" y="1330" class="node-title" font-size="16"><tspan x="44" dy="0">Optional · coding agent</tspan></text>
+<text x="44" y="1355" class="secondary" font-size="13"><tspan x="44" dy="0">Request scans ↔ read reports</tspan><tspan x="44" dy="19">The agent edits source files</tspan></text>
+</g>
+<text x="180" y="1424" class="center secondary" font-size="13"><tspan x="180" dy="0">Edit, then reload → panel rescans</tspan><tspan x="180" dy="19">Requires an open panel and page access</tspan></text>
+<text x="16" y="1481" class="node-title" font-size="16"><tspan x="16" dy="0">Who owns the data?</tspan></text>
+<text x="16" y="1507" class="secondary" font-size="13"><tspan x="16" dy="0">Source: web page / project files</tspan><tspan x="16" dy="19">Settings: Chrome storage · token file</tspan><tspan x="16" dy="19">Derived: panel / MCP memory; no persistent</tspan><tspan x="16" dy="19">database</tspan></text>
+<text x="16" y="1593" class="accent" font-size="13"><tspan x="16" dy="0">MCP reports also carry excerpts of page text</tspan><tspan x="16" dy="19">and HTML.</tspan><tspan x="16" dy="19">Any onward model sharing depends on the agent</tspan><tspan x="16" dy="19">configuration.</tspan></text>
+<text x="16" y="1701" class="section" font-size="15"><tspan x="16" dy="0">02 / Sound boundaries</tspan></text>
+<text x="16" y="1728" class="node-title" font-size="14"><tspan x="16" dy="0">Local first</tspan></text>
+<text x="16" y="1748" class="secondary" font-size="13"><tspan x="16" dy="0">Basic checks need no account or LLM</tspan></text>
+<text x="16" y="1783" class="node-title" font-size="14"><tspan x="16" dy="0">Separate scores</tspan></text>
+<text x="16" y="1803" class="secondary" font-size="13"><tspan x="16" dy="0">Taste and prose never inflate UI scores</tspan></text>
+<text x="16" y="1838" class="node-title" font-size="14"><tspan x="16" dy="0">Scoped access</tspan></text>
+<text x="16" y="1858" class="secondary" font-size="13"><tspan x="16" dy="0">A click, or origins the user allows</tspan></text>
+<text x="16" y="1893" class="section" font-size="15"><tspan x="16" dy="0">03 / Know the current limits</tspan></text>
+<rect x="16" y="1911" width="328" height="64" rx="8" class="risk"/>
+<text x="30" y="1934" class="risk-title" font-size="14"><tspan x="30" dy="0">Summary omits prose</tspan></text>
+<text x="30" y="1956" class="secondary" font-size="13"><tspan x="30" dy="0">Use full: true for writing results</tspan></text>
+<rect x="16" y="1983" width="328" height="83" rx="8" class="risk"/>
+<text x="30" y="2006" class="risk-title" font-size="14"><tspan x="30" dy="0">Reports are memory snapshots</tspan></text>
+<text x="30" y="2028" class="secondary" font-size="13"><tspan x="30" dy="0">Lost on restart; may be stale after</tspan><tspan x="30" dy="19">disconnect</tspan></text>
+<rect x="16" y="2074" width="328" height="83" rx="8" class="risk"/>
+<text x="30" y="2097" class="risk-title" font-size="14"><tspan x="30" dy="0">Default token: 6 hex digits</tspan></text>
+<text x="30" y="2119" class="secondary" font-size="13"><tspan x="30" dy="0">No attempt limit; authentication needs</tspan><tspan x="30" dy="19">hardening</tspan></text>
+<text x="16" y="2189" class="section" font-size="15"><tspan x="16" dy="0">04 / Next, in order</tspan></text>
+<text x="16" y="2216" class="" font-size="13"><tspan x="16" dy="0">1  Harden MCP tokens and connection limits</tspan></text>
+<text x="16" y="2244" class="" font-size="13"><tspan x="16" dy="0">2  Include prose summaries; mark stale reports</tspan></text>
+<text x="16" y="2272" class="" font-size="13"><tspan x="16" dy="0">3  Test live setup, shortcuts &amp; genre false</tspan><tspan x="16" dy="19">positives</tspan></text>
+<rect x="16" y="2329" width="328" height="81" rx="10" class="planned"/>
+<text x="30" y="2352" class="secondary" font-size="13"><tspan x="30" dy="0">Planned only · LLM review / OAuth</tspan><tspan x="30" dy="19">Not connected to the current execution</tspan><tspan x="30" dy="19">path</tspan></text>
+<text x="16" y="2436" class="secondary" font-size="13"><tspan x="16" dy="0">Observed: 47 prose / 19 UI precision checks</tspan><tspan x="16" dy="19">passed</tspan><tspan x="16" dy="19">Mock MCP round trips; live agent setup not</tspan><tspan x="16" dy="19">verified</tspan></text>
+<text x="16" y="2530" class="secondary" font-size="13"><tspan x="16" dy="0">Source 7e0f0a5 · 2026-09-06 · Solid: code /</tspan><tspan x="16" dy="19">dashed: planned</tspan></text>
+</svg>

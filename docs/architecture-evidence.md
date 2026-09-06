@@ -1,0 +1,79 @@
+# 구조도 근거와 검증 범위
+
+[README](../README.md) · [설치·MCP 가이드](guide.md)
+
+기준 소스: `7e0f0a5`, 확인일: 2026-09-06.
+구조도는 구현·테스트·계획을 구분한 코드 기반 설명이며, 사용자 환경의 배포·연결 상태판이 아닙니다.
+
+## 선언 / 의도 / 관찰
+
+| 상태 | 근거 |
+|---|---|
+| 선언됨 | MV3 워커·사이드패널·권한은 manifest에 존재. Node MCP 서버는 별도 실행 파일이며 확장이 자동 기동하지 않음 |
+| 관찰됨 | 앞선 실행에서 문체 47검사·UI 정밀 19검사·14개 코퍼스·패널·i18n·아이콘 테스트 통과 |
+| 이번 문서 작업에서 재확인 | `BAMTI_PORT=18766 node mcp/e2e.mjs`: 잘못된 토큰 거절, 미연결 오류, 모의 연결, scan/full/highlight/get/wait 왕복, 연결 해제 로그 |
+| 관찰되지 않음 | 실제 사용자의 에이전트 등록, 네이티브 툴바·단축키에서 시작하는 전체 사용 흐름, 현재 운영 연결 상태 |
+| 의도만 있음 | 향후 LLM 정밀 분석·OAuth. manifest/엔트리포인트에는 실행 경로 없음 |
+
+`mcp/e2e.mjs`는 7개 도구의 **등록을 열거**하지만 `show_all`과 `clear_highlight`의
+성공 왕복은 실행하지 않습니다. 또한 결과를 주로 로그로 출력하므로, 7개 도구의 모든 동작이
+assertion으로 검증됐다는 뜻이 아닙니다. 이번 확인에서도 이를 실제 연결 검증으로 취급하지 않았습니다.
+
+## 구조도에서 코드로
+
+| 구조도 주장 | 근거 파일·위치 | 해석 |
+|---|---|---|
+| Chrome MV3 + 선택형 로컬 프로세스 | [manifest](../manifest.json), [Node 패키지](../mcp/package.json) | 서버·DB·호스팅 배포 설정은 별도로 선언되어 있지 않음 |
+| 클릭·단축키 → 워커 → 패널 | [worker.js](../src/bg/worker.js#L10) | 패널을 사용자 제스처 안에서 먼저 열고 나머지 처리를 비동기로 수행 |
+| 패널 → 스캐너 주입·메시지 | [panel.js](../src/panel/panel.js#L290) | 선택한 탭에 코드를 주입하고 locale을 포함한 검사 메시지 전송 |
+| 렌더링된 DOM 표본 | [context.js](../src/core/context.js#L18) | 숨김·닫힌 패널 등을 제외하며 6,000요소/30,000방문 상한 |
+| 23점수 + 10참고 | [signals.js](../src/core/signals.js), [score.js](../src/core/score.js#L89) | taste는 점수에서 분리. 건너뛴 규칙 때문에 분모가 작아지지 않음 |
+| 문체 점수 분리 | [score.js](../src/core/score.js#L118), [prose.js](../src/prose/prose.js#L136) | prose는 별도 속성이며 weight=0 |
+| KO 13 / EN 39 | [prose.js](../src/prose/prose.js#L34), [영어 규칙](../src/prose/english-rules.js) | 문체의 한·영 숫자는 서로 다른 규칙 단위. 모든 매칭이 개별 카드가 되는 것은 아님 |
+| 하이라이트·원본 보존 | [scan.js](../src/scan/scan.js#L32) | 별도 오버레이 레이어를 만들고 소스/본문을 리라이트하지 않음 |
+| 언어·연결 설정 저장 | [bootstrap.js](../src/panel/bootstrap.js#L4), [panel.js](../src/panel/panel.js#L61) | chrome.storage.local에 저장; 브리지 기본값은 꺼짐 |
+| 선택형 WS ↔ MCP stdio | [panel.js](../src/panel/panel.js#L72), [server.mjs](../mcp/server.mjs#L44) | 패널이 클라이언트. 서버 포트 기본 8765, 루프백 바인드 |
+| 리포트 자동 전달 | [panel.js](../src/panel/panel.js#L429), [server.mjs](../mcp/server.mjs#L66) | 연결된 서버에 결과 전송. 이후 모델 호출/수정은 에이전트 책임 |
+| 영구 설정 vs 파생 결과 | [server.mjs](../mcp/server.mjs#L23) | 토큰은 파일, lastReport는 메모리 변수. 이벤트 로그·큐·리포트 DB 없음 |
+| 재검사 조건 | [panel.js](../src/panel/panel.js#L623) | 페이지 이동/새로고침·탭 이벤트 기반. 임의의 모든 HMR/DOM 변경 감시는 아님 |
+
+## 주요 발견과 다음 작업
+
+### 1. 연결 인증 보강
+
+`crypto.randomBytes(3)`은 **24비트, HEX 6자리** 기본 토큰을 만듭니다.
+[server.mjs](../mcp/server.mjs#L23)의 연결 핸들러에는 인증 시도 속도 제한,
+인증 전 연결 만료 또는 연결 수 제한이 없습니다.
+루프백 바인드와 첫 메시지 토큰 검사는 존재하지만 외부 배포용 보안 완성을 뜻하지 않습니다.
+
+다음 작업: 토큰 길이 증가, 인증 전 타임아웃·연결 제한·시도 제한.
+이 문서 작업에서는 서버 동작을 바꾸지 않았습니다.
+
+### 2. 요약 누락과 낡은 결과 표시
+
+[summarize()](../mcp/server.mjs#L92)는 `signals`와 `taste`만 반환하므로
+문체는 `full: true`로 조회해야 합니다.
+서버의 `lastReport`는 패널 연결 해제 때 지워지지 않으며,
+`bamti_get_report`는 연결 여부와 무관하게 저장된 스냅샷을 반환할 수 있습니다.
+확장 패널의 낡은 결과 차단과 서버 캐시의 신선도는 서로 다른 문제입니다.
+
+다음 작업: 요약에 `prose` 포함, source URL/검사 시각/연결 상태로 신선도 표시.
+`wait_for_report`의 시간 만료 시 waiter 제거 비교도 원래 resolve와 래퍼가 달라
+의도대로 제거되지 않을 수 있으므로 정리 경로 테스트가 필요합니다.
+
+### 3. 실제 경로와 오탐 평가
+
+MCP 모의 왕복과 패널 프리뷰는 사용자 프로필의 에이전트 설정이나 네이티브
+단축키 동작을 대체하지 않습니다. 규칙이 예제를 찾는다는 사실도 실제 AI/사람
+구별 정확도를 의미하지 않습니다.
+
+다음 작업: 네이티브 전체 흐름, 두 도구의 미검증 왕복, 장르·언어별 독립 평가셋.
+MIX처럼 일반적인 도구 UI의 낮은 점수는 제작 방식을 알아냈다는 근거가 아닙니다.
+
+## 읽기·접근성·재현
+
+- SVG는 원본 도형·연결선·텍스트이며 외부 리소스가 없습니다.
+- 데스크톱과 모바일은 다른 배치입니다. README의 picture source는 600px 이하에서 모바일을 선택합니다.
+- 라이트·다크 팔레트, XML 유효성, 중복 ID, 라벨 경계, README 상대 경로를 [readme.cjs](../test/readme.cjs)로 확인합니다.
+- 코드나 규칙 수가 바뀌면 [생성 원본](architecture/build.mjs), 근거표와 테스트를 함께 갱신해야 합니다.
+- 이전 README의 장황한 변경 이력과 실험 기록은 Git 이력에 남습니다. 현행 사용 설명은 검증 가능한 코드 상태로 다시 작성했습니다.
