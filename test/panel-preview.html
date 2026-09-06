@@ -12,7 +12,7 @@
 /* 엔진은 항상 최신으로 — 정적 <script src> 는 캐시에 물려 옛 시그널로 채점한다 */
 const __v = '?v=' + Date.now();
 const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
-const __engine = __load('/src/core/signals.js').then(() => __load('/src/core/score.js'));
+const __engine = __load('/src/core/context.js').then(() => __load('/src/core/signals.js')).then(() => __load('/src/core/score.js'));
 </script>
 <script>
 /* ── chrome.* 심 ── 패널이 호출하는 최소 API만 흉내낸다 */
@@ -47,7 +47,7 @@ function scanIframe(url) {
       const t0 = performance.now();
       const r = BAMTI.run({ doc: d, els, cs, svgs: [...d.querySelectorAll('svg')], rawText,
                             text: rawText.toLowerCase(), title: d.title, url, host: 'localhost', truncated: 0 });
-      r.ms = Math.round(performance.now() - t0); r.domSize = els.length; r.truncated = 0;
+      r.ms = Math.round(performance.now() - t0);
       res(r);
     }, 400);
     document.body.append(frame);

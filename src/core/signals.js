@@ -84,9 +84,9 @@
       hint: 'AI 생성 랜딩페이지에서 가장 흔한 단일 지문입니다. 헤드라인은 단색으로 두고, 강조가 필요하면 한 단어에만 색을 주세요.',
       detect(ctx) {
         const hit = ctx.els.filter(el => {
-          if (!/^H[1-3]$/.test(el.tagName) && !el.querySelector?.('span')) return false;
+          if (!el.matches('h1,h2,h3') && !el.closest('h1,h2,h3')) return false;
           const cs = ctx.cs(el);
-          return cs.backgroundClip === 'text' || cs.webkitBackgroundClip === 'text';
+          return cs.backgroundImage.includes('gradient(') && (cs.backgroundClip === 'text' || cs.webkitBackgroundClip === 'text');
         });
         return hit.length ? { ev: `${hit.length}개 요소가 background-clip:text 그라디언트`, nodes: hit } : null;
       }
@@ -106,9 +106,9 @@
       }
     },
     {
-      id: 'tailwind-stock-palette', cat: 'visual', weight: 8,
+      id: 'tailwind-stock-palette', kind: 'taste', cat: 'visual', weight: 8,
       label: 'Tailwind 기본 팔레트 그대로',
-      hint: '팔레트를 한 번도 커스텀하지 않았다는 뜻입니다. 브랜드 색 1개만 정의해도 인상이 완전히 달라집니다.',
+      hint: '공개 팔레트와 겹치는 색입니다. 정상적인 디자인 시스템에서도 사용하므로 AI 생성이나 미완성의 근거로 채점하지 않습니다. 브랜드와 맞는지만 검토하세요.',
       detect(ctx) {
         const used = new Map();
         for (const el of ctx.els) {
@@ -137,9 +137,9 @@
       }
     },
     {
-      id: 'no-custom-typeface', scope: 'page', cat: 'visual', weight: 6,
+      id: 'no-custom-typeface', kind: 'taste', scope: 'page', cat: 'visual', weight: 6,
       label: '커스텀 폰트 없음 (Inter/시스템 폰트만)',
-      hint: '제목용 폰트 하나만 바꿔도 "템플릿 느낌"이 크게 줄어듭니다.',
+      hint: '시스템 폰트는 속도와 가독성을 위한 정상적인 선택입니다. 제목과 본문의 위계가 부족할 때만 크기·굵기를 검토하세요.',
       detect(ctx) {
         const fams = new Set();
         for (const el of ctx.els.slice(0, 1200)) {
@@ -154,9 +154,9 @@
       }
     },
     {
-      id: 'single-radius', cat: 'visual', weight: 5,
+      id: 'single-radius', kind: 'taste', cat: 'visual', weight: 5,
       label: '모든 모서리 반경이 동일',
-      hint: '카드·버튼·입력창이 전부 같은 radius면 시각적 위계가 사라집니다. 최소 2단계로 나누세요.',
+      hint: '같은 반경을 반복하는 것은 일관된 디자인 토큰일 수 있습니다. 다른 역할의 요소가 실제로 구분되지 않을 때만 바꾸세요.',
       detect(ctx) {
         const radii = ctx.els
           .map(el => ctx.cs(el).borderTopLeftRadius)
@@ -243,7 +243,7 @@
       detect(ctx) {
         const ABBR = /\b(inc|ltd|co|corp|etc|vs|jr|sr|dr|mr|ms|st|no|ex|e\.g|i\.e)\.$/i;
         const hits = [];
-        for (const h of ctx.doc.querySelectorAll('h1')) {   // 대제목만 — h2 소제목은 문장일 수 있다
+        for (const h of ctx.query('h1')) {   // 대제목만 — h2 소제목은 문장일 수 있다
           const t = (h.innerText || h.textContent || '').replace(/\s+/g, ' ').trim();
           if (!t || t.length > 80) continue;
           if (!/[.．。]$/.test(t) || /\.{2,}$/.test(t) || ABBR.test(t)) continue;
@@ -260,16 +260,16 @@
         return {
           ev: hits.slice(0, 3).map(t => `"${t.slice(0, 34)}"`).join(', ')
               + (hits.length > 3 ? ` 외 ${hits.length - 3}개` : ''),
-          nodes: [...ctx.doc.querySelectorAll('h1')].filter(h =>
+          nodes: ctx.query('h1').filter(h =>
             hits.includes((h.innerText || h.textContent || '').replace(/\s+/g, ' ').trim())),
         };
       }
     },
 
     {
-      id: 'value-sprawl', cat: 'visual', weight: 9,
-      label: '토큰만 있고 시스템은 없음',
-      hint: '디자인 시스템의 외형은 갖췄는데 값이 컴포넌트마다 새로 만들어집니다. 사람이 만든 디자인시스템(Polaris·Atlassian·Bootstrap)은 글자 크기를 4~11종으로 끝냅니다. 쓰이는 값을 세어보고 스케일로 묶으세요 — 크기 6단계, 반경 3단계, 그림자 3단계면 충분합니다.',
+      id: 'value-sprawl', kind: 'taste', cat: 'visual', weight: 9,
+      label: '다양한 스타일 값 사용',
+      hint: '스타일 종류는 화면의 규모와 기능에 따라 늘어납니다. 이 개수로 AI 생성이나 시스템 부재를 판단하지 않습니다. 같은 역할의 요소끼리 비교할 때 참고하세요.',
       detect(ctx) {
         if (ctx.els.length < 120) return null;         // 너무 작은 페이지는 표본 부족
         const U = a => new Set(a).size;
@@ -302,9 +302,9 @@
       }
     },
     {
-      id: 'typeface-sprawl', cat: 'visual', weight: 6,
+      id: 'typeface-sprawl', kind: 'taste', cat: 'visual', weight: 6,
       label: '폰트 패밀리 3종 이상',
-      hint: '실제 제품은 라이선스 비용과 로딩 성능 때문에 서체 하나에 커밋합니다 (Stripe·Basecamp는 1종). 본문 하나로 줄이고, 강조가 필요하면 굵기와 크기로 만드세요.',
+      hint: '여러 서체는 코드·다국어·브랜드 영역을 구분하기 위한 선택일 수 있습니다. 같은 역할의 텍스트에서 불필요하게 달라지는지만 확인하세요.',
       detect(ctx) {
         const GENERIC = /^(ui-sans-serif|ui-serif|ui-monospace|system-ui|-apple-system|blinkmacsystemfont|sans-serif|serif|monospace|inherit|initial)$/;
         const fams = new Map();   // family → 표본 요소
@@ -360,7 +360,7 @@
       detect(ctx) {
         const seq = ['features','기능','how it works','작동','pricing','요금','가격','testimonial','후기','faq','자주'];
         const found = [], nodes = [];
-        for (const h of ctx.doc.querySelectorAll('h2,h3')) {
+        for (const h of ctx.query('h2,h3')) {
           const t = txt(h);
           const i = seq.findIndex(s => t.includes(s));
           if (i >= 0) { found.push(seq[i]); nodes.push(h); }
@@ -374,12 +374,19 @@
       label: '3단 요금제 + 가운데 "인기"',
       hint: '실제 가격 정책이 정해지기 전이라면 요금 섹션은 아예 빼는 편이 신뢰에 낫습니다.',
       detect(ctx) {
-        const t = ctx.text;
-        if (!/pricing|요금|가격/.test(t)) return null;
-        const re = /most popular|가장 인기|추천|인기|best value|recommended/i;
-        if (!re.test(t)) return null;
-        const nodes = ctx.els.filter(el => el.children.length === 0 && re.test(el.textContent || '') && (el.textContent || '').length < 40).slice(0, 6);
-        return { ev: '요금 섹션에 "인기/추천" 뱃지 패턴', nodes };
+        const sections = ctx.query('section').filter(sec =>
+          ctx.query('h2,h3').some(h => sec.contains(h) && /^(pricing|plans|요금|요금제|가격)(\b|\s|$)/i.test(txt(h))));
+        const badge = /most popular|가장 인기|추천|인기|best value|recommended/i;
+        const price = /[$€£₩]\s*\d|\d[\d,]*\s*(원|\/\s*(mo|month|월))|contact (us|sales)|custom/i;
+        const nodes = [];
+        for (const sec of sections) {
+          for (const box of ctx.els.filter(el => sec.contains(el) && el.children.length === 3)) {
+            const cards = [...box.children];
+            if (!cards.every(c => c.querySelector('h3,h4') && c.querySelector('a,button') && price.test(txt(c)))) continue;
+            if (badge.test(txt(cards[1])) && !badge.test(txt(cards[0])) && !badge.test(txt(cards[2]))) nodes.push(cards[1]);
+          }
+        }
+        return nodes.length ? { ev: `가격·CTA가 있는 3개 요금 카드 중 가운데 추천 ${nodes.length}곳`, nodes } : null;
       }
     },
     {
@@ -387,7 +394,7 @@
       label: '히어로 상단 알약 뱃지',
       hint: '"✨ Introducing…" 뱃지는 실제 공지가 있을 때만 쓰세요.',
       detect(ctx) {
-        const h1 = ctx.doc.querySelector('h1');
+        const h1 = ctx.query('h1')[0];
         if (!h1) return null;
         const near = [...(h1.parentElement?.children || [])].filter(el => el !== h1);
         const hit = near.filter(el => {
@@ -416,7 +423,7 @@
       label: '무색무취 CTA 문구',
       hint: 'CTA는 "무엇을 얻는지"를 써야 합니다. "지금 시작하기" → "무료로 첫 리포트 받기".',
       detect(ctx) {
-        const btns = [...ctx.doc.querySelectorAll('a,button')]
+        const btns = ctx.query('a,button').filter(el => !el.closest('nav,footer,aside,[role="navigation"]'))
           .filter(el => GENERIC_CTA.some(g => txt(el) === g || txt(el).replace(/\s+/g,'') === g.replace(/\s+/g,'')));
         return btns.length
           ? { ev: `${btns.length}개: ${[...new Set(btns.map(b => txt(b)))].slice(0,3).join(' / ')}`, nodes: btns }
@@ -531,12 +538,12 @@
       label: '실사 이미지가 한 장도 없음',
       hint: '마케팅 페이지인데 사진·스크린샷이 없고 아이콘·그라디언트만 있습니다. 보여줄 실제 제품이 없을 때 나오는 형태예요. 실제 화면 캡처 한 장이 기능 카드 여섯 개보다 설득력 있습니다.',
       detect(ctx) {
-        if (!ctx.doc.querySelector('h1')) return null;
-        const marketing = [...ctx.doc.querySelectorAll('h2,h3')].some(h => /features|pricing|기능|요금|how it works|작동|testimonial|후기/i.test(txt(h)));
+        if (!ctx.query('h1').length) return null;
+        const marketing = ctx.query('h2,h3').some(h => /features|pricing|기능|요금|how it works|작동|testimonial|후기/i.test(txt(h)));
         if (!marketing) return null;
         const secs = ctx.els.filter(el => el.tagName === 'SECTION' || el.parentElement === ctx.doc.body || el.parentElement?.tagName === 'MAIN').filter(el => el.offsetHeight > 200);
         if (secs.length < 3) return null;
-        const real = [...ctx.doc.querySelectorAll('img,picture,video,canvas')].filter(el => {
+        const real = ctx.query('img,picture,video,canvas').filter(el => {
           if (el.tagName === 'IMG' && /^data:image\/svg|\.svg(\?|$)/i.test(el.currentSrc || el.src || '')) return false;
           const r = el.getBoundingClientRect();
           return Math.max(r.width, el.width || 0) >= 120;
@@ -573,17 +580,17 @@
     /* ═══ 🧟 미완성 (취향 아님 — 진짜 결함) ═════════════════════ */
     {
       id: 'dead-links', cat: 'unfinished', weight: 12,
-      label: '죽은 링크',
-      hint: '방문자가 처음 누르는 링크가 아무 반응 없으면 그 순간 신뢰가 끝납니다. 최우선 수정 대상.',
+      label: '목적지가 비어 있는 링크',
+      hint: 'href만으로 동작 여부를 확정할 수 없습니다. 클릭 시 의도한 동작이 있는지 확인하고, 동작 버튼이면 button을, 이동 링크이면 실제 주소를 사용하세요.',
       detect(ctx) {
-        const links = [...ctx.doc.querySelectorAll('a')];
-        if (links.length < 5) return null;
+        const links = ctx.query('a[href]');
         const dead = links.filter(a => {
+          if (a.matches('[onclick],[aria-controls],[aria-expanded],[aria-haspopup],[role="button"],[role="tab"],[role="menuitem"]') || a.querySelector('button,input,select')) return false;
           const h = a.getAttribute('href');
-          return h === null || h === '' || h === '#' || h === 'javascript:void(0)';
+          return h === '' || h === '#' || /^javascript:\s*(void\s*\(\s*0\s*\)|;)\s*;?$/i.test(h);
         });
-        return dead.length / links.length >= .35 || dead.length >= 8
-          ? { ev: `링크 ${links.length}개 중 ${dead.length}개가 href="#" 또는 없음`, nodes: dead }
+        return dead.length > 0
+          ? { ev: `보이는 링크 ${links.length}개 중 ${dead.length}개에 이동 주소 없음 · 클릭 동작은 미검증`, nodes: dead }
           : null;
       }
     },
@@ -593,7 +600,7 @@
       hint: '실제 배포 전 반드시 제거. 검색엔진에도 그대로 색인됩니다.',
       detect(ctx) {
         // STRONG: 산문에 섞여 나와도 플레이스홀더가 확실한 것
-        const STRONG = [/lorem ipsum/i, /\bcompany name\b/i, /\byour name here\b/i,
+        const STRONG = [/lorem\s+ipsum/i, /\bcompany name\b/i, /\byour name here\b/i,
                         /\blogo here\b/i, /여기에 (내용|텍스트)/, /샘플 텍스트/];
         // SLOT: 브랜드 자리표시자. 요소의 "전체 텍스트"일 때만 인정한다.
         //   Stripe의 "...for your company" 같은 정상 카피를 오탐하지 않기 위함.
@@ -626,11 +633,16 @@
     },
     {
       id: 'placeholder-images', cat: 'unfinished', weight: 9,
-      label: '스톡/더미 이미지',
-      hint: 'Unsplash 사진과 dicebear 아바타는 "아직 진짜 사용자가 없다"는 신호로 읽힙니다.',
+      label: '더미 이미지 서비스 사용',
+      hint: '자리표시자용 이미지 서비스가 연결돼 있습니다. 실제 제품 화면인지 확인하세요. 일반 스톡 사진은 이 규칙에서 제외합니다.',
       detect(ctx) {
-        const imgs = [...ctx.doc.querySelectorAll('img')];
-        const hit = imgs.filter(i => PLACEHOLDER_HOSTS.some(h => (i.currentSrc || i.src || '').includes(h)));
+        const imgs = ctx.query('img');
+        const hit = imgs.filter(i => {
+          try {
+            const host = new URL(i.currentSrc || i.src).hostname;
+            return PLACEHOLDER_HOSTS.filter(h => !h.includes('unsplash')).includes(host);
+          } catch { return false; }
+        });
         if (!hit.length) return null;
         const hosts = [...new Set(hit.map(i => { try { return new URL(i.currentSrc || i.src).host; } catch { return '?'; } }))];
         return { ev: `${hit.length}개 (${hosts.join(', ')})`, nodes: hit };
@@ -638,13 +650,15 @@
     },
     {
       id: 'missing-favicon', scope: 'page', cat: 'unfinished', weight: 5,
-      label: '파비콘 없음 / 기본 파비콘',
-      hint: '탭에 지구본이나 Vite 로고가 뜹니다. 북마크했을 때 바로 티납니다.',
+      label: '프레임워크 파비콘 경로',
+      hint: '시작 템플릿 이름이 남은 파비콘 경로입니다. 실제 아이콘을 확인해주세요. favicon.ico라는 파일명이나 link 태그 누락만으로 기본 아이콘을 판단하지 않습니다.',
       detect(ctx) {
         const l = ctx.doc.querySelector('link[rel~="icon"]');
-        if (!l) return { ev: '<link rel="icon"> 없음' };
+        if (!l) return null; // /favicon.ico 자동 탐색은 DOM만으로 확인할 수 없다.
         const href = l.getAttribute('href') || '';
-        return /vite\.svg|favicon\.ico$|next\.svg|default/i.test(href) ? { ev: `기본 파비콘: ${href}` } : null;
+        let pathname;
+        try { pathname = new URL(href, ctx.doc.baseURI).pathname; } catch { return null; }
+        return /\/(vite|next)\.svg$/i.test(pathname) ? { ev: `템플릿 이름이 남은 경로: ${pathname}`, } : null;
       }
     },
     {
@@ -662,9 +676,9 @@
 
     /* ═══ 🔧 툴체인 ═════════════════════════════════════════════ */
     {
-      id: 'lucide-icons', cat: 'toolchain', weight: 6,
-      label: 'Lucide 아이콘 기본 세트',
-      hint: '아이콘 자체는 문제없지만, 전부 기본 스트로크 2px 24px면 "붙여넣은 티"가 납니다. 크기·굵기에 변주를 주세요.',
+      id: 'lucide-icons', kind: 'taste', cat: 'toolchain', weight: 6,
+      label: '24px 선형 아이콘 사용',
+      hint: '여러 아이콘 라이브러리가 같은 SVG 규격을 사용합니다. 이것만으로 Lucide 사용 여부나 AI 생성을 식별할 수 없습니다.',
       detect(ctx) {
         const hit = ctx.svgs.filter(s =>
           s.getAttribute('stroke') === 'currentColor' &&
@@ -672,7 +686,7 @@
           String(s.getAttribute('stroke-width')) === '2' &&
           (s.getAttribute('viewBox') || '').trim() === '0 0 24 24'
         );
-        return hit.length >= 3 ? { ev: `Lucide 지문 SVG ${hit.length}개`, nodes: hit } : null;
+        return hit.length >= 3 ? { ev: `24px · stroke-width=2인 선형 SVG ${hit.length}개`, nodes: hit } : null;
       }
     },
     {
@@ -685,12 +699,12 @@
       }
     },
     {
-      id: 'shadcn-defaults', cat: 'toolchain', weight: 7,
-      label: 'shadcn/ui 기본 컴포넌트 그대로',
-      hint: '기본 테마를 한 번도 안 건드렸다는 신호입니다. radius·색·그림자만 조정해도 달라 보입니다.',
+      id: 'shadcn-defaults', kind: 'taste', cat: 'toolchain', weight: 7,
+      label: '컴포넌트 라이브러리 속성 사용',
+      hint: 'data-slot·Radix 속성은 기능과 접근성을 위한 구현 흔적입니다. 테마 수정 여부나 제작자를 알 수 없으므로 점수에서 제외합니다.',
       detect(ctx) {
-        const slotEls = [...ctx.doc.querySelectorAll('[data-slot]')];
-        const radixEls = [...ctx.doc.querySelectorAll('[data-radix-collection-item],[data-state][data-orientation]')];
+        const slotEls = ctx.query('[data-slot]');
+        const radixEls = ctx.query('[data-radix-collection-item],[data-state][data-orientation]');
         return (slotEls.length + radixEls.length) >= 3
           ? { ev: `data-slot ${slotEls.length}개 / Radix 속성 ${radixEls.length}개`, nodes: [...slotEls, ...radixEls].slice(0, 30) } : null;
       }
@@ -700,7 +714,7 @@
       label: '아무도 요청 안 한 다크모드 토글',
       hint: '유지비가 두 배입니다. 실사용 데이터 없으면 v1에서 빼세요.',
       detect(ctx) {
-        const hit = [...ctx.doc.querySelectorAll('button,[role="switch"]')].filter(el => {
+        const hit = ctx.query('button,[role="switch"]').filter(el => {
           const s = (el.getAttribute('aria-label') || '') + ' ' + txt(el) + ' ' + (el.className?.baseVal || el.className || '');
           return /dark|theme|모드 전환|다크/i.test(String(s));
         });
@@ -710,9 +724,9 @@
   ];
 
   B.CATS = {
-    visual:     { icon: '🎨', name: '시각 지문',   desc: 'AI 기본 스타일 그대로' },
-    structure:  { icon: '🧱', name: '구조 지문',   desc: '템플릿 레이아웃 답습' },
-    unfinished: { icon: '🧟', name: '미완성 흔적', desc: '취향 아님 — 실제 결함' },
-    toolchain:  { icon: '🔧', name: '툴체인 흔적', desc: '생성 도구 기본값' },
+    visual:     { icon: '🎨', name: '시각 지문',   desc: '화면에서 발견한 시각 패턴' },
+    structure:  { icon: '🧱', name: '구조 지문',   desc: '반복되는 랜딩 구성' },
+    unfinished: { icon: '🧟', name: '미완성 흔적', desc: '배포 전 확인할 항목' },
+    toolchain:  { icon: '🔧', name: '툴체인 흔적', desc: '아이콘·컴포넌트 패턴' },
   };
 })();

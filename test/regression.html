@@ -6,7 +6,7 @@ b{color:#fff}.ok{color:#4ade80}.ng{color:#f87171}pre{white-space:pre-wrap}</styl
 /* 엔진은 항상 최신으로 — 정적 <script src> 는 브라우저 캐시에 물려 옛 시그널로 채점하는 사고가 났다 */
 const __v = '?v=' + Date.now();
 const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
-const __engine = __load('/src/core/signals.js').then(() => __load('/src/core/score.js'));
+const __engine = __load('/src/core/context.js').then(() => __load('/src/core/signals.js')).then(() => __load('/src/core/score.js'));
 </script>
 <script>
 /* 기대치: AI 후보와 사람 사이트는 티가 안 나야 하고(<30), 슬롭 픽스처는 잡혀야 한다(>=50) */
@@ -59,9 +59,9 @@ const load = url => new Promise(res => {
   s += '─'.repeat(64) + `\n<b>${pass} PASS / ${fail} FAIL</b>\n`;
 
   // 새 시그널이 어디서 발화했는지
-  s += '\n【 신규 시그널 발화 분포 】\n';
+  s += '\n【 패턴 발화 분포 — 참고 패턴 포함 】\n';
   for (const id of ['value-sprawl','typeface-sprawl','section-template-repeat','card-clones','cta-banner','icon-circle-badges','no-real-images','zigzag-features']) {
-    const hit = rows.filter(x => x.r.signals?.some(g => g.id === id));
+    const hit = rows.filter(x => [...(x.r.signals || []), ...(x.r.taste || [])].some(g => g.id === id));
     const ai = hit.filter(x => x.t.g === 'AI후보').length, hu = hit.filter(x => x.t.g === '사람').length;
     s += `  ${id.padEnd(16)} AI후보 ${ai}/7   사람 ${hu}/5   ` +
          hit.map(x => x.t.n).join(', ') + '\n';

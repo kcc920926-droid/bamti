@@ -11,13 +11,7 @@
 
   /* ── 스캔 컨텍스트: 비싼 연산은 여기서 한 번만 ─────────────── */
   function buildCtx() {
-    const cache = new WeakMap();
-    const cs = el => { let v = cache.get(el); if (!v) { v = getComputedStyle(el); cache.set(el, v); } return v; };
-    const all = [...document.body.querySelectorAll('*')].filter(el => !el.closest('#' + LAYER_ID));
-    const els = all.length > 6000 ? all.slice(0, 6000) : all;
-    const rawText = document.body.innerText || '';
-    return { doc: document, els, cs, svgs: [...document.querySelectorAll('svg')].filter(s => !s.closest('#' + LAYER_ID)),
-             rawText, text: rawText.toLowerCase(), title: document.title, truncated: all.length > 6000 ? all.length : 0 };
+    return B.prepareContext({ doc: document });
   }
 
   B.scan = function scan() {

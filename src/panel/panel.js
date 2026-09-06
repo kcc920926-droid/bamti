@@ -189,7 +189,7 @@ async function scan(tabId, { auto = false } = {}) {
 
     await chrome.scripting.executeScript({
       target: { tabId },
-      files: ['src/core/signals.js', 'src/core/score.js', 'src/scan/scan.js'],
+      files: ['src/core/context.js', 'src/core/signals.js', 'src/core/score.js', 'src/scan/scan.js'],
     });
     if (ticket !== revision) return;
     await chrome.tabs.sendMessage(tabId, { type: 'bamti:clear' }).catch(() => {});
@@ -285,6 +285,7 @@ function render(r) {
   $('pagetext').textContent = `${r.title || '(제목 없음)'} · ${r.host || '로컬 파일'} · ${when}`;
   $('pagetext').title = r.url || '';
   $('pageurl').textContent = r.url || lastUrl;
+  $('enginescope').textContent = r.pageType ? `${r.pageType.label} · ${r.scopeNote}` : '로컬 UI 규칙 검사 · AI 제작 여부는 판정하지 않습니다.';
   refreshAllow(lastUrl);   // 권한의 기준은 리포트의 url 이 아니라 scan() 이 기록한 탭 URL
   document.body.dataset.band = r.band;
   $('score').textContent = r.score;
@@ -292,7 +293,7 @@ function render(r) {
   $('bandline').textContent = r.bandLine;
   $('meta').textContent =
     `지문 ${r.firedCount}/${r.totalSignals} · 요소 ${r.domSize.toLocaleString()}개 · ${r.ms}ms` +
-    (r.truncated ? ` · ${r.truncated.toLocaleString()}개 중 앞부분만` : '');
+    (r.truncated ? ' · 표본 검사' : '');
   const caveats = [];
   if (r.truncated) caveats.push('페이지가 커서 일부 요소만 검사했습니다.');
   if (r.errors?.length) caveats.push(`${r.errors.length}개 규칙을 검사하지 못했습니다.`);
@@ -346,7 +347,7 @@ function renderList() {
 
   $('list').replaceChildren(frag);
   $('tastegroup').hidden = !tastes.length;
-  $('tastesummary').textContent = `취향으로 검토할 항목 ${tastes.length}개 · 점수 제외`;
+  $('tastesummary').textContent = `참고 패턴 ${tastes.length}개 · 점수 제외`;
   $('tastelist').replaceChildren(...tastes.map(s => row(s, false)));
   $('noresults').hidden = !!tells.length;
   const filtering = !!query || category !== 'all';
@@ -394,7 +395,8 @@ $('copyreport').onclick = () => {
   const r = lastReport;
   const text = [`밤티 UI 검토: ${r.title}`, r.url, `검사 시각: ${r.scannedAt}`, `패턴 점수 ${r.score}/100 · AI 생성 확률이 아닙니다.`,
     ...r.signals.map(suggestionText),
-    ...(r.taste?.length ? ['취향 항목 (점수 제외)', ...r.taste.map(suggestionText)] : []),
+    ...(r.pageType ? [`검사 범위: ${r.pageType.label} · ${r.scopeNote}`] : []),
+    ...(r.taste?.length ? ['참고 패턴 (점수 제외)', ...r.taste.map(suggestionText)] : []),
     ...(r.truncated || r.errors?.length ? ['일부 요소 또는 규칙은 검사하지 못했습니다.'] : [])].join('\n\n');
   copyText(text, $('copyreport'));
 };
@@ -412,7 +414,7 @@ function row(s, crit) {
   d.className = 'sig' + (crit ? ' crit' : '') + (s.kind === 'taste' ? ' taste' : '');
 
   const sum = document.createElement('summary');
-  sum.innerHTML = `<span class="w" title="${s.kind === 'taste' ? '점수에 포함되지 않는 취향 항목' : '규칙 가중치 (심각도 아님)'}">${s.kind === 'taste' ? '취향' : s.weight}</span>
+  sum.innerHTML = `<span class="w" title="${s.kind === 'taste' ? '점수에 포함되지 않는 참고 패턴' : '규칙 가중치 (심각도 아님)'}">${s.kind === 'taste' ? '참고' : s.weight}</span>
     <span class="t">${esc(s.label)}<span class="ev">${esc(s.evidence)}</span></span>`;
   d.append(sum);
 

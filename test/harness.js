@@ -7,6 +7,7 @@
   });
   const v = '?v=' + (globalThis.__bamtiV || (globalThis.__bamtiV = String(performance.timeOrigin | 0)));
   if (!globalThis.BAMTI?.SIGNALS) {
+    await load('/src/core/context.js' + v);
     await load('/src/core/signals.js' + v);
     await load('/src/core/score.js' + v);
   }
@@ -20,7 +21,7 @@
     const r = B.run({ doc: document, els: all, cs, svgs: [...document.querySelectorAll('svg')],
                       rawText, text: rawText.toLowerCase(), title: document.title, truncated: 0 });
     return { score: r.score, band: r.bandLabel, tells: `${r.firedCount}/${r.totalSignals}`,
-             errors: r.errors, dom: all.length,
+             errors: r.errors, dom: r.domSize, pageType: r.pageType, scope: r.scopeNote,
              hit: r.signals.map(s => `[${s.weight}] ${s.label} — ${s.evidence}`),
              taste: (r.taste || []).map(s => `${s.label} — ${s.evidence}`) };
   };

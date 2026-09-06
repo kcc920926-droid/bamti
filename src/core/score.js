@@ -13,10 +13,19 @@
   ];
 
   B.run = function run(ctx) {
+    ctx = B.prepareContext(ctx);
     const fired = [];
     const errors = [];
+    const skipped = [];
+    const marketingRules = new Set(['everything-centered', 'three-col-feature-grid', 'uniform-section-rhythm',
+      'canonical-section-order', 'three-tier-pricing', 'hero-badge-pill', 'fake-social-proof', 'generic-cta-copy',
+      'section-template-repeat', 'card-clones', 'cta-banner', 'icon-circle-badges', 'no-real-images', 'zigzag-features']);
 
     for (const sig of B.SIGNALS) {
+      if (ctx.pageType.key === 'application' && marketingRules.has(sig.id)) {
+        skipped.push({ id: sig.id, reason: '서비스·도구 화면에는 랜딩페이지 구성 규칙을 적용하지 않음' });
+        continue;
+      }
       let res = null;
       try {
         res = sig.detect(ctx);
@@ -41,10 +50,12 @@
     const tells = fired.filter(f => f.kind !== 'taste');
     const taste = fired.filter(f => f.kind === 'taste');
 
-    const tellSigs = B.SIGNALS.filter(s => (s.kind || 'tell') !== 'taste');
-    const total = tellSigs.reduce((s, x) => s + x.weight, 0);
+    const allTellSigs = B.SIGNALS.filter(s => (s.kind || 'tell') !== 'taste');
+    const tellSigs = allTellSigs.filter(s => !skipped.some(x => x.id === s.id));
+    // Skipping unrelated rules must never inflate the same evidence into a higher score.
+    const total = allTellSigs.reduce((s, x) => s + x.weight, 0);
     const got   = tells.reduce((s, x) => s + x.weight, 0);
-    const score = Math.round((got / total) * 100);
+    const score = total ? Math.round((got / total) * 100) : 0;
     const band  = BANDS.find(b => score >= b.min);
 
     // 카테고리별 집계 — 어디를 먼저 손봐야 하는지
@@ -68,9 +79,16 @@
       host: ctx.host || location.host,
       title: ctx.doc.title,
       scannedAt: new Date().toISOString(),
-      score, band: band.key, bandLabel: band.label, bandLine: band.line,
+      score, band: band.key,
+      bandLabel: score < 15 ? '검출 근거 적음' : band.label,
+      bandLine: ctx.pageType.key === 'application'
+        ? '도구 화면은 미완성 흔적 위주로 검사합니다. 낮은 점수로 완성도나 제작 방식을 판단할 수 없습니다.' : band.line,
       firedCount: tells.length, totalSignals: tellSigs.length,
-      byCat, signals: tells, taste, errors,
+      byCat, signals: tells, taste, errors, skipped,
+      pageType: ctx.pageType, domSize: ctx.domSize, truncated: ctx.truncated, hiddenRoots: ctx.hiddenRoots,
+      scopeNote: ctx.pageType.key === 'application'
+        ? `랜딩 구성 규칙 ${skipped.length}개 제외 · AI 제작 여부는 판정하지 않습니다.`
+        : '렌더링된 UI의 규칙 검사입니다. AI 제작 여부는 판정하지 않습니다.',
     };
   };
 })();

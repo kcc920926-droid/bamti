@@ -141,7 +141,7 @@ const origin = process.env.BAMTI_TEST_URL || 'http://127.0.0.1:8777';
       window.__request = msg => new Promise(resolve => window.__handlers[0](msg, {}, resolve));
     });
     for (let n = 0; n < 3; n++) {
-      for (const file of ['core/signals.js', 'core/score.js', 'scan/scan.js']) await scanner.addScriptTag({ url: `${origin}/src/${file}?run=${n}` });
+      for (const file of ['core/context.js', 'core/signals.js', 'core/score.js', 'scan/scan.js']) await scanner.addScriptTag({ url: `${origin}/src/${file}?run=${n}` });
       const result = await scanner.evaluate(async () => {
         const { report } = await window.__request({ type: 'bamti:scan' });
         const sig = report.signals.find(s => s.count > 0);
