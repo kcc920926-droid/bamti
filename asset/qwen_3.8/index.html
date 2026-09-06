@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>qwen_3.8 · Component Gallery</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════ 상단 바 ═══════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="logo">qwen<span class="logo-accent">_3.8</span></span>
+    <span class="badge badge-outline">component gallery</span>
+  </div>
+  <div class="topbar-right">
+    <div class="searchbox" data-searchbox>
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+      <input type="text" placeholder="컴포넌트 검색…" data-search-input />
+      <kbd>⌘K</kbd>
+    </div>
+    <button class="icon-btn" data-theme-toggle title="테마 전환" aria-label="테마 전환">
+      <svg class="icon sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4l1.4-1.4"/></svg>
+      <svg class="icon moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- ═══════════════ 사이드 내비 ═══════════════ -->
+<aside class="sidenav">
+  <nav data-spy-nav>
+    <a href="#typography">타이포그래피</a>
+    <a href="#buttons">버튼</a>
+    <a href="#forms">폼 &amp; 입력</a>
+    <a href="#badges">배지 &amp; 칩</a>
+    <a href="#cards">카드</a>
+    <a href="#alerts">알림</a>
+    <a href="#feedback">피드백 &amp; 진행</a>
+    <a href="#avatars">아바타</a>
+    <a href="#navigation">내비게이션</a>
+    <a href="#disclosure">디스클로저</a>
+    <a href="#overlays">오버레이</a>
+    <a href="#tables">테이블</a>
+    <a href="#timeline">타임라인</a>
+    <a href="#empty">빈 상태</a>
+  </nav>
+</aside>
+
+<!-- ═══════════════ 본문 ═══════════════ -->
+<main class="content">
+
+  <section class="hero">
+    <h1>생각나는 거의 모든 컴포넌트</h1>
+    <p>qwen_3.8이 떠올린 컴포넌트를 한 페이지에 모았습니다. 타이포그래피부터 오버레이까지 — 전부 HTML + CSS + TypeScript로만 동작합니다.</p>
+    <div class="hero-meta">
+      <span class="badge badge-accent">14개 섹션</span>
+      <span class="badge badge-muted">프레임워크 없음</span>
+      <span class="badge badge-muted">다크 / 라이트 테마</span>
+    </div>
+  </section>
+
+  <!-- ─────────── 타이포그래피 ─────────── -->
+  <section id="typography" class="section">
+    <h2 class="section-title">타이포그래피</h2>
+    <div class="card">
+      <h1>제목 1 — 페이지 타이틀</h1>
+      <h2>제목 2 — 섹션 타이틀</h2>
+      <h3>제목 3 — 카드 타이틀</h3>
+      <h4>제목 4 — 소그룹</h4>
+      <p>본문 문단입니다. <strong>강조</strong>, <em>기울임</em>, <a href="#typography">링크</a>, <code>인라인 코드</code>, <mark>하이라이트</mark>, <del>취소선</del>, <u>밑줄</u>, 위<sup>첨자</sup>와 아래<sub>첨자</sub>까지.</p>
+      <blockquote>
+        “좋은 컴포넌트는 설명서가 필요 없다.”
+        <cite>— 아무개, 아마도</cite>
+      </blockquote>
+      <div class="type-columns">
+        <div>
+          <h5>순서 없는 목록</h5>
+          <ul><li>디자인 토큰</li><li>컴포넌트</li><li>패턴 <ul><li>중첩 항목</li></ul></li></ul>
+        </div>
+        <div>
+          <h5>순서 있는 목록</h5>
+          <ol><li>스케치</li><li>구현</li><li>리뷰</li></ol>
+        </div>
+        <div>
+          <h5>정의 목록</h5>
+          <dl><dt>시그널</dt><dd>AI 지문 하나의 증거</dd><dt>스코어</dt><dd>발화 가중치 합</dd></dl>
+        </div>
+      </div>
+      <h5>코드 블록</h5>
+      <div class="codeblock">
+        <div class="codeblock-bar"><span>signals.ts</span><button class="copy-btn" data-copy>복사</button></div>
+        <pre><code id="sample-code">const score = fired.reduce((s, x) => s + x.weight, 0)
+            / total * 100;
+// 판정은 단정하지 않는다 — "지문 N개 발견"</code></pre>
+      </div>
+      <p>단축키: <kbd>⌘</kbd> + <kbd>K</kbd> 검색 · <kbd>Esc</kbd> 닫기 · <kbd>Shift</kbd> <kbd>?</kbd> 도움말</p>
+    </div>
+  </section>
+
+  <!-- ─────────── 버튼 ─────────── -->
+  <section id="buttons" class="section">
+    <h2 class="section-title">버튼</h2>
+    <div class="card">
+      <h5>변형</h5>
+      <div class="row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-link">Link</button>
+      </div>
+      <h5>크기</h5>
+      <div class="row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+      <h5>상태</h5>
+      <div class="row">
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-primary is-loading" disabled><span class="spinner spinner-sm"></span>로딩 중</button>
+        <button class="btn btn-outline" data-demo-loading>클릭하면 로딩</button>
+      </div>
+      <h5>아이콘 버튼 &amp; 그룹</h5>
+      <div class="row">
+        <button class="icon-btn" title="좋아요"><svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button class="icon-btn" title="설정"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.9 2.9l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.9-2.9l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.9-2.9l.1.1a1.7 1.7 0 001.9.3h.1a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.9 2.9l-.1.1a1.7 1.7 0 00-.3 1.9v.1a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button>
+        <span class="divider-v"></span>
+        <div class="btn-group">
+          <button class="btn btn-outline is-active">왼쪽</button>
+          <button class="btn btn-outline">가운데</button>
+          <button class="btn btn-outline">오른쪽</button>
+        </div>
+        <span class="divider-v"></span>
+        <div class="btn-group">
+          <button class="btn btn-secondary">내보내기</button>
+          <button class="btn btn-secondary" data-dropdown="#export-menu" aria-haspopup="true">▾</button>
+        </div>
+      </div>
+      <div class="dropdown-menu" id="export-menu">
+        <button class="menu-item">JSON으로 내보내기</button>
+        <button class="menu-item">CSV로 내보내기</button>
+        <hr class="menu-sep" />
+        <button class="menu-item menu-danger">전체 삭제</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 폼 & 입력 ─────────── -->
+  <section id="forms" class="section">
+    <h2 class="section-title">폼 &amp; 입력</h2>
+    <div class="card form-grid">
+      <div class="field">
+        <label class="label" for="f-name">이름 <span class="req">*</span></label>
+        <input class="input" id="f-name" type="text" placeholder="김밤티" />
+        <p class="hint">실명을 입력해 주세요.</p>
+      </div>
+      <div class="field">
+        <label class="label" for="f-email">이메일</label>
+        <div class="input-affix">
+          <span class="affix">@</span>
+          <input class="input" id="f-email" type="email" placeholder="bamti@example.com" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="f-pw">비밀번호</label>
+        <div class="input-affix">
+          <input class="input" id="f-pw" type="password" placeholder="••••••••" data-password />
+          <button class="affix affix-btn" data-reveal="#f-pw" title="비밀번호 표시">👁</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="f-err">에러 상태</label>
+        <input class="input input-error" id="f-err" type="text" value="qwerty@" />
+        <p class="hint hint-error">올바른 이메일 형식이 아닙니다.</p>
+      </div>
+      <div class="field">
+        <label class="label" for="f-ok">성공 상태</label>
+        <input class="input input-success" id="f-ok" type="text" value="bamti@nous.dev" />
+        <p class="hint hint-success">사용 가능한 주소입니다.</p>
+      </div>
+      <div class="field">
+        <label class="label" for="f-sel">셀렉트</label>
+        <select class="input" id="f-sel">
+          <option>스캔 강도 선택</option>
+          <option>빠른 스캔</option>
+          <option>정밀 스캔</option>
+          <option>집요한 스캔</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label class="label" for="f-bio">자기소개 <span class="counter" data-counter-for="f-bio">0/200</span></label>
+        <textarea class="input textarea" id="f-bio" maxlength="200" placeholder="200자 이내로 작성해 주세요." data-counter></textarea>
+      </div>
+      <div class="field">
+        <label class="label">체크박스</label>
+        <label class="check"><input type="checkbox" checked /><span class="check-box"></span>시각 지문 검사</label>
+        <label class="check"><input type="checkbox" /><span class="check-box"></span>구조 지문 검사</label>
+        <label class="check"><input type="checkbox" disabled /><span class="check-box"></span>비활성 옵션</label>
+      </div>
+      <div class="field">
+        <label class="label">라디오</label>
+        <label class="radio"><input type="radio" name="plan" checked /><span class="radio-dot"></span>무료</label>
+        <label class="radio"><input type="radio" name="plan" /><span class="radio-dot"></span>프로</label>
+        <label class="radio"><input type="radio" name="plan" /><span class="radio-dot"></span>엔터프라이즈</label>
+      </div>
+      <div class="field">
+        <label class="label">스위치</label>
+        <label class="switch"><input type="checkbox" checked /><span class="track"><span class="thumb"></span></span>자동 스캔</label>
+        <label class="switch"><input type="checkbox" /><span class="track"><span class="thumb"></span></span>알림</label>
+      </div>
+      <div class="field field-wide">
+        <label class="label" for="f-range">민감도 <output class="range-out" for="f-range">50</output></label>
+        <input type="range" id="f-range" min="0" max="100" value="50" data-range />
+      </div>
+      <div class="field">
+        <label class="label" for="f-date">날짜</label>
+        <input class="input" id="f-date" type="date" value="2026-09-01" />
+      </div>
+      <div class="field">
+        <label class="label" for="f-file">파일</label>
+        <div class="filedrop" data-filedrop>
+          <input type="file" id="f-file" hidden multiple />
+          <p>파일을 끌어다 놓거나 <button class="btn btn-link" type="button" data-filepick>찾아보기</button></p>
+          <p class="hint">PNG, JPG, PDF — 최대 10MB</p>
+        </div>
+      </div>
+      <div class="field field-wide">
+        <div class="form-actions">
+          <button class="btn btn-primary">제출</button>
+          <button class="btn btn-ghost">취소</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 배지 & 칩 ─────────── -->
+  <section id="badges" class="section">
+    <h2 class="section-title">배지 &amp; 칩</h2>
+    <div class="card">
+      <h5>상태 배지</h5>
+      <div class="row">
+        <span class="badge badge-success"><span class="dot"></span>운영 중</span>
+        <span class="badge badge-warning"><span class="dot"></span>점검 예정</span>
+        <span class="badge badge-danger"><span class="dot"></span>장애</span>
+        <span class="badge badge-info"><span class="dot"></span>베타</span>
+        <span class="badge badge-muted">중립</span>
+        <span class="badge badge-accent">NEW</span>
+        <span class="badge badge-outline">v0.3.1</span>
+      </div>
+      <h5>칩 (제거 가능)</h5>
+      <div class="row" data-chips>
+        <span class="chip">tailwind <button class="chip-x" data-chip-remove>×</button></span>
+        <span class="chip">기본 팔레트 <button class="chip-x" data-chip-remove>×</button></span>
+        <span class="chip">placeholder <button class="chip-x" data-chip-remove>×</button></span>
+        <span class="chip chip-accent">지문 17개 <button class="chip-x" data-chip-remove>×</button></span>
+      </div>
+      <h5>카운트</h5>
+      <div class="row">
+        <button class="btn btn-secondary">알림 <span class="count-pill">4</span></button>
+        <button class="btn btn-secondary">메일 <span class="count-pill count-hot">99+</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 카드 ─────────── -->
+  <section id="cards" class="section">
+    <h2 class="section-title">카드</h2>
+    <div class="card-grid">
+      <article class="card">
+        <h3>기본 카드</h3>
+        <p>제목, 본문, 행동 버튼의 가장 흔한 구성. 그림자 대신 테두리로 계층을 나눕니다.</p>
+        <div class="row"><button class="btn btn-primary btn-sm">자세히</button><button class="btn btn-ghost btn-sm">닫기</button></div>
+      </article>
+      <article class="card card-media">
+        <div class="media-block">CSS 그래디언트</div>
+        <div class="card-body">
+          <span class="badge badge-accent">디자인</span>
+          <h3>미디어 카드</h3>
+          <p>이미지 영역 대신 그라디언트로 채운 카드. 실제 서비스라면 <code>&lt;img&gt;</code>가 들어가겠죠.</p>
+        </div>
+      </article>
+      <article class="card card-profile">
+        <div class="avatar avatar-lg">밤</div>
+        <h3>밤티</h3>
+        <p class="muted">AI Slop Detector · 밤나무 숲</p>
+        <div class="row center"><span class="stat"><b>128</b>스캔</span><span class="stat"><b>17</b>지문</span><span class="stat"><b>4.2</b>점수</span></div>
+        <button class="btn btn-primary btn-block">팔로우</button>
+      </article>
+      <article class="card card-stats">
+        <p class="muted">이번 주 스캔</p>
+        <p class="stat-num">1,284</p>
+        <p class="trend up">▲ 12.4% <span class="muted">지난주 대비</span></p>
+        <div class="spark" aria-hidden="true"></div>
+      </article>
+      <article class="card card-pricing">
+        <span class="badge badge-accent">인기</span>
+        <h3>프로</h3>
+        <p class="price"><b>₩9,900</b><span class="muted"> /월</span></p>
+        <ul class="price-list">
+          <li>✓ 무제한 스캔</li>
+          <li>✓ 지문 리포트</li>
+          <li>✓ 우선 지원</li>
+        </ul>
+        <button class="btn btn-primary btn-block">시작하기</button>
+      </article>
+      <article class="card card-cta">
+        <h3>액션 유도 카드</h3>
+        <p>전체 카드가 클릭되는 패턴. 호버 시 살짝 떠오릅니다.</p>
+        <span class="link-arrow">시그널 정의 보러가기 →</span>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─────────── 알림 ─────────── -->
+  <section id="alerts" class="section">
+    <h2 class="section-title">알림</h2>
+    <div class="stack">
+      <div class="alert alert-info"><b>정보</b> — 스캔 결과가 준비되면 알려드립니다.<button class="alert-x" data-dismiss>×</button></div>
+      <div class="alert alert-success"><b>성공</b> — 지문 3개를 제거했습니다. 점수가 12점 낮아졌습니다.</div>
+      <div class="alert alert-warning"><b>경고</b> — 기본 팔레트 색상이 아직 7곳 남아 있습니다.</div>
+      <div class="alert alert-danger"><b>오류</b> — 스캔 중 네트워크 오류가 발생했습니다. <a href="#alerts">다시 시도</a></div>
+      <div class="callout">
+        <span class="callout-icon">💡</span>
+        <div><b>콜아웃</b> — 알림보다 부드러운 보충 설명. 인용구나 팁에 씁니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 피드백 & 진행 ─────────── -->
+  <section id="feedback" class="section">
+    <h2 class="section-title">피드백 &amp; 진행</h2>
+    <div class="card stack">
+      <div>
+        <h5>프로그레스 바</h5>
+        <div class="progress"><div class="progress-fill" style="width:64%"></div></div>
+        <p class="hint">스캔 진행률 64%</p>
+        <div class="progress progress-indeterminate"><div class="progress-fill"></div></div>
+      </div>
+      <div>
+        <h5>스피너</h5>
+        <div class="row">
+          <span class="spinner spinner-sm"></span>
+          <span class="spinner"></span>
+          <span class="spinner spinner-lg"></span>
+          <span class="dots"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+      <div>
+        <h5>스켈레톤</h5>
+        <div class="skeleton-row">
+          <div class="avatar skeleton"></div>
+          <div class="stack" style="flex:1">
+            <div class="skeleton" style="width:40%"></div>
+            <div class="skeleton" style="width:90%"></div>
+            <div class="skeleton" style="width:70%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h5>토스트</h5>
+        <div class="row">
+          <button class="btn btn-secondary" data-toast="success">성공 토스트</button>
+          <button class="btn btn-secondary" data-toast="error">오류 토스트</button>
+          <button class="btn btn-secondary" data-toast="info">정보 토스트</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 아바타 ─────────── -->
+  <section id="avatars" class="section">
+    <h2 class="section-title">아바타</h2>
+    <div class="card">
+      <div class="row">
+        <span class="avatar avatar-sm">S</span>
+        <span class="avatar">밤</span>
+        <span class="avatar avatar-lg">티</span>
+        <span class="avatar avatar-xl av-green">Q</span>
+        <span class="avatar avatar-status">밤<span class="status-dot online"></span></span>
+        <span class="avatar avatar-status">티<span class="status-dot away"></span></span>
+        <span class="avatar avatar-status">Q<span class="status-dot busy"></span></span>
+      </div>
+      <h5>아바타 그룹</h5>
+      <div class="avatar-stack">
+        <span class="avatar av-a">A</span><span class="avatar av-b">B</span><span class="avatar av-c">C</span><span class="avatar av-d">D</span><span class="avatar av-more">+5</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 내비게이션 ─────────── -->
+  <section id="navigation" class="section">
+    <h2 class="section-title">내비게이션</h2>
+    <div class="card stack">
+      <div>
+        <h5>브레드크럼</h5>
+        <nav class="crumbs"><a href="#navigation">홈</a><span class="crumb-sep">/</span><a href="#navigation">프로젝트</a><span class="crumb-sep">/</span><span class="crumb-cur">bamti</span></nav>
+      </div>
+      <div>
+        <h5>탭 — 언더라인</h5>
+        <div class="tabs" data-tabs>
+          <button class="tab is-active" data-tab="t1">스캔 결과</button>
+          <button class="tab" data-tab="t2">시그널</button>
+          <button class="tab" data-tab="t3">설정</button>
+        </div>
+        <div class="tab-panel" data-panel="t1">스캔 결과 패널입니다. 점수 23점 — 약간 티남.</div>
+        <div class="tab-panel" data-panel="t2" hidden>시그널 패널입니다. 발화한 지문 7개를 나열합니다.</div>
+        <div class="tab-panel" data-panel="t3" hidden>설정 패널입니다. 스캔 강도를 조절합니다.</div>
+      </div>
+      <div>
+        <h5>탭 — 필</h5>
+        <div class="tabs tabs-pill" data-tabs>
+          <button class="tab is-active">전체</button>
+          <button class="tab">시각</button>
+          <button class="tab">구조</button>
+          <button class="tab">미완성</button>
+        </div>
+      </div>
+      <div>
+        <h5>페이지네이션</h5>
+        <nav class="pagination">
+          <button class="page-btn" disabled>‹</button>
+          <button class="page-btn is-active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span class="page-ellipsis">…</span>
+          <button class="page-btn">12</button>
+          <button class="page-btn">›</button>
+        </nav>
+      </div>
+      <div>
+        <h5>스테퍼</h5>
+        <ol class="stepper">
+          <li class="step done"><span class="step-dot">✓</span>설치</li>
+          <li class="step done"><span class="step-dot">✓</span>확장 등록</li>
+          <li class="step current"><span class="step-dot">3</span>첫 스캔</li>
+          <li class="step"><span class="step-dot">4</span>리포트</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 디스클로저 ─────────── -->
+  <section id="disclosure" class="section">
+    <h2 class="section-title">디스클로저</h2>
+    <div class="card stack">
+      <div class="accordion" data-accordion>
+        <div class="acc-item open">
+          <button class="acc-head">AI 슬롭이 뭔가요?<span class="acc-arrow">▾</span></button>
+          <div class="acc-body"><p>AI가 만들어낸 결과물에 남는 특유의 흔적을 말합니다. 기본 팔레트 색상, 플레이스홀더 이미지, 흔한 CTA 문구 같은 것들이죠.</p></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">점수는 어떻게 매기나요?<span class="acc-arrow">▾</span></button>
+          <div class="acc-body"><p>발화한 시그널의 가중치 합을 전체 가중치 합으로 나눠 0~100점으로 환산합니다. 미완성 계열은 결함이라 가중치가 높습니다.</p></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head">판정을 믿어도 되나요?<span class="acc-arrow">▾</span></button>
+          <div class="acc-body"><p>단정하지 않습니다. “AI가 썼다”가 아니라 “지문 N개 발견”이라고만 말합니다.</p></div>
+        </div>
+      </div>
+      <div>
+        <h5>드롭다운 메뉴</h5>
+        <button class="btn btn-secondary" data-dropdown="#demo-menu">메뉴 열기 ▾</button>
+        <div class="dropdown-menu" id="demo-menu">
+          <button class="menu-item">새 스캔</button>
+          <button class="menu-item">기록 보기</button>
+          <button class="menu-item" disabled>비활성 항목</button>
+          <hr class="menu-sep" />
+          <button class="menu-item menu-danger">기록 삭제</button>
+        </div>
+      </div>
+      <details class="details">
+        <summary>네이티브 details / summary</summary>
+        <p>브라우저 기본 요소로도 디스클로저를 만들 수 있습니다. JS 없이 열리고 닫힙니다.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ─────────── 오버레이 ─────────── -->
+  <section id="overlays" class="section">
+    <h2 class="section-title">오버레이</h2>
+    <div class="card">
+      <div class="row">
+        <button class="btn btn-primary" data-modal-open="#modal-demo">모달 열기</button>
+        <button class="btn btn-danger" data-modal-open="#modal-confirm">확인 모달</button>
+        <span class="tooltip-wrap">툴팁 위에 호버
+          <span class="tooltip">도움이 될 만한 설명이 여기 뜹니다</span>
+        </span>
+        <span class="tooltip-wrap">아래 툴팁
+          <span class="tooltip tooltip-bottom">아래에도 뜹니다</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 테이블 ─────────── -->
+  <section id="tables" class="section">
+    <h2 class="section-title">테이블</h2>
+    <div class="card table-wrap">
+      <table class="table" data-sortable>
+        <thead>
+          <tr>
+            <th data-sort>시그널 <span class="sort-arrow"></span></th>
+            <th data-sort>카테고리 <span class="sort-arrow"></span></th>
+            <th data-sort="num">가중치 <span class="sort-arrow"></span></th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>tailwind-default-palette</td><td>시각</td><td>3</td><td><span class="badge badge-danger"><span class="dot"></span>발화</span></td></tr>
+          <tr><td>placeholder-images</td><td>구조</td><td>2</td><td><span class="badge badge-danger"><span class="dot"></span>발화</span></td></tr>
+          <tr><td>generic-cta</td><td>구조</td><td>1</td><td><span class="badge badge-muted">잠잠</span></td></tr>
+          <tr><td>default-title</td><td>미완성</td><td>5</td><td><span class="badge badge-muted">잠잠</span></td></tr>
+          <tr><td>emoji-favicon</td><td>시각</td><td>2</td><td><span class="badge badge-danger"><span class="dot"></span>발화</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─────────── 타임라인 ─────────── -->
+  <section id="timeline" class="section">
+    <h2 class="section-title">타임라인</h2>
+    <div class="card">
+      <ol class="timeline">
+        <li class="tl-item">
+          <span class="tl-dot tl-accent"></span>
+          <div><b>프로젝트 시작</b><time>2026-08-25</time><p>manifest.json 초안 작성, 사이드 패널 구조 결정.</p></div>
+        </li>
+        <li class="tl-item">
+          <span class="tl-dot"></span>
+          <div><b>시그널 17종 정의</b><time>2026-08-28</time><p>시각·구조·미완성·툴체인 네 개 카테고리로 분류.</p></div>
+        </li>
+        <li class="tl-item">
+          <span class="tl-dot tl-done"></span>
+          <div><b>컴포넌트 갤러리</b><time>2026-09-01</time><p>qwen_3.8이 이 페이지를 작성했습니다.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─────────── 빈 상태 ─────────── -->
+  <section id="empty" class="section">
+    <h2 class="section-title">빈 상태</h2>
+    <div class="card-grid">
+      <div class="card empty-state">
+        <div class="empty-art" aria-hidden="true">🌰</div>
+        <h3>아직 스캔 기록이 없어요</h3>
+        <p>첫 페이지를 스캔하면 지문 리포트가 여기에 나타납니다.</p>
+        <button class="btn btn-primary">첫 스캔 시작</button>
+      </div>
+      <div class="card empty-state">
+        <div class="empty-art" aria-hidden="true">🔍</div>
+        <h3>결과 없음</h3>
+        <p>‘<span data-echo>nightshade</span>’에 대한 검색 결과가 없습니다.<br/>다른 키워드로 시도해 보세요.</p>
+        <button class="btn btn-outline">필터 초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>qwen_3.8 · HTML + TypeScript + CSS only · esbuild로 번들링</p>
+    <p class="muted">Made with 🌰 in ~/project/bamti/asset/qwen_3.8</p>
+  </footer>
+
+</main>
+</div>
+
+<!-- ═══════════════ 모달 ═══════════════ -->
+<div class="modal-backdrop" data-modal-backdrop hidden>
+  <div class="modal" id="modal-demo" role="dialog" aria-modal="true" hidden>
+    <header class="modal-head"><h3>모달 제목</h3><button class="icon-btn" data-modal-close>×</button></header>
+    <div class="modal-body">
+      <p>백드롭 클릭, <kbd>Esc</kbd>, 닫기 버튼 모두 닫힙니다. 포커스는 모달 안에 갇힙니다.</p>
+      <div class="field"><label class="label" for="m-input">모달 안 입력</label><input class="input" id="m-input" placeholder="여기에 입력" /></div>
+    </div>
+    <footer class="modal-foot"><button class="btn btn-ghost" data-modal-close>취소</button><button class="btn btn-primary" data-modal-close>확인</button></footer>
+  </div>
+  <div class="modal modal-sm" id="modal-confirm" role="alertdialog" aria-modal="true" hidden>
+    <header class="modal-head"><h3>정말 삭제할까요?</h3></header>
+    <div class="modal-body"><p>이 작업은 되돌릴 수 없습니다. 스캔 기록 128건이 영구 삭제됩니다.</p></div>
+    <footer class="modal-foot"><button class="btn btn-ghost" data-modal-close>취소</button><button class="btn btn-danger" data-modal-close>삭제</button></footer>
+  </div>
+</div>
+
+<!-- 토스트 컨테이너 -->
+<div class="toast-stack" data-toast-stack aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create Next App</title>
+<style>
+  * { box-sizing:border-box; } body { margin:0; font-family:Inter,ui-sans-serif,system-ui,sans-serif; color:#0f172a; background:#fff; }
+  .wrap { max-width:1280px; margin:0 auto; padding:0 24px; }
+  header { border-bottom:1px solid #e2e8f0; } nav { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  nav .logo { font-weight:700; } nav .links a { margin:0 12px; color:#475569; text-decoration:none; }
+  nav .cta { display:flex; gap:10px; align-items:center; }
+  .btn { display:inline-block; border-radius:12px; padding:12px 22px; background:linear-gradient(90deg,#8b5cf6,#3b82f6); color:#fff; text-decoration:none; font-weight:600; }
+  .ghost { display:inline-block; border-radius:12px; padding:12px 22px; border:1px solid #e2e8f0; color:#334155; text-decoration:none; }
+  section { padding:96px 0; } .center { text-align:center; }
+  h1 { font-size:3.25rem; line-height:1.05; margin:16px 0; background:linear-gradient(90deg,#7c3aed,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  h2 { font-size:2rem; margin:0 0 10px; } .sub { color:#64748b; max-width:600px; margin:0 auto 40px; }
+  .pill { display:inline-block; border-radius:9999px; background:#ede9fe; color:#7c3aed; padding:6px 14px; font-size:13px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+  .card { border-radius:12px; border:1px solid #e5e7eb; background:#fff; padding:28px; text-align:left; }
+  .ico { width:48px; height:48px; border-radius:9999px; background:#ede9fe; color:#7c3aed; display:grid; place-items:center; margin-bottom:16px; }
+  .ico svg { width:22px; height:22px; }
+  .logos { display:flex; gap:40px; justify-content:center; align-items:center; filter:grayscale(1); opacity:.6; }
+  .logos span { font-weight:700; font-size:20px; color:#94a3b8; }
+  .zig { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+  .fake { height:320px; border-radius:12px; background:linear-gradient(135deg,#a78bfa,#60a5fa); }
+  .tier { border-radius:12px; border:1px solid #cbd5e1; padding:28px; background:#fff; text-align:left; }
+  .tier.pop { border-color:#7c3aed; } .tier .tag { font-size:12px; color:#7c3aed; font-weight:700; }
+  .tier ul { list-style:none; padding:0; } .tier li::before { content:"✓ "; color:#16a34a; }
+  .banner { background:linear-gradient(90deg,#7c3aed,#3b82f6); color:#fff; text-align:center; border-radius:0; }
+  .banner h2 { color:#fff; } .banner .btn { background:#fff; color:#7c3aed; }
+  footer { border-top:1px solid #e2e8f0; padding:48px 0; color:#64748b; } .cols { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  .cols a { display:block; color:#64748b; text-decoration:none; margin:6px 0; }
+  .avatar { width:44px; height:44px; border-radius:9999px; background:#e2e8f0; }
+</style></head>
+<body>
+<header><div class="wrap"><nav>
+  <div class="logo">✨ Acme</div>
+  <div class="links"><a href="#">Features</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Blog</a></div>
+  <div class="cta"><a class="ghost" href="#">Sign in</a><a class="btn" href="#">Get Started</a></div>
+</nav></div></header>
+
+<section class="center"><div class="wrap">
+  <span class="pill">🚀 Now in public beta</span>
+  <h1>Build better products.<br>Ship faster.</h1>
+  <p class="sub">Acme helps modern teams collaborate, iterate and deliver — all in one place. Lorem ipsum dolor sit amet.</p>
+  <a class="btn" href="#">Start Free Trial</a> <a class="ghost" href="#">Learn More</a>
+  <p style="margin-top:56px;color:#94a3b8;font-size:13px">Trusted by 10,000+ teams worldwide</p>
+  <div class="logos"><span>ACME</span><span>Globex</span><span>Initech</span><span>Umbrella</span><span>Hooli</span></div>
+</div></section>
+
+<section class="center" id="features"><div class="wrap">
+  <h2>Features</h2><p class="sub">Everything you need to move fast, all in one platform.</p>
+  <div class="grid3">
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><h3>Lightning Fast</h3><p>Optimized for speed so your team never waits around.</p></div>
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/></svg></div><h3>Secure by Default</h3><p>Enterprise-grade security built into every single layer.</p></div>
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg></div><h3>Global Scale</h3><p>Deploy anywhere in the world with a single click today.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap zig"><div><h2>Collaborate in real time</h2><p>Work together with your team seamlessly, wherever they are. Comments, mentions and live cursors.</p><a class="ghost" href="#">Learn More</a></div><div class="fake"></div></div></section>
+<section><div class="wrap zig"><div class="fake"></div><div><h2>Automate the boring stuff</h2><p>Let powerful workflows handle repetitive tasks so you can focus on what matters most.</p><a class="ghost" href="#">Learn More</a></div></div></section>
+<section><div class="wrap zig"><div><h2>Insights that matter</h2><p>Beautiful dashboards and reports that turn your data into decisions in seconds.</p><a class="ghost" href="#">Learn More</a></div><div class="fake"></div></div></section>
+
+<section class="center" id="how"><div class="wrap">
+  <h2>How it works</h2><p class="sub">Get up and running in three simple steps.</p>
+  <div class="grid3">
+    <div class="card"><div class="ico">1</div><h3>Sign up</h3><p>Create your free account in under a minute flat.</p></div>
+    <div class="card"><div class="ico">2</div><h3>Connect</h3><p>Link your tools and import your data instantly here.</p></div>
+    <div class="card"><div class="ico">3</div><h3>Launch</h3><p>Invite your team and start shipping right away now.</p></div>
+  </div>
+</div></section>
+
+<section class="center" id="testimonials"><div class="wrap">
+  <h2>Loved by teams everywhere</h2><p class="sub">Don't just take our word for it.</p>
+  <div class="grid3">
+    <div class="card"><div class="avatar"></div><h3>Sarah Chen</h3><p>"Acme completely transformed how our team works together every day."</p></div>
+    <div class="card"><div class="avatar"></div><h3>James Miller</h3><p>"The best investment we've made this year. Absolutely game changing."</p></div>
+    <div class="card"><div class="avatar"></div><h3>Priya Patel</h3><p>"Incredible product with an even better support team behind it."</p></div>
+  </div>
+</div></section>
+
+<section class="center" id="pricing"><div class="wrap">
+  <h2>Pricing</h2><p class="sub">Simple, transparent pricing that grows with you.</p>
+  <div class="grid3">
+    <div class="tier"><h3>Starter</h3><p>$0 / mo</p><ul><li>Up to 3 projects</li><li>Basic analytics</li><li>Community support</li></ul><a class="ghost" href="#">Get Started</a></div>
+    <div class="tier pop"><span class="tag">MOST POPULAR</span><h3>Pro</h3><p>$29 / mo</p><ul><li>Unlimited projects</li><li>Advanced analytics</li><li>Priority support</li></ul><a class="btn" href="#">Get Started</a></div>
+    <div class="tier"><h3>Enterprise</h3><p>Custom</p><ul><li>SSO &amp; SAML</li><li>Dedicated manager</li><li>Custom contracts</li></ul><a class="ghost" href="#">Contact Sales</a></div>
+  </div>
+</div></section>
+
+<section class="center" id="faq"><div class="wrap">
+  <h2>Frequently asked questions</h2>
+  <div class="card" style="max-width:720px;margin:0 auto"><h3>Can I cancel anytime?</h3><p>Yes. No contracts, no hidden fees.</p></div>
+</div></section>
+
+<section class="banner"><div class="wrap"><h2>Ready to get started?</h2><p>Join thousands of teams already building with Acme.</p><a class="btn" href="#">Start Free Trial</a></div></section>
+
+<footer><div class="wrap cols">
+  <div><b>Product</b><a href="#">Features</a><a href="#">Pricing</a><a href="#">Changelog</a></div>
+  <div><b>Company</b><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a></div>
+  <div><b>Resources</b><a href="#">Docs</a><a href="#">Community</a><a href="#">Support</a></div>
+  <div><b>Legal</b><a href="#">Privacy</a><a href="#">Terms</a><button aria-label="Toggle dark mode">🌙</button></div>
+</div></footer>
+</body></html>

@@ -1,0 +1,99 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>밤티 패널 프리뷰</title>
+<link rel="stylesheet" href="/src/panel/panel.css">
+<style>
+  html { background:#3b3b40; }
+  body { width:min(100%, 420px); min-height:100vh; margin:0 auto; box-shadow:0 0 0 1px #000, 0 20px 60px rgba(0,0,0,.5); }
+  #target { padding:8px 14px; font:11px ui-monospace,monospace; color:var(--dim); background:var(--card); border-bottom:1px solid var(--line); }
+  #target select { font:inherit; }
+</style>
+<div id="target"><label for="pick">프리뷰 대상: </label><select id="pick"></select> · 실제 확장 API는 모의 실행</div>
+<div id="panel-root"><!-- panel.html 을 런타임에 주입 --></div>
+<script>
+/* 엔진은 항상 최신으로 — 정적 <script src> 는 캐시에 물려 옛 시그널로 채점한다 */
+const __v = '?v=' + Date.now();
+const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
+const __engine = __load('/src/core/signals.js').then(() => __load('/src/core/score.js'));
+</script>
+<script>
+/* ── chrome.* 심 ── 패널이 호출하는 최소 API만 흉내낸다 */
+const TARGETS = Object.fromEntries(Object.entries({
+  'slop픽스처': '/test/fixtures/slop.html',
+  'gpt_sol_5.6': '/asset/gpt_sol_5.6/index.html',
+  'qwen_3.8': '/asset/qwen_3.8/index.html',
+  'basecamp': '/test/mirror/basecamp.html',
+  'stripe': '/test/mirror/stripe.html',
+}).map(([k, v]) => [k, location.origin + v]));   // 실제 tab.url 처럼 절대 URL
+let current = decodeURIComponent(location.hash.slice(1)) || 'slop픽스처';
+if (!TARGETS[current]) current = 'slop픽스처';
+const pick = document.getElementById('pick');
+for (const k of Object.keys(TARGETS)) pick.append(new Option(k, k, false, k === current));
+pick.onchange = () => { location.hash = pick.value; location.reload(); };
+
+let frame = null;
+function scanIframe(url) {
+  return new Promise(async res => {
+    await __engine;
+    if (frame) frame.remove();
+    frame = document.createElement('iframe');
+    frame.style.cssText = 'width:1280px;height:900px;position:fixed;left:-9999px';
+    frame.src = url;
+    frame.onload = () => setTimeout(() => {
+      const d = frame.contentDocument, w = frame.contentWindow;
+      const cache = new WeakMap();
+      const cs = el => { let v = cache.get(el); if (!v) { v = w.getComputedStyle(el); cache.set(el, v); } return v; };
+      const els = [...d.body.querySelectorAll('*')].slice(0, 6000);
+      const rawText = d.body.innerText || '';
+      BAMTI._nodes = new Map();
+      const t0 = performance.now();
+      const r = BAMTI.run({ doc: d, els, cs, svgs: [...d.querySelectorAll('svg')], rawText,
+                            text: rawText.toLowerCase(), title: d.title, url, host: 'localhost', truncated: 0 });
+      r.ms = Math.round(performance.now() - t0); r.domSize = els.length; r.truncated = 0;
+      res(r);
+    }, 400);
+    document.body.append(frame);
+  });
+}
+
+const listeners = [];
+globalThis.chrome = {
+  storage: { session: { get: async () => ({ bamtiTarget: 1 }) },
+             local:   { get: async () => ({}), set: async () => {} } },
+  runtime: { onMessage: { addListener: fn => listeners.push(fn) } },
+  scripting: { executeScript: async () => [] },
+  extension: { isAllowedFileSchemeAccess: cb => cb(true) },
+  permissions: (() => { const g = new Set(); return {
+    contains: async ({origins}) => origins.every(o => g.has(o)),
+    request:  async ({origins}) => { origins.forEach(o => g.add(o)); console.log('permissions.request', origins); return true; },
+    remove:   async ({origins}) => { origins.forEach(o => g.delete(o)); return true; },
+  }; })(),
+  windows: { getCurrent: async () => ({ id: 7 }) },
+  tabs: {
+    onActivated: { addListener: fn => (globalThis.__onActivated = fn) },
+    onUpdated: { addListener: fn => (globalThis.__onUpdated = fn) },
+    onRemoved: { addListener: fn => (globalThis.__onRemoved = fn) },
+    get: async id => ({ id, url: TARGETS[current], windowId: 7 }),
+    create: async o => console.log('tabs.create', o.url),
+    query: async () => [{ id: 1, url: TARGETS[current] }],
+    sendMessage: async (_tab, msg) => {
+      if (msg.type === 'bamti:scan')  return { ok: true, report: await scanIframe(TARGETS[current]) };
+      if (msg.type === 'bamti:highlight') { globalThis.__lastMsg = msg; return { ok: true }; }
+      if (msg.type === 'bamti:highlight-all') { globalThis.__lastMsg = msg; return { ok: true, n: msg.items.length }; }
+      if (msg.type === 'bamti:clear') { globalThis.__lastMsg = msg; return { ok: true }; }
+      return { ok: true };
+    },
+  },
+};
+</script>
+<script>
+/* panel.html 을 실시간으로 가져와 <header>…</main> 만 꺼내 주입한 뒤 panel.js 로드.
+   스냅샷이 아니라서 panel.html 을 고치면 프리뷰도 즉시 따라온다. */
+(async () => {
+  const html = await (await fetch('/src/panel/panel.html?x=' + Date.now())).text();
+  const part = html.match(/<header>[\s\S]*?<\/main>/);
+  if (!part) { document.body.textContent = 'panel.html 에서 <header>…</main> 을 찾지 못함'; return; }
+  document.getElementById('panel-root').outerHTML = part[0];
+  const sc = document.createElement('script');
+  sc.src = '/src/panel/panel.js?x=' + Date.now();
+  document.body.append(sc);
+})();
+</script>

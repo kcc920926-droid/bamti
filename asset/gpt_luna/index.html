@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Luna — a tactile component atlas." />
+    <title>LUNA / Component Atlas</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Atlas navigation">
+        <a class="brand" href="#top" aria-label="Luna component atlas home">
+          <span class="brand-mark" aria-hidden="true">◒</span>
+          <span class="brand-copy">
+            <strong>LUNA</strong>
+            <small>component atlas</small>
+          </span>
+          <span class="brand-index">01</span>
+        </a>
+
+        <div class="sidebar-rule"></div>
+        <p class="side-label">Index</p>
+        <nav class="side-nav">
+          <a class="nav-item is-active" href="#overview" data-nav>
+            <span class="nav-number">00</span><span>Overview</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#actions" data-nav>
+            <span class="nav-number">01</span><span>Actions</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#inputs" data-nav>
+            <span class="nav-number">02</span><span>Inputs</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#navigation" data-nav>
+            <span class="nav-number">03</span><span>Navigation</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#data" data-nav>
+            <span class="nav-number">04</span><span>Data display</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#feedback" data-nav>
+            <span class="nav-number">05</span><span>Feedback</span><span class="nav-dot"></span>
+          </a>
+          <a class="nav-item" href="#overlays" data-nav>
+            <span class="nav-number">06</span><span>Overlays</span><span class="nav-dot"></span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="orbit-mini" aria-hidden="true">
+            <span class="orbit-mini-ring orbit-mini-ring-a"></span>
+            <span class="orbit-mini-ring orbit-mini-ring-b"></span>
+            <span class="orbit-mini-core"></span>
+          </div>
+          <div class="system-status">
+            <span class="status-led is-live"></span>
+            <div><strong>All systems nominal</strong><small>Last sync 09:41:08</small></div>
+          </div>
+          <p class="side-footnote">Made for the small decisions<br />that make a surface sing.</p>
+        </div>
+      </aside>
+
+      <main class="main" id="top">
+        <header class="topbar">
+          <div class="breadcrumbs" aria-label="Breadcrumb">
+            <span>Library</span><span class="crumb-slash">/</span><strong>gpt_luna</strong>
+          </div>
+          <div class="topbar-actions">
+            <button class="command-hint" type="button" data-command-open aria-label="Open command palette">
+              <span class="keycap">⌘</span><span class="keycap">K</span><span class="command-label">Command palette</span>
+            </button>
+            <button class="icon-btn has-tooltip" type="button" data-theme-toggle data-tooltip="Toggle theme" aria-label="Toggle light and dark theme">◐</button>
+            <button class="avatar avatar-sm" type="button" data-toast="Profile menu is part of the atlas." aria-label="Open profile">KL</button>
+          </div>
+        </header>
+
+        <section class="hero" id="overview" data-section="overview">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> UI INVENTORY / 001</p>
+            <h1>Everything needs<br /><em>a good surface.</em></h1>
+            <p class="hero-lede">A deliberately opinionated field guide to buttons, fields, signals, and the quiet details between them. Built as a place to look, touch, and decide.</p>
+            <div class="hero-actions">
+              <button class="btn btn-accent" type="button" data-scroll-to="#actions">Explore components <span class="btn-arrow">↗</span></button>
+              <button class="text-btn" type="button" data-toast="The source is intentionally plain HTML, CSS, and TypeScript.">Read the note <span>↘</span></button>
+            </div>
+            <div class="hero-meta">
+              <span><i class="meta-line"></i> 25 component specimens</span>
+              <span><i class="meta-line"></i> 06 interaction states</span>
+              <span><i class="meta-line"></i> 01 lunar system</span>
+            </div>
+          </div>
+          <div class="hero-visual" aria-label="Abstract lunar orbit illustration">
+            <div class="hero-orbit orbit-one"></div>
+            <div class="hero-orbit orbit-two"></div>
+            <div class="hero-orbit orbit-three"></div>
+            <div class="hero-moon"><span></span><i></i><b></b></div>
+            <span class="orbit-label label-top">SURFACE<br /><b>01.00</b></span>
+            <span class="orbit-label label-bottom">LIGHT / DARK<br /><b>TOGGLE</b></span>
+            <span class="orbit-tick tick-a"></span><span class="orbit-tick tick-b"></span>
+          </div>
+        </section>
+
+        <div class="atlas-toolbar" aria-label="Component filters">
+          <div class="toolbar-intro"><span class="toolbar-pulse"></span><span>Showing all surfaces</span></div>
+          <div class="filter-list" role="list">
+            <button class="filter-chip is-selected" type="button" data-filter="all">All <span>25</span></button>
+            <button class="filter-chip" type="button" data-filter="actions">Actions <span>04</span></button>
+            <button class="filter-chip" type="button" data-filter="inputs">Inputs <span>03</span></button>
+            <button class="filter-chip" type="button" data-filter="navigation">Navigation <span>04</span></button>
+            <button class="filter-chip" type="button" data-filter="data">Data <span>06</span></button>
+            <button class="filter-chip" type="button" data-filter="feedback">Feedback <span>04</span></button>
+            <button class="filter-chip" type="button" data-filter="overlays">Overlays <span>04</span></button>
+          </div>
+        </div>
+
+        <div class="atlas" id="components">
+          <section class="atlas-section" id="actions" data-category="actions">
+            <div class="section-heading">
+              <span class="section-number">01</span>
+              <div><p class="eyebrow">INTERACTION</p><h2>Actions that feel like a decision</h2></div>
+              <p class="section-note">A button should tell you what will happen before you commit. Weight, tone, and motion do the talking.</p>
+            </div>
+            <div class="spec-grid grid-actions">
+              <article class="spec-card span-7" data-component="buttons">
+                <div class="spec-card-head"><div><span class="component-label">BUTTONS / 01</span><h3>Weight, not decoration</h3></div><span class="component-count">6 states</span></div>
+                <div class="button-rack">
+                  <div class="button-row"><span class="state-label">Primary</span><button class="btn btn-accent" type="button" data-toast="Primary action acknowledged.">Launch sequence <span class="btn-arrow">↗</span></button><button class="btn btn-accent btn-icon-only" type="button" aria-label="Launch" data-toast="Launch icon pressed.">↗</button></div>
+                  <div class="button-row"><span class="state-label">Quiet</span><button class="btn btn-neutral" type="button" data-toast="Saved to the local demo state.">Save changes</button><button class="btn btn-quiet" type="button">Cancel</button></div>
+                  <div class="button-row"><span class="state-label">Danger</span><button class="btn btn-danger" type="button" data-toast="Destructive action is only a demo.">Archive item</button><button class="icon-btn has-tooltip" type="button" data-tooltip="More actions" aria-label="More actions">•••</button></div>
+                </div>
+              </article>
+
+              <article class="spec-card span-5" data-component="badges">
+                <div class="spec-card-head"><div><span class="component-label">BADGES / 02</span><h3>Small signals, clear tone</h3></div></div>
+                <div class="badge-cloud">
+                  <span class="badge badge-live"><i></i>Live</span><span class="badge badge-warm">Needs review</span><span class="badge badge-neutral">Draft</span><span class="badge badge-dark">Archived</span><span class="badge badge-outline">v1.4.2</span>
+                </div>
+                <div class="tag-row"><span class="tag">Design systems <button type="button" aria-label="Remove Design systems">×</button></span><span class="tag">Motion <button type="button" aria-label="Remove Motion">×</button></span><button class="add-tag" type="button" data-toast="Add a tag from the keyboard next.">+ Add tag</button></div>
+              </article>
+
+              <article class="spec-card span-4" data-component="avatars">
+                <div class="spec-card-head"><div><span class="component-label">PEOPLE / 03</span><h3>Presence & ownership</h3></div></div>
+                <div class="avatar-line"><div class="avatar-stack"><span class="avatar avatar-a">MK</span><span class="avatar avatar-b">SY</span><span class="avatar avatar-c">JL</span><span class="avatar avatar-more">+5</span></div><span class="muted-copy">8 collaborators</span></div>
+                <div class="presence-row"><span class="presence-person"><span class="avatar avatar-xs avatar-a">MK</span><span><b>Mika Kim</b><small>Editing now</small></span></span><span class="status-led is-live"></span></div>
+              </article>
+
+              <article class="spec-card span-8 action-callout" data-component="menus">
+                <div class="spec-card-head"><div><span class="component-label">MENU / 04</span><h3>Open space for secondary actions</h3></div><button class="icon-btn" type="button" aria-label="Menu settings">⚙</button></div>
+                <div class="menu-preview">
+                  <button class="menu-trigger" type="button" data-menu-toggle><span class="menu-trigger-icon">◎</span> Project actions <span class="chevron">⌄</span></button>
+                  <div class="dropdown-menu" data-menu>
+                    <button type="button" data-toast="Duplicated in the demo."><span>◇</span> Duplicate</button><button type="button" data-toast="Link copied in the demo."><span>↗</span> Copy link</button><div class="menu-divider"></div><button class="is-danger" type="button" data-toast="Delete is disabled in this atlas."><span>×</span> Delete</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="atlas-section" id="inputs" data-category="inputs">
+            <div class="section-heading">
+              <span class="section-number">02</span>
+              <div><p class="eyebrow">INPUT / OUTPUT</p><h2>Fields with a little patience</h2></div>
+              <p class="section-note">Good forms lower the cognitive load. Labels stay close, errors stay kind, and focus is impossible to miss.</p>
+            </div>
+            <div class="spec-grid grid-inputs">
+              <article class="spec-card span-7" data-component="fields">
+                <div class="spec-card-head"><div><span class="component-label">FIELDS / 05</span><h3>Text, search, selection</h3></div><span class="component-count">focus visible</span></div>
+                <div class="field-grid">
+                  <label class="field"><span>Project name</span><input type="text" value="Luna / component atlas" /></label>
+                  <label class="field"><span>Search the atlas</span><span class="input-with-icon"><span>⌕</span><input type="search" placeholder="Try “button”" /></span></label>
+                  <label class="field"><span>Theme</span><select><option>Dark / lunar</option><option>Light / paper</option><option>System preference</option></select></label>
+                  <label class="field field-error"><span>Slug <em>Required</em></span><input type="text" value="luna atlas" aria-invalid="true" /><small>Use lowercase letters and hyphens only.</small></label>
+                  <label class="field field-full"><span>Notes</span><textarea rows="3" placeholder="Leave a useful note…">Surfaces should feel considered, even in their quietest state.</textarea><small class="field-hint">0 / 280 characters</small></label>
+                </div>
+              </article>
+
+              <article class="spec-card span-5" data-component="choices">
+                <div class="spec-card-head"><div><span class="component-label">CHOICES / 06</span><h3>Binary, multiple, single</h3></div></div>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" checked /><span class="control-check"></span><span><b>Enable notifications</b><small>Receive a nudge when the surface changes.</small></span></label>
+                  <label class="choice"><input type="checkbox" /><span class="control-check"></span><span><b>Share with the team</b><small>Visible to everyone with access.</small></span></label>
+                  <div class="choice-divider"></div>
+                  <label class="choice"><input type="radio" name="density" checked /><span class="control-radio"></span><span><b>Comfortable density</b><small>A little more air between decisions.</small></span></label>
+                  <label class="choice"><input type="radio" name="density" /><span class="control-radio"></span><span><b>Compact density</b><small>Fit more into the viewport.</small></span></label>
+                  <label class="switch-line"><span><b>Reduce motion</b><small>Respect your system preference.</small></span><input class="switch-input" type="checkbox" /><span class="switch"></span></label>
+                </div>
+              </article>
+
+              <article class="spec-card span-12 control-strip-card" data-component="controls">
+                <div class="spec-card-head"><div><span class="component-label">CONTROLS / 07</span><h3>Range, progress, upload</h3></div><span class="component-count">live demo</span></div>
+                <div class="control-strip">
+                  <label class="range-field"><span><b>Accent intensity</b><output data-range-output>72%</output></span><input type="range" min="0" max="100" value="72" data-range /></label>
+                  <div class="progress-block"><span><b>Atlas coverage</b><b>82%</b></span><div class="progress"><i style="width: 82%"></i></div><small>18 components documented</small></div>
+                  <button class="upload-zone" type="button" data-toast="Upload surface opened in demo mode."><span class="upload-icon">↑</span><span><b>Drop an asset here</b><small>SVG, PNG, or JPG · max 10 MB</small></span></button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="atlas-section" id="navigation" data-category="navigation">
+            <div class="section-heading">
+              <span class="section-number">03</span>
+              <div><p class="eyebrow">WAYFINDING</p><h2>Navigation with a sense of place</h2></div>
+              <p class="section-note">A good route does not announce itself. It gives you enough orientation to move without hesitation.</p>
+            </div>
+            <div class="spec-grid grid-navigation">
+              <article class="spec-card span-8" data-component="tabs">
+                <div class="spec-card-head"><div><span class="component-label">TABS / 08</span><h3>One surface, several views</h3></div></div>
+                <div class="tabs" role="tablist" aria-label="Component views">
+                  <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="overview-tab">Overview <span>12</span></button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="tokens-tab">Tokens <span>08</span></button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="notes-tab">Notes <span>04</span></button>
+                </div>
+                <div class="tab-panel is-active" id="overview-tab" role="tabpanel"><div class="tab-panel-mark">◌</div><div><b>Overview is the broadest lens.</b><p>Use tabs when the content shares a context but asks for a different depth of attention.</p></div><span class="panel-arrow">↗</span></div>
+                <div class="tab-panel" id="tokens-tab" role="tabpanel"><div class="tab-panel-mark">⊙</div><div><b>Tokens are the grammar.</b><p>Color, spacing, type, and motion become easier to reuse when named.</p></div><span class="panel-arrow">↗</span></div>
+                <div class="tab-panel" id="notes-tab" role="tabpanel"><div class="tab-panel-mark">∴</div><div><b>Notes hold the why.</b><p>Small decisions compound. Leave a trail for the person who comes next.</p></div><span class="panel-arrow">↗</span></div>
+              </article>
+
+              <article class="spec-card span-4" data-component="breadcrumbs">
+                <div class="spec-card-head"><div><span class="component-label">BREADCRUMBS / 09</span><h3>Breadcrumbs</h3></div></div>
+                <nav class="crumbs-demo" aria-label="Demo breadcrumb"><a href="#overview">Library</a><span>/</span><a href="#components">Systems</a><span>/</span><strong>Luna</strong></nav>
+                <div class="segment-control"><button class="is-active" type="button">Day</button><button type="button">Week</button><button type="button">Month</button></div>
+              </article>
+
+              <article class="spec-card span-5" data-component="stepper">
+                <div class="spec-card-head"><div><span class="component-label">STEPPER / 10</span><h3>Progressive disclosure</h3></div><span class="component-count">2 / 4</span></div>
+                <ol class="stepper">
+                  <li class="is-complete"><span>✓</span><div><b>Define</b><small>Set the intent</small></div></li><li class="is-current"><span>02</span><div><b>Compose</b><small>Give it a surface</small></div></li><li><span>03</span><div><b>Connect</b><small>Make it respond</small></div></li><li><span>04</span><div><b>Release</b><small>Let it out</small></div></li>
+                </ol>
+              </article>
+
+              <article class="spec-card span-7" data-component="accordion">
+                <div class="spec-card-head"><div><span class="component-label">ACCORDION / 11</span><h3>Progressive detail</h3></div></div>
+                <div class="accordion">
+                  <div class="accordion-item is-open"><button type="button" aria-expanded="true" data-accordion>What makes a good component?<span>＋</span></button><div class="accordion-content"><p>It has a clear job, an honest state, and enough contrast to be understood at a glance.</p></div></div>
+                  <div class="accordion-item"><button type="button" aria-expanded="false" data-accordion>When should I use an overlay?<span>＋</span></button><div class="accordion-content"><p>When the current context matters and the next decision is brief, focused, and reversible.</p></div></div>
+                  <div class="accordion-item"><button type="button" aria-expanded="false" data-accordion>How much motion is enough?<span>＋</span></button><div class="accordion-content"><p>Enough to explain continuity. Never enough to become the reason someone waits.</p></div></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="atlas-section" id="data" data-category="data">
+            <div class="section-heading">
+              <span class="section-number">04</span>
+              <div><p class="eyebrow">OBSERVATION</p><h2>Data that helps you notice</h2></div>
+              <p class="section-note">Numbers are not the story. They are a small, well-lit window into the story.</p>
+            </div>
+            <div class="spec-grid grid-data">
+              <article class="spec-card metric-card span-3" data-component="metric">
+                <div class="metric-top"><span class="component-label">METRIC / 12</span><span class="metric-kebab">•••</span></div><span class="metric-title">Components shipped</span><strong class="metric-value">24</strong><div class="metric-foot"><span class="trend-up">↗ 18%</span><span>vs last cycle</span></div>
+              </article>
+              <article class="spec-card metric-card span-3" data-component="metric">
+                <div class="metric-top"><span class="component-label">METRIC / 13</span><span class="metric-kebab">•••</span></div><span class="metric-title">Open decisions</span><strong class="metric-value">07</strong><div class="metric-foot"><span class="trend-warm">→ steady</span><span>this week</span></div>
+              </article>
+              <article class="spec-card metric-card span-3" data-component="metric">
+                <div class="metric-top"><span class="component-label">METRIC / 14</span><span class="metric-kebab">•••</span></div><span class="metric-title">System health</span><strong class="metric-value">98<span>%</span></strong><div class="metric-foot"><span class="trend-up">↗ 2.4%</span><span>all surfaces</span></div>
+              </article>
+              <article class="spec-card metric-card metric-dark span-3" data-component="metric">
+                <div class="metric-top"><span class="component-label">METRIC / 15</span><span class="metric-kebab">•••</span></div><span class="metric-title">Last release</span><strong class="metric-value">1.4<span>.2</span></strong><div class="metric-foot"><span class="trend-light">● stable</span><span>3 days ago</span></div>
+              </article>
+
+              <article class="spec-card chart-card span-8" data-component="chart">
+                <div class="spec-card-head"><div><span class="component-label">CHART / 16</span><h3>Attention over time</h3></div><div class="chart-legend"><span><i class="legend-dot dot-accent"></i>Activated</span><span><i class="legend-dot dot-muted"></i>Reviewed</span></div></div>
+                <div class="chart-meta"><strong>1,284</strong><span class="trend-up">↗ 12.8%</span><small>last 30 days</small></div>
+                <div class="bar-chart" aria-label="Bar chart showing attention over the last eight periods">
+                  <div class="chart-y"><span>120</span><span>90</span><span>60</span><span>30</span><span>0</span></div>
+                  <div class="bars"><div class="bar-group"><i style="height: 38%"></i><b style="height: 22%"></b></div><div class="bar-group"><i style="height: 56%"></i><b style="height: 31%"></b></div><div class="bar-group"><i style="height: 44%"></i><b style="height: 24%"></b></div><div class="bar-group"><i style="height: 68%"></i><b style="height: 43%"></b></div><div class="bar-group"><i style="height: 61%"></i><b style="height: 39%"></b></div><div class="bar-group"><i style="height: 77%"></i><b style="height: 51%"></b></div><div class="bar-group"><i style="height: 64%"></i><b style="height: 46%"></b></div><div class="bar-group"><i style="height: 92%"></i><b style="height: 66%"></b></div></div>
+                  <div class="chart-x"><span>01</span><span>05</span><span>09</span><span>13</span><span>17</span><span>21</span><span>25</span><span>29</span></div>
+                </div>
+              </article>
+
+              <article class="spec-card table-card span-4" data-component="table">
+                <div class="spec-card-head"><div><span class="component-label">TABLE / 17</span><h3>Recent surfaces</h3></div><button class="text-btn text-btn-small" type="button" data-toast="Viewing all surfaces is a demo.">View all ↗</button></div>
+                <div class="mini-table"><div class="table-row table-head"><span>Name</span><span>State</span></div><div class="table-row"><span><i class="table-icon orange"></i>Buttons</span><span class="table-state">Live</span></div><div class="table-row"><span><i class="table-icon lime"></i>Fields</span><span class="table-state">Review</span></div><div class="table-row"><span><i class="table-icon blue"></i>Overlays</span><span class="table-state">Draft</span></div><div class="table-row"><span><i class="table-icon pink"></i>Data</span><span class="table-state">Live</span></div></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="atlas-section" id="feedback" data-category="feedback">
+            <div class="section-heading">
+              <span class="section-number">05</span>
+              <div><p class="eyebrow">RESPONSE</p><h2>Feedback that keeps its composure</h2></div>
+              <p class="section-note">The interface is always talking back. Make sure it knows when to be loud, and when to be a whisper.</p>
+            </div>
+            <div class="spec-grid grid-feedback">
+              <article class="spec-card span-7" data-component="alerts">
+                <div class="spec-card-head"><div><span class="component-label">ALERTS / 18</span><h3>Contextual, not catastrophic</h3></div></div>
+                <div class="alert-stack"><div class="alert alert-info"><span class="alert-symbol">i</span><div><b>New surface detected</b><p>Your component has been added to the atlas.</p></div><button type="button" aria-label="Dismiss info" data-dismiss>×</button></div><div class="alert alert-success"><span class="alert-symbol">✓</span><div><b>Everything is in orbit</b><p>Changes saved successfully.</p></div><button type="button" aria-label="Dismiss success" data-dismiss>×</button></div><div class="alert alert-warning"><span class="alert-symbol">!</span><div><b>One decision is waiting</b><p>Review the empty state before release.</p></div><button type="button" aria-label="Dismiss warning" data-dismiss>×</button></div></div>
+              </article>
+              <article class="spec-card span-5" data-component="toast">
+                <div class="spec-card-head"><div><span class="component-label">TOAST / 19</span><h3>Momentary proof</h3></div></div>
+                <div class="toast-demo"><div class="toast-message"><span class="toast-icon">✓</span><div><b>Changes saved</b><small>Just now · Undo</small></div><button type="button" aria-label="Close toast" data-dismiss>×</button></div><button class="btn btn-neutral btn-small" type="button" data-show-toast>Trigger toast</button></div>
+              </article>
+              <article class="spec-card span-4" data-component="status">
+                <div class="spec-card-head"><div><span class="component-label">STATUS / 20</span><h3>Loading states</h3></div></div>
+                <div class="status-list"><div class="status-row"><span class="status-led is-live"></span><span>Operational</span><small>99.9%</small></div><div class="status-row"><span class="status-led is-warm"></span><span>Degraded</span><small>2 regions</small></div><div class="status-row"><span class="status-led is-off"></span><span>Offline</span><small>Paused</small></div></div>
+              </article>
+              <article class="spec-card span-8" data-component="skeleton">
+                <div class="spec-card-head"><div><span class="component-label">SKELETON / 21</span><h3>Loading without the panic</h3></div><button class="text-btn text-btn-small" type="button" data-skeleton-toggle>Animate ↗</button></div>
+                <div class="skeleton-layout" data-skeleton><span class="skeleton-avatar"></span><div class="skeleton-lines"><span class="skeleton-line line-long"></span><span class="skeleton-line line-medium"></span><span class="skeleton-line line-short"></span></div><div class="skeleton-side"><span class="skeleton-line"></span><span class="skeleton-line line-short"></span></div></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="atlas-section" id="overlays" data-category="overlays">
+            <div class="section-heading">
+              <span class="section-number">06</span>
+              <div><p class="eyebrow">FOCUS LAYERS</p><h2>Overlays for the moments that matter</h2></div>
+              <p class="section-note">Sometimes the next thought deserves the whole room. Keep the exit obvious and the focus intentional.</p>
+            </div>
+            <div class="spec-grid grid-overlays">
+              <article class="spec-card span-4" data-component="modal">
+                <div class="spec-card-head"><div><span class="component-label">MODAL / 22</span><h3>Pause the surface</h3></div></div>
+                <div class="overlay-preview overlay-preview-modal"><div class="fake-modal"><span class="component-label">CONFIRMATION</span><b>Ready to publish?</b><p>This will make the latest surface available to your team.</p><div><button class="btn btn-quiet btn-small" type="button">Not yet</button><button class="btn btn-accent btn-small" type="button" data-modal-open>Publish</button></div></div></div>
+              </article>
+              <article class="spec-card span-4" data-component="drawer">
+                <div class="spec-card-head"><div><span class="component-label">DRAWER / 23</span><h3>Inspect in context</h3></div></div>
+                <div class="overlay-preview overlay-preview-drawer"><div class="fake-page"><span></span><span></span><span></span><i></i></div><div class="fake-drawer"><span class="component-label">INSPECTOR</span><b>Button / Primary</b><small>Action surface</small><button type="button" data-drawer-open>Open inspector <span>↗</span></button></div></div>
+              </article>
+              <article class="spec-card span-4" data-component="empty">
+                <div class="spec-card-head"><div><span class="component-label">EMPTY STATE / 24</span><h3>Make blank feel useful</h3></div></div>
+                <div class="empty-state"><div class="empty-glyph">∅</div><b>Nothing here yet</b><p>Start with a small, clear intention.</p><button class="btn btn-neutral btn-small" type="button" data-toast="Empty states are invitations, not dead ends.">Create surface</button></div>
+              </article>
+              <article class="spec-card command-card span-12" data-component="command">
+                <div class="spec-card-head"><div><span class="component-label">COMMAND / 25</span><h3>Keyboard-first, quietly powerful</h3></div><span class="component-count">⌘ K</span></div>
+                <div class="command-inline"><span class="command-search-icon">⌕</span><input type="text" placeholder="Search commands or components" data-command-inline /><span class="keycap">ESC</span></div>
+                <div class="command-suggestions"><button type="button" data-toast="Navigating to Actions in demo mode."><span class="suggestion-glyph">↗</span><span><b>Open Actions</b><small>Navigate to component family</small></span><span class="keycap">↵</span></button><button type="button" data-toast="Theme picker opened in demo mode."><span class="suggestion-glyph">◐</span><span><b>Change appearance</b><small>Toggle light or dark surface</small></span><span class="keycap">T</span></button><button type="button" data-toast="Audit complete: no blocking issues."><span class="suggestion-glyph">✓</span><span><b>Run accessibility audit</b><small>Check contrast and focus states</small></span><span class="keycap">A</span></button></div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer">
+          <div><span class="brand-mark">◒</span><span>LUNA / component atlas</span></div><span>Designed in the dark, checked in the light.</span><span>HTML · CSS · TS</span>
+        </footer>
+      </main>
+    </div>
+
+    <div class="toast-viewport" aria-live="polite" data-toast-viewport></div>
+
+    <div class="modal-backdrop" data-modal aria-hidden="true">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close icon-btn" type="button" data-modal-close aria-label="Close dialog">×</button>
+        <span class="component-label">CONFIRMATION / 22</span><h2 id="modal-title">Ready to publish?</h2><p>This is a focused moment for a focused decision. Your latest surface will become visible to the team.</p>
+        <div class="modal-meta"><span><i class="status-led is-live"></i> All checks passed</span><span>Last edited just now</span></div>
+        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-modal-close>Not yet</button><button class="btn btn-accent" type="button" data-publish>Publish surface <span>↗</span></button></div>
+      </section>
+    </div>
+
+    <aside class="drawer" data-drawer aria-hidden="true" aria-labelledby="drawer-title">
+      <div class="drawer-head"><span class="component-label">INSPECTOR / 23</span><button class="icon-btn" type="button" data-drawer-close aria-label="Close inspector">×</button></div>
+      <div class="drawer-body"><p class="eyebrow">COMPONENT / BUTTON</p><h2 id="drawer-title">Primary action</h2><p class="drawer-copy">The primary action carries the most consequential next step. Use it once per surface when possible.</p><div class="drawer-preview"><button class="btn btn-accent" type="button">Save changes <span>↗</span></button></div><div class="drawer-properties"><div><span>Token</span><b>action / accent</b></div><div><span>Radius</span><b>2px</b></div><div><span>Contrast</span><b class="good">AA · 7.2</b></div><div><span>Keyboard</span><b>Enter / Space</b></div></div></div>
+    </aside>
+
+    <div class="command-palette" data-command-palette aria-hidden="true">
+      <div class="palette-backdrop" data-command-close></div>
+      <section class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="palette-search"><span>⌕</span><input type="search" placeholder="Type a command…" data-command-input /><span class="keycap">ESC</span></div>
+        <p class="palette-label">Suggested</p>
+        <div class="palette-list" data-command-list>
+          <button type="button" data-palette-action="actions"><span class="suggestion-glyph">↗</span><span><b>Go to Actions</b><small>Jump to the interaction set</small></span><span class="keycap">1</span></button>
+          <button type="button" data-palette-action="inputs"><span class="suggestion-glyph">⌗</span><span><b>Go to Inputs</b><small>Jump to the form set</small></span><span class="keycap">2</span></button>
+          <button type="button" data-palette-action="theme"><span class="suggestion-glyph">◐</span><span><b>Toggle theme</b><small>Switch the canvas tone</small></span><span class="keycap">T</span></button>
+          <button type="button" data-palette-action="audit"><span class="suggestion-glyph">✓</span><span><b>Run quick audit</b><small>Check the atlas state</small></span><span class="keycap">A</span></button>
+        </div>
+        <div class="palette-foot"><span>↑↓ to navigate</span><span>↵ to select</span><span>esc to close</span></div>
+      </section>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

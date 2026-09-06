@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="부품 대장 — 화면을 만드는 조각들의 규격서">
+  <rect width="1200" height="630" fill="#fbf9f5"/>
+  <g stroke="#ebe4d7" stroke-width="1">
+    <path d="M0 90h1200M0 540h1200"/>
+  </g>
+  <g stroke="#15130e" stroke-width="3"><path d="M80 156h1040"/></g>
+
+  <g font-family="Iowan Old Style, Charter, Palatino, Georgia, serif" fill="#15130e">
+    <text x="80" y="132" font-size="34">부품 대장 · 제1판</text>
+    <text x="80" y="286" font-size="86" letter-spacing="-2">부품 하나하나의</text>
+    <text x="80" y="382" font-size="86" letter-spacing="-2"><tspan fill="#0d4f4b" font-style="italic">규격</tspan><tspan>을 적어 둔 문서</tspan></text>
+  </g>
+
+  <g font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" fill="#58513f" font-size="26">
+    <text x="80" y="452">버튼부터 대화창까지 102종 · 상태 · 키보드 조작 · 금지 사항까지</text>
+  </g>
+
+  <g font-family="SF Mono, Menlo, monospace" font-size="20" fill="#857c66">
+    <text x="80" y="588">HTML 1 · CSS 5 · TypeScript 1 · 외부 의존 0</text>
+    <text x="1120" y="588" text-anchor="end">10장 / 102부품</text>
+  </g>
+
+  <g transform="translate(1000 220)">
+    <rect x="0" y="0" width="120" height="120" rx="6" fill="none" stroke="#15130e" stroke-width="5"/>
+    <path d="M32 92V28h30a18 18 0 0 1 0 32H32m0 0h34a18 18 0 0 1 0 32H32"
+          fill="none" stroke="#0d4f4b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

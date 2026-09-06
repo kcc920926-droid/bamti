@@ -1,0 +1,72 @@
+<!doctype html><meta charset="utf-8"><title>밤티 회귀 테스트</title>
+<style>body{font:12.5px/1.6 ui-monospace,monospace;margin:14px;background:#111;color:#eee}
+b{color:#fff}.ok{color:#4ade80}.ng{color:#f87171}pre{white-space:pre-wrap}</style>
+<pre id="out">실행 중…</pre>
+<script>
+/* 엔진은 항상 최신으로 — 정적 <script src> 는 브라우저 캐시에 물려 옛 시그널로 채점하는 사고가 났다 */
+const __v = '?v=' + Date.now();
+const __load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src + __v; s.onload = res; s.onerror = () => rej(new Error('load ' + src)); document.head.append(s); });
+const __engine = __load('/src/core/signals.js').then(() => __load('/src/core/score.js'));
+</script>
+<script>
+/* 기대치: AI 후보와 사람 사이트는 티가 안 나야 하고(<30), 슬롭 픽스처는 잡혀야 한다(>=50) */
+const T = [
+  ...['deepseek_v4','glm_5.3','gpt_luna','kimi3','opus5','qwen_3.8','gpt_sol_5.6']
+      .map(n => ({ n, g:'AI후보',  url:`/asset/${n}/index.html`, max:30 })),
+  ...['bootstrap','polaris','atlassian','basecamp','stripe']
+      .map(n => ({ n, g:'사람',    url:`/test/mirror/${n}.html`, max:30 })),
+  { n:'slop픽스처', g:'양성', url:'/test/fixtures/slop.html', min:50 },
+  { n:'slop랜딩',  g:'양성', url:'/test/fixtures/slop-landing.html', min:50 },
+];
+
+const load = url => new Promise(res => {
+  const f = document.createElement('iframe');
+  f.style.cssText = 'width:1280px;height:900px;position:absolute;left:-9999px';
+  f.src = url;
+  f.onload = () => setTimeout(() => {
+    let r = null;
+    try {
+      const d = f.contentDocument, w = f.contentWindow;
+      const cache = new WeakMap();
+      const cs = el => { let v = cache.get(el); if (!v) { v = w.getComputedStyle(el); cache.set(el, v); } return v; };
+      const els = [...d.body.querySelectorAll('*')].slice(0, 6000);
+      const rawText = d.body.innerText || '';
+      BAMTI._nodes = new Map();
+      r = BAMTI.run({ doc:d, els, cs, svgs:[...d.querySelectorAll('svg')], rawText,
+                      text: rawText.toLowerCase(), title: d.title, url, host: location.host, truncated: 0 });
+    } catch (e) { r = { err: String(e.message) }; }
+    f.remove(); res(r);
+  }, 400);
+  document.body.append(f);
+});
+
+(async () => {
+  await __engine;
+  let s = '', pass = 0, fail = 0;
+  const rows = [];
+  for (const t of T) rows.push({ t, r: await load(t.url) });
+
+  s += `엔진: 시그널 ${BAMTI.SIGNALS.length}종 (tell ${BAMTI.SIGNALS.filter(x=>(x.kind||'tell')!=='taste').length})\n\n`;
+  s += 'target'.padEnd(14) + 'grp'.padEnd(8) + '점수'.padStart(5) + '  지문'.padEnd(8) + ' 판정\n';
+  s += '─'.repeat(64) + '\n';
+  for (const { t, r } of rows) {
+    if (r.err) { s += `${t.n.padEnd(14)}${t.g.padEnd(8)}  ERR ${r.err}\n`; fail++; continue; }
+    const ok = t.max != null ? r.score < t.max : r.score >= t.min;
+    ok ? pass++ : fail++;
+    s += `${t.n.padEnd(14)}${t.g.padEnd(7)}${String(r.score).padStart(4)}  ${(r.firedCount+'/'+r.totalSignals).padEnd(7)} `
+       + `<span class="${ok?'ok':'ng'}">${ok?'PASS':'FAIL'}</span>  ${r.bandLabel}\n`;
+  }
+  s += '─'.repeat(64) + `\n<b>${pass} PASS / ${fail} FAIL</b>\n`;
+
+  // 새 시그널이 어디서 발화했는지
+  s += '\n【 신규 시그널 발화 분포 】\n';
+  for (const id of ['value-sprawl','typeface-sprawl','section-template-repeat','card-clones','cta-banner','icon-circle-badges','no-real-images','zigzag-features']) {
+    const hit = rows.filter(x => x.r.signals?.some(g => g.id === id));
+    const ai = hit.filter(x => x.t.g === 'AI후보').length, hu = hit.filter(x => x.t.g === '사람').length;
+    s += `  ${id.padEnd(16)} AI후보 ${ai}/7   사람 ${hu}/5   ` +
+         hit.map(x => x.t.n).join(', ') + '\n';
+  }
+  document.getElementById('out').innerHTML = s;
+  window.__done = true;
+})();
+</script>

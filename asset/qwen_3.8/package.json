@@ -1,0 +1,15 @@
+{
+  "name": "qwen_3.8-component-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "description": "qwen_3.8이 생각하는 거의 모든 컴포넌트 — HTML + TS + CSS 갤러리",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --minify --sourcemap --outfile=app.js",
+    "watch": "esbuild src/main.ts --bundle --sourcemap --outfile=app.js --watch",
+    "dev": "esbuild src/main.ts --bundle --sourcemap --outfile=app.js && python3 -m http.server 8091"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  }
+}

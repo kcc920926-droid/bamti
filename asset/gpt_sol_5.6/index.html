@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Obsidian Index — a comprehensive, interactive UI component field guide."
+    />
+    <title>Obsidian Index · Component Field Guide</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="컴포넌트 탐색">
+        <a class="brand" href="#overview" aria-label="Obsidian Index 홈">
+          <span class="brand-mark" aria-hidden="true"
+            ><i></i><i></i><i></i
+          ></span>
+          <span><strong>OBSIDIAN</strong><small>INDEX / 01</small></span>
+        </a>
+        <nav class="side-nav" aria-label="컴포넌트 디렉터리">
+          <p class="eyebrow">Directory</p>
+          <a class="is-active" href="#overview"><span>00</span>Overview</a>
+          <a href="#actions"><span>01</span>Actions</a>
+          <a href="#forms"><span>02</span>Forms</a>
+          <a href="#navigation"><span>03</span>Navigation</a>
+          <a href="#data"><span>04</span>Data display</a>
+          <a href="#feedback"><span>05</span>Feedback</a>
+          <a href="#overlays"><span>06</span>Overlays</a>
+        </nav>
+        <div class="sidebar-note">
+          <span class="status-dot"></span>
+          <p><strong>System status</strong><br />All primitives operational</p>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <button
+            class="icon-button mobile-menu"
+            id="menuToggle"
+            type="button"
+            aria-label="메뉴 열기"
+            aria-expanded="false"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+          <div class="breadcrumb">
+            <span>Index</span><b>/</b><strong>Component field guide</strong>
+          </div>
+          <div class="topbar-actions">
+            <button class="shortcut" id="commandTrigger" type="button">
+              <span>Quick find</span><kbd>⌘ K</kbd>
+            </button>
+            <button
+              class="icon-button"
+              id="themeToggle"
+              type="button"
+              aria-label="다크 모드로 전환"
+            >
+              <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                />
+              </svg>
+              <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section class="hero" id="overview">
+            <div>
+              <p class="kicker"><span></span>Interface inventory · 2026</p>
+              <h1>Small parts.<br /><em>Clear systems.</em></h1>
+            </div>
+            <div class="hero-copy">
+              <p>
+                제품을 조립하는 데 필요한 인터페이스 부품을 한곳에 모은 살아있는
+                필드 가이드입니다.
+              </p>
+              <dl>
+                <div>
+                  <dt>Components</dt>
+                  <dd>60+</dd>
+                </div>
+                <div>
+                  <dt>Theme</dt>
+                  <dd>Adaptive</dd>
+                </div>
+                <div>
+                  <dt>Access</dt>
+                  <dd>AA ready</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="actions">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">01</span>
+                <p class="eyebrow">Actions</p>
+                <h2>Buttons &amp; controls</h2>
+              </div>
+              <p>의도를 분명히 전달하는 클릭 가능한 기본 요소.</p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-8">
+                <div class="specimen-label">
+                  <span>Button</span><code>5 variants</code>
+                </div>
+                <div class="demo-row">
+                  <button class="button primary" type="button">
+                    Create project <span>↗</span>
+                  </button>
+                  <button class="button secondary" type="button">
+                    Save draft
+                  </button>
+                  <button class="button outline" type="button">Preview</button>
+                  <button class="button ghost" type="button">Cancel</button>
+                  <button class="button danger" type="button">Delete</button>
+                </div>
+              </article>
+              <article class="specimen span-4 inverse-card">
+                <div class="specimen-label">
+                  <span>Icon buttons</span><code>3 sizes</code>
+                </div>
+                <div class="demo-row">
+                  <button
+                    class="icon-button size-sm"
+                    type="button"
+                    aria-label="추가"
+                  >
+                    +
+                  </button>
+                  <button
+                    class="icon-button"
+                    type="button"
+                    aria-label="더 보기"
+                  >
+                    •••
+                  </button>
+                  <button
+                    class="icon-button size-lg"
+                    type="button"
+                    aria-label="다음"
+                  >
+                    →
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-4 warm-card">
+                <div class="specimen-label">
+                  <span>Button states</span><code>loading / disabled</code>
+                </div>
+                <div class="demo-row">
+                  <button class="button primary is-loading" type="button">
+                    <i class="spinner"></i>Publishing
+                  </button>
+                  <button class="button outline" type="button" disabled>
+                    Unavailable
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Segmented control</span><code>single select</code>
+                </div>
+                <div class="segmented" role="group" aria-label="보기 방식">
+                  <button class="is-selected" type="button" data-segment>
+                    Grid
+                  </button>
+                  <button type="button" data-segment>List</button>
+                  <button type="button" data-segment>Map</button>
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Split button</span><code>action + menu</code>
+                </div>
+                <div class="split-button">
+                  <button type="button" id="splitAction">Export report</button>
+                  <button
+                    type="button"
+                    data-popover-trigger="exportMenu"
+                    aria-label="내보내기 옵션"
+                    aria-expanded="false"
+                  >
+                    ⌄
+                  </button>
+                  <div class="mini-menu" id="exportMenu" role="menu">
+                    <button role="menuitem" type="button">
+                      PDF document <span>⌘P</span>
+                    </button>
+                    <button role="menuitem" type="button">
+                      CSV table <span>⌘E</span>
+                    </button>
+                    <button role="menuitem" type="button">
+                      Public link <span>⌘L</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-4 lime-card">
+                <div class="specimen-label">
+                  <span>Links</span><code>inline / nav</code>
+                </div>
+                <div class="link-stack">
+                  <a class="text-link" href="#forms"
+                    >Inline text link <span>↗</span></a
+                  >
+                  <a class="arrow-link" href="#navigation"
+                    ><span>Continue exploring</span><b>→</b></a
+                  >
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="forms">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">02</span>
+                <p class="eyebrow">Forms</p>
+                <h2>Inputs &amp; selection</h2>
+              </div>
+              <p>정보를 입력하고 선택하는 조용하고 명료한 필드.</p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-7">
+                <div class="specimen-label">
+                  <span>Text field</span><code>default</code>
+                </div>
+                <label class="field"
+                  ><span>Workspace name</span
+                  ><input type="text" value="Northern Studio" /><small
+                    >공백 포함 32자까지 사용할 수 있습니다.</small
+                  ></label
+                >
+              </article>
+              <article class="specimen span-5 soft-card">
+                <div class="specimen-label">
+                  <span>Input state</span><code>success</code>
+                </div>
+                <div class="field success">
+                  <label for="emailInput">Email address</label>
+                  <div class="input-wrap">
+                    <input
+                      type="email"
+                      id="emailInput"
+                      value="hello@studio.kr"
+                      autocomplete="email"
+                    /><b>✓</b>
+                  </div>
+                  <small>사용할 수 있는 주소입니다.</small>
+                </div>
+              </article>
+              <article class="specimen span-5">
+                <div class="specimen-label">
+                  <span>Search input</span><code>with shortcut</code>
+                </div>
+                <label class="search-field"
+                  ><svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-4-4" /></svg
+                  ><input
+                    type="search"
+                    id="componentFilter"
+                    placeholder="Filter components…"
+                  /><kbd>/</kbd></label
+                >
+              </article>
+              <article class="specimen span-7">
+                <div class="specimen-label">
+                  <span>Password</span><code>visibility control</code>
+                </div>
+                <div class="field">
+                  <label for="passwordInput">Account password</label>
+                  <div class="input-wrap">
+                    <input
+                      type="password"
+                      id="passwordInput"
+                      value="somethingsafe"
+                      autocomplete="current-password"
+                    /><button
+                      class="field-action"
+                      id="passwordToggle"
+                      type="button"
+                    >
+                      Show
+                    </button>
+                  </div>
+                  <small>최소 12자 · 숫자와 기호 포함</small>
+                </div>
+              </article>
+              <article class="specimen span-7">
+                <div class="specimen-label">
+                  <span>Textarea</span><code>character count</code>
+                </div>
+                <label class="field"
+                  ><span>Project note</span
+                  ><textarea
+                    id="noteInput"
+                    maxlength="140"
+                    placeholder="Write a short project note…"
+                  ></textarea
+                  ><small class="count"
+                    ><span>Public description</span
+                    ><b id="noteCount">0 / 140</b></small
+                  ></label
+                >
+              </article>
+              <article class="specimen span-5 sand-card">
+                <div class="specimen-label">
+                  <span>Select</span><code>native</code>
+                </div>
+                <label class="field"
+                  ><span>Home region</span
+                  ><select>
+                    <option>Asia Pacific</option>
+                    <option>North America</option>
+                    <option>Western Europe</option></select
+                  ><small>데이터 저장 위치를 선택하세요.</small></label
+                >
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Checkbox</span><code>3 states</code>
+                </div>
+                <div class="control-stack">
+                  <label class="check-control"
+                    ><input type="checkbox" checked /><span></span>Email
+                    digest</label
+                  >
+                  <label class="check-control"
+                    ><input type="checkbox" /><span></span>Product
+                    updates</label
+                  >
+                  <label class="check-control is-disabled"
+                    ><input type="checkbox" disabled /><span></span>Partner
+                    offers</label
+                  >
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Radio group</span><code>single select</code>
+                </div>
+                <div class="control-stack">
+                  <label class="radio-control"
+                    ><input type="radio" name="plan" checked /><span></span
+                    >Monthly billing</label
+                  >
+                  <label class="radio-control"
+                    ><input type="radio" name="plan" /><span></span>Annual
+                    billing <em>−20%</em></label
+                  >
+                  <label class="radio-control"
+                    ><input type="radio" name="plan" /><span></span
+                    >Enterprise</label
+                  >
+                </div>
+              </article>
+              <article class="specimen span-4 inverse-card">
+                <div class="specimen-label">
+                  <span>Switch</span><code>boolean</code>
+                </div>
+                <div class="switch-stack">
+                  <label
+                    ><span
+                      ><b>Notifications</b><small>Weekly activity</small></span
+                    ><input type="checkbox" checked /><i></i
+                  ></label>
+                  <label
+                    ><span><b>Private mode</b><small>Hide profile</small></span
+                    ><input type="checkbox" /><i></i
+                  ></label>
+                </div>
+              </article>
+              <article class="specimen span-6 soft-card">
+                <div class="specimen-label">
+                  <span>Range slider</span><code>continuous</code>
+                </div>
+                <div class="range-control">
+                  <span
+                    ><b>Monthly budget</b
+                    ><output id="rangeOutput" for="rangeInput"
+                      >$4,800</output
+                    ></span
+                  ><label class="sr-only" for="rangeInput"
+                    >Monthly budget amount</label
+                  ><input
+                    id="rangeInput"
+                    type="range"
+                    min="1000"
+                    max="10000"
+                    step="100"
+                    value="4800"
+                  />
+                </div>
+              </article>
+              <article class="specimen span-6">
+                <div class="specimen-label">
+                  <span>Number stepper</span><code>increment</code>
+                </div>
+                <div class="number-stepper">
+                  <button type="button" data-step="-1" aria-label="감소">
+                    −</button
+                  ><output id="stepperOutput">04</output
+                  ><button type="button" data-step="1" aria-label="증가">
+                    +
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-5">
+                <div class="specimen-label">
+                  <span>PIN input</span><code>one-time code</code>
+                </div>
+                <div
+                  class="pin-input"
+                  id="pinInput"
+                  role="group"
+                  aria-label="인증 코드"
+                >
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="첫 번째 숫자"
+                  /><input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="두 번째 숫자"
+                  /><input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="세 번째 숫자"
+                  /><span>—</span
+                  ><input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="네 번째 숫자"
+                  /><input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="다섯 번째 숫자"
+                  /><input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="1"
+                    aria-label="여섯 번째 숫자"
+                  />
+                </div>
+              </article>
+              <article class="specimen span-7 upload-card" id="dropzone">
+                <div class="specimen-label">
+                  <span>File upload</span><code>drop zone</code>
+                </div>
+                <label class="drop-zone"
+                  ><input type="file" hidden /><span class="upload-icon">↥</span
+                  ><strong>Drop a file, or <u>browse</u></strong
+                  ><small>PNG, JPG or PDF · up to 10 MB</small></label
+                >
+              </article>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="navigation">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">03</span>
+                <p class="eyebrow">Navigation</p>
+                <h2>Wayfinding &amp; structure</h2>
+              </div>
+              <p>현재 위치와 다음 이동을 자연스럽게 알려주는 길잡이.</p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-7">
+                <div class="specimen-label">
+                  <span>Tabs</span><code>content switch</code>
+                </div>
+                <div class="tabs" data-tabs>
+                  <div role="tablist" aria-label="프로젝트 정보">
+                    <button
+                      class="is-active"
+                      role="tab"
+                      aria-selected="true"
+                      data-tab="tabOverview"
+                      type="button"
+                    >
+                      Overview</button
+                    ><button
+                      role="tab"
+                      aria-selected="false"
+                      data-tab="tabActivity"
+                      type="button"
+                    >
+                      Activity <i>8</i></button
+                    ><button
+                      role="tab"
+                      aria-selected="false"
+                      data-tab="tabSettings"
+                      type="button"
+                    >
+                      Settings
+                    </button>
+                  </div>
+                  <div
+                    class="tab-panel is-active"
+                    id="tabOverview"
+                    role="tabpanel"
+                  >
+                    <strong>Product launch</strong>
+                    <p>
+                      팀의 중요한 목표와 최근 진행 상황을 한눈에 확인합니다.
+                    </p>
+                  </div>
+                  <div class="tab-panel" id="tabActivity" role="tabpanel">
+                    <strong>Eight new updates</strong>
+                    <p>오늘 문서 3개와 작업 5개가 갱신되었습니다.</p>
+                  </div>
+                  <div class="tab-panel" id="tabSettings" role="tabpanel">
+                    <strong>Workspace settings</strong>
+                    <p>권한, 알림과 기본 표시 방식을 관리합니다.</p>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-5 warm-card">
+                <div class="specimen-label">
+                  <span>Breadcrumb</span><code>location</code>
+                </div>
+                <nav class="crumbs" aria-label="현재 위치">
+                  <a href="#overview">Home</a><span>/</span
+                  ><a href="#data">Library</a><span>/</span
+                  ><strong>Research</strong>
+                </nav>
+                <div class="mini-page-title">
+                  <span>RS</span>
+                  <div>
+                    <strong>Research library</strong
+                    ><small>Updated 12 minutes ago</small>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Pagination</span><code>page select</code>
+                </div>
+                <nav class="pagination" aria-label="페이지">
+                  <button type="button" aria-label="이전 페이지">←</button
+                  ><button class="is-current" type="button" aria-current="page">
+                    1</button
+                  ><button type="button">2</button
+                  ><button type="button">3</button><span>…</span
+                  ><button type="button">12</button
+                  ><button type="button" aria-label="다음 페이지">→</button>
+                </nav>
+              </article>
+              <article class="specimen span-8 soft-card">
+                <div class="specimen-label">
+                  <span>Progress steps</span><code>multi-step flow</code>
+                </div>
+                <ol class="steps">
+                  <li class="is-complete">
+                    <span>✓</span>
+                    <div><b>Account</b><small>Complete</small></div>
+                  </li>
+                  <li class="is-current">
+                    <span>2</span>
+                    <div><b>Workspace</b><small>In progress</small></div>
+                  </li>
+                  <li>
+                    <span>3</span>
+                    <div><b>Invite team</b><small>Optional</small></div>
+                  </li>
+                  <li>
+                    <span>4</span>
+                    <div><b>Finish</b><small>Review</small></div>
+                  </li>
+                </ol>
+              </article>
+              <article class="specimen span-6 inverse-card">
+                <div class="specimen-label">
+                  <span>Command row</span><code>keyboard first</code>
+                </div>
+                <button class="command-row" id="commandRow" type="button">
+                  <span class="command-symbol">⌘</span
+                  ><span
+                    ><strong>Open command menu</strong
+                    ><small>Search actions and pages</small></span
+                  ><kbd>⌘ K</kbd>
+                </button>
+              </article>
+              <article class="specimen span-6">
+                <div class="specimen-label">
+                  <span>Anchor menu</span><code>local navigation</code>
+                </div>
+                <nav class="anchor-menu" aria-label="설정 영역">
+                  <a class="is-active" href="#navigation">General</a
+                  ><a href="#data">Members <span>24</span></a
+                  ><a href="#feedback">Integrations</a
+                  ><a href="#overlays">Billing</a>
+                </nav>
+              </article>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="data">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">04</span>
+                <p class="eyebrow">Data display</p>
+                <h2>Content &amp; information</h2>
+              </div>
+              <p>숫자와 상태, 콘텐츠 사이의 관계를 빠르게 읽도록 돕는 구성.</p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-4 metric-card acid-card">
+                <div class="specimen-label">
+                  <span>Metric</span><code>positive</code>
+                </div>
+                <div class="metric">
+                  <span>↗ 12.4%</span><strong>84.2k</strong
+                  ><small>Monthly visitors</small>
+                </div>
+              </article>
+              <article class="specimen span-4 metric-card">
+                <div class="specimen-label">
+                  <span>Metric</span><code>neutral</code>
+                </div>
+                <div class="metric">
+                  <span>→ 0.2%</span><strong>03:42</strong
+                  ><small>Avg. session</small>
+                </div>
+              </article>
+              <article class="specimen span-4 metric-card coral-card">
+                <div class="specimen-label">
+                  <span>Metric</span><code>attention</code>
+                </div>
+                <div class="metric">
+                  <span>↘ 4.8%</span><strong>1.7%</strong
+                  ><small>Bounce rate</small>
+                </div>
+              </article>
+              <article class="specimen span-5">
+                <div class="specimen-label">
+                  <span>Avatars</span><code>image / initials / group</code>
+                </div>
+                <div class="avatar-showcase">
+                  <span class="avatar photo-a">AM</span
+                  ><span class="avatar photo-b">SK</span
+                  ><span class="avatar photo-c">JH</span
+                  ><span class="avatar initials">+9</span>
+                  <div>
+                    <strong>Design chapter</strong
+                    ><small>12 people online</small>
+                  </div>
+                </div>
+                <div class="presence-row">
+                  <span class="avatar mini photo-a"><i></i>AM</span
+                  ><span>Avery is reviewing your file</span>
+                </div>
+              </article>
+              <article class="specimen span-7 sand-card">
+                <div class="specimen-label">
+                  <span>Badges &amp; tags</span><code>semantic labels</code>
+                </div>
+                <div class="badge-cloud">
+                  <span class="badge neutral">Draft</span
+                  ><span class="badge success"><i></i>Active</span
+                  ><span class="badge warning">Needs review</span
+                  ><span class="badge danger">Blocked</span
+                  ><span class="badge outline">Editorial</span
+                  ><button class="tag" type="button">
+                    Design system <b>×</b></button
+                  ><button class="tag" type="button">Research <b>×</b></button>
+                </div>
+              </article>
+              <article class="specimen span-12 table-specimen">
+                <div class="specimen-label">
+                  <span>Data table</span><code>sort / select / status</code>
+                </div>
+                <div class="table-toolbar">
+                  <label class="search-field"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="m20 20-4-4" /></svg
+                    ><input
+                      id="tableFilter"
+                      type="search"
+                      placeholder="Search projects…" /></label
+                  ><button class="button outline" type="button">
+                    Filter <span>2</span>
+                  </button>
+                </div>
+                <div class="table-scroll">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>
+                          <label class="check-control icon-only"
+                            ><input
+                              type="checkbox"
+                              id="selectAll"
+                              aria-label="전체 선택" /><span></span
+                          ></label>
+                        </th>
+                        <th>
+                          <button type="button" data-sort="name">
+                            Project ↕
+                          </button>
+                        </th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                        <th>
+                          <button type="button" data-sort="date">
+                            Last edited ↕
+                          </button>
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="projectRows">
+                      <tr data-name="Atlas Library" data-date="1">
+                        <td>
+                          <label class="check-control icon-only"
+                            ><input type="checkbox" /><span></span
+                          ></label>
+                        </td>
+                        <td>
+                          <strong>Atlas Library</strong
+                          ><small>Knowledge base</small>
+                        </td>
+                        <td>
+                          <span class="owner"
+                            ><i class="avatar mini photo-a">AM</i>Avery</span
+                          >
+                        </td>
+                        <td>
+                          <span class="badge success"><i></i>Active</span>
+                        </td>
+                        <td>2 min ago</td>
+                        <td>•••</td>
+                      </tr>
+                      <tr data-name="Field Notes" data-date="2">
+                        <td>
+                          <label class="check-control icon-only"
+                            ><input type="checkbox" /><span></span
+                          ></label>
+                        </td>
+                        <td>
+                          <strong>Field Notes</strong
+                          ><small>Research archive</small>
+                        </td>
+                        <td>
+                          <span class="owner"
+                            ><i class="avatar mini photo-b">SK</i>Sora</span
+                          >
+                        </td>
+                        <td><span class="badge warning">Review</span></td>
+                        <td>Yesterday</td>
+                        <td>•••</td>
+                      </tr>
+                      <tr data-name="Northstar" data-date="3">
+                        <td>
+                          <label class="check-control icon-only"
+                            ><input type="checkbox" /><span></span
+                          ></label>
+                        </td>
+                        <td>
+                          <strong>Northstar</strong
+                          ><small>Product roadmap</small>
+                        </td>
+                        <td>
+                          <span class="owner"
+                            ><i class="avatar mini photo-c">JH</i>June</span
+                          >
+                        </td>
+                        <td><span class="badge neutral">Draft</span></td>
+                        <td>Aug 24</td>
+                        <td>•••</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+              <article class="specimen span-7 chart-card">
+                <div class="specimen-label">
+                  <span>Line chart</span><code>7 day trend</code>
+                </div>
+                <div class="chart-head">
+                  <div>
+                    <strong>24,860</strong><small>Total interactions</small>
+                  </div>
+                  <span>+18.2%</span>
+                </div>
+                <div
+                  class="line-chart"
+                  role="img"
+                  aria-label="월요일부터 일요일까지 상승하는 상호작용 추이"
+                >
+                  <div class="chart-grid"><i></i><i></i><i></i><i></i></div>
+                  <svg
+                    viewBox="0 0 600 170"
+                    preserveAspectRatio="none"
+                    role="img"
+                  >
+                    <defs>
+                      <linearGradient
+                        id="chartFill"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="0"
+                          stop-color="#ff5c35"
+                          stop-opacity=".28"
+                        />
+                        <stop
+                          offset="1"
+                          stop-color="#ff5c35"
+                          stop-opacity="0"
+                        />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      class="area"
+                      d="M0 151 C65 140 80 116 145 123 S220 93 280 105 S355 54 420 69 S520 34 600 18 L600 170 L0 170Z"
+                    />
+                    <path
+                      class="line"
+                      d="M0 151 C65 140 80 116 145 123 S220 93 280 105 S355 54 420 69 S520 34 600 18"
+                    />
+                    <g>
+                      <circle cx="0" cy="151" r="4" />
+                      <circle cx="145" cy="123" r="4" />
+                      <circle cx="280" cy="105" r="4" />
+                      <circle cx="420" cy="69" r="4" />
+                      <circle cx="600" cy="18" r="4" />
+                    </g>
+                  </svg>
+                  <div class="chart-labels">
+                    <span>Mon</span><span>Tue</span><span>Wed</span
+                    ><span>Thu</span><span>Fri</span><span>Sat</span
+                    ><span>Sun</span>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-5 inverse-card">
+                <div class="specimen-label">
+                  <span>Progress</span><code>linear / circular</code>
+                </div>
+                <div class="progress-list">
+                  <div>
+                    <span><b>Storage</b><small>6.8 of 10 GB</small></span>
+                    <div class="progress"><i class="width-68"></i></div>
+                  </div>
+                  <div>
+                    <span><b>Tasks</b><small>42 of 64 done</small></span>
+                    <div class="progress mint"><i class="width-66"></i></div>
+                  </div>
+                </div>
+                <div class="radial value-72">
+                  <span><strong>72%</strong><small>Complete</small></span>
+                </div>
+              </article>
+              <article class="specimen span-5">
+                <div class="specimen-label">
+                  <span>Timeline</span><code>activity</code>
+                </div>
+                <ol class="timeline">
+                  <li>
+                    <i class="avatar mini photo-a">AM</i>
+                    <div>
+                      <b>Avery published the brief</b
+                      ><small>Today, 10:24</small>
+                    </div>
+                  </li>
+                  <li>
+                    <span class="timeline-icon">↗</span>
+                    <div>
+                      <b>Version 2.4 was deployed</b
+                      ><small>Yesterday, 18:06</small>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="avatar mini photo-b">SK</i>
+                    <div>
+                      <b>Sora added 3 comments</b><small>Aug 29, 14:32</small>
+                    </div>
+                  </li>
+                </ol>
+              </article>
+              <article class="specimen span-7 warm-card">
+                <div class="specimen-label">
+                  <span>Content card</span><code>editorial</code>
+                </div>
+                <article class="content-card">
+                  <div class="content-visual">
+                    <span>FIELD<br />NOTE<br />№ 24</span><i></i>
+                  </div>
+                  <div class="content-body">
+                    <span class="badge outline">Research</span>
+                    <h3>Interfaces should explain themselves.</h3>
+                    <p>
+                      좋은 컴포넌트는 사용법을 외우게 하지 않고, 다음 행동을
+                      자연스럽게 드러냅니다.
+                    </p>
+                    <div>
+                      <span class="avatar mini photo-c">JH</span
+                      ><small>6 min read</small
+                      ><button
+                        class="icon-button size-sm"
+                        type="button"
+                        aria-label="북마크"
+                      >
+                        ⌑
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </article>
+              <article class="specimen span-6 code-card">
+                <div class="specimen-label">
+                  <span>Code block</span><code>copyable</code>
+                </div>
+                <div class="code-head">
+                  <span><i></i><i></i><i></i></span><b>button.ts</b
+                  ><button type="button" id="copyCode">Copy</button>
+                </div>
+                <pre><code><span>type</span> ButtonProps = {
+  intent: <em>"primary"</em> | <em>"quiet"</em>;
+  label: <em>string</em>;
+};
+
+<span>export</span> <span>const</span> createButton = (props) =&gt; {
+  <span>return</span> { ...props, ready: <b>true</b> };
+};</code></pre>
+              </article>
+              <article class="specimen span-6 soft-card">
+                <div class="specimen-label">
+                  <span>Accordion</span><code>disclosure</code>
+                </div>
+                <div class="accordion" data-accordion>
+                  <div class="accordion-item is-open">
+                    <button type="button" aria-expanded="true">
+                      What is a design token?<span>−</span>
+                    </button>
+                    <div>
+                      <p>
+                        색상, 여백, 타이포그래피처럼 인터페이스 전반에서
+                        재사용하는 작은 디자인 결정입니다.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <button type="button" aria-expanded="false">
+                      How do themes work?<span>+</span>
+                    </button>
+                    <div>
+                      <p>
+                        공통 의미를 가진 토큰 값만 바꿔 같은 구조를 밝거나
+                        어둡게 표현합니다.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <button type="button" aria-expanded="false">
+                      Is it accessible?<span>+</span>
+                    </button>
+                    <div>
+                      <p>
+                        키보드 탐색과 명확한 포커스, 의미 있는 HTML 구조를
+                        기본으로 삼았습니다.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="feedback">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">05</span>
+                <p class="eyebrow">Feedback</p>
+                <h2>Signals &amp; system states</h2>
+              </div>
+              <p>
+                행동의 결과와 현재 상태를 즉시, 적절한 강도로 전달하는 신호.
+              </p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-7">
+                <div class="specimen-label">
+                  <span>Alerts</span><code>4 intents</code>
+                </div>
+                <div class="alert-stack">
+                  <div class="alert info">
+                    <span>i</span>
+                    <div>
+                      <b>New version available</b>
+                      <p>Refresh to use the latest components.</p>
+                    </div>
+                    <button type="button" aria-label="닫기">×</button>
+                  </div>
+                  <div class="alert success">
+                    <span>✓</span>
+                    <div>
+                      <b>Changes published</b>
+                      <p>Your workspace is now up to date.</p>
+                    </div>
+                    <button type="button" aria-label="닫기">×</button>
+                  </div>
+                  <div class="alert warning">
+                    <span>!</span>
+                    <div>
+                      <b>Storage nearly full</b>
+                      <p>Only 1.2 GB remains on your plan.</p>
+                    </div>
+                    <button type="button" aria-label="닫기">×</button>
+                  </div>
+                  <div class="alert error">
+                    <span>×</span>
+                    <div>
+                      <b>Upload failed</b>
+                      <p>Check the file type and try again.</p>
+                    </div>
+                    <button type="button" aria-label="닫기">×</button>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-5 inverse-card">
+                <div class="specimen-label">
+                  <span>Toast</span><code>ephemeral</code>
+                </div>
+                <div class="toast-demo">
+                  <div class="demo-toast">
+                    <span>✓</span>
+                    <div>
+                      <b>Copied to clipboard</b
+                      ><small>Share link is ready.</small>
+                    </div>
+                    <button type="button">×</button>
+                  </div>
+                  <button
+                    class="button secondary"
+                    id="toastTrigger"
+                    type="button"
+                  >
+                    Trigger toast
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-4 skeleton-card">
+                <div class="specimen-label">
+                  <span>Skeleton</span><code>loading</code>
+                </div>
+                <div class="skeleton-layout">
+                  <i class="skeleton avatar-skeleton"></i>
+                  <div>
+                    <i class="skeleton line long"></i
+                    ><i class="skeleton line"></i>
+                  </div>
+                  <i class="skeleton block"></i>
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Spinner</span><code>indeterminate</code>
+                </div>
+                <div class="spinner-showcase">
+                  <i class="spinner size-sm"></i><i class="spinner"></i
+                  ><i class="spinner size-lg"></i>
+                  <div>
+                    <strong>Syncing library</strong
+                    ><small>Please keep this tab open.</small>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-4 lime-card">
+                <div class="specimen-label">
+                  <span>Empty state</span><code>zero data</code>
+                </div>
+                <div class="empty-state">
+                  <span>⌁</span><strong>No saved views yet</strong
+                  ><small>Create a view to return to this filter.</small
+                  ><button class="button primary" type="button">
+                    Create view
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-12 banner-card">
+                <div class="status-banner">
+                  <span class="status-orbit"><i></i></span>
+                  <div>
+                    <b>All systems operational</b>
+                    <p>Last checked just now · Next check in 60 seconds</p>
+                  </div>
+                  <a href="#feedback">View status history →</a>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="catalog-section" id="overlays">
+            <div class="section-heading">
+              <div>
+                <span class="section-no">06</span>
+                <p class="eyebrow">Overlays</p>
+                <h2>Layers &amp; temporary views</h2>
+              </div>
+              <p>
+                흐름을 떠나지 않고 집중된 선택과 정보를 제공하는 임시 레이어.
+              </p>
+            </div>
+            <div class="specimen-grid">
+              <article class="specimen span-4 warm-card">
+                <div class="specimen-label">
+                  <span>Tooltip</span><code>hover / focus</code>
+                </div>
+                <div class="center-demo">
+                  <button
+                    class="icon-button tooltip"
+                    type="button"
+                    aria-label="즐겨찾기에 추가"
+                    data-tooltip="즐겨찾기에 추가"
+                  >
+                    ☆</button
+                  ><button
+                    class="icon-button tooltip"
+                    type="button"
+                    aria-label="링크 복사"
+                    data-tooltip="링크 복사"
+                  >
+                    ⌁</button
+                  ><button
+                    class="icon-button tooltip"
+                    type="button"
+                    aria-label="더 보기"
+                    data-tooltip="더 보기"
+                  >
+                    •••
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-4">
+                <div class="specimen-label">
+                  <span>Popover</span><code>anchored card</code>
+                </div>
+                <div class="popover-demo">
+                  <button
+                    class="avatar photo-a"
+                    type="button"
+                    data-popover-trigger="profilePopover"
+                    aria-expanded="true"
+                  >
+                    AM
+                  </button>
+                  <div class="profile-popover is-visible" id="profilePopover">
+                    <div><span class="avatar photo-a">AM</span><i></i></div>
+                    <strong>Avery Morgan</strong
+                    ><small>Product designer · Seoul</small>
+                    <p>Building practical tools for curious teams.</p>
+                    <button class="button outline" type="button">
+                      View profile
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <article class="specimen span-4 inverse-card">
+                <div class="specimen-label">
+                  <span>Dropdown menu</span><code>selection</code>
+                </div>
+                <div class="dropdown-static">
+                  <button type="button"><span>✎</span>Rename</button
+                  ><button type="button">
+                    <span>⌘</span>Duplicate <kbd>⌘D</kbd></button
+                  ><button type="button"><span>↗</span>Move to…</button>
+                  <hr />
+                  <button class="danger-item" type="button">
+                    <span>⌫</span>Move to trash
+                  </button>
+                </div>
+              </article>
+              <article class="specimen span-12 overlay-launcher">
+                <div class="specimen-label">
+                  <span>Interactive layers</span
+                  ><code>modal / drawer / command</code>
+                </div>
+                <div>
+                  <button
+                    class="layer-button modal-launch"
+                    id="modalTrigger"
+                    type="button"
+                  >
+                    <span>01</span><strong>Dialog</strong
+                    ><small>Focused confirmation</small><b>↗</b></button
+                  ><button
+                    class="layer-button drawer-launch"
+                    id="drawerTrigger"
+                    type="button"
+                  >
+                    <span>02</span><strong>Drawer</strong
+                    ><small>Supplementary panel</small><b>→</b></button
+                  ><button
+                    class="layer-button command-launch"
+                    id="commandLaunch"
+                    type="button"
+                  >
+                    <span>03</span><strong>Command menu</strong
+                    ><small>Keyboard navigation</small><b>⌘K</b>
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <footer class="footer">
+            <div class="brand-mark" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </div>
+            <div>
+              <strong>Obsidian Index</strong
+              ><small
+                >Built as a living reference · 60+ interface specimens</small
+              >
+            </div>
+            <a href="#overview">Back to top ↑</a>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <div class="scrim" id="scrim"></div>
+    <div class="overlay-scrim" id="overlayScrim"></div>
+    <section
+      class="dialog"
+      id="demoDialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dialogTitle"
+      hidden
+    >
+      <button
+        class="dialog-close"
+        type="button"
+        data-close-overlay
+        aria-label="닫기"
+      >
+        ×</button
+      ><span class="dialog-mark">!</span>
+      <p class="eyebrow">Confirm action</p>
+      <h2 id="dialogTitle">Publish this workspace?</h2>
+      <p>
+        멤버 24명에게 변경된 콘텐츠가 바로 표시됩니다. 게시 후에도 이전 버전으로
+        되돌릴 수 있습니다.
+      </p>
+      <div class="dialog-summary">
+        <span>Current version</span><strong>Obsidian v2.4</strong
+        ><small>18 changes · 4 contributors</small>
+      </div>
+      <div class="dialog-actions">
+        <button class="button ghost" type="button" data-close-overlay>
+          Keep editing</button
+        ><button class="button secondary" type="button" id="publishConfirm">
+          Publish now
+        </button>
+      </div>
+    </section>
+    <aside class="drawer" id="demoDrawer" aria-labelledby="drawerTitle" hidden>
+      <div class="drawer-head">
+        <div>
+          <p class="eyebrow">Inspector</p>
+          <h2 id="drawerTitle">Component details</h2>
+        </div>
+        <button
+          class="icon-button"
+          type="button"
+          data-close-overlay
+          aria-label="닫기"
+        >
+          ×
+        </button>
+      </div>
+      <div class="drawer-preview">
+        <span>BTN / 01</span
+        ><button class="button secondary" type="button">Create project</button>
+      </div>
+      <dl class="property-list">
+        <div>
+          <dt>Variant</dt>
+          <dd>
+            <select>
+              <option>Primary</option>
+              <option>Secondary</option>
+              <option>Quiet</option>
+            </select>
+          </dd>
+        </div>
+        <div>
+          <dt>Size</dt>
+          <dd>
+            <div class="segmented">
+              <button type="button" data-segment>S</button
+              ><button class="is-selected" type="button" data-segment>M</button
+              ><button type="button" data-segment>L</button>
+            </div>
+          </dd>
+        </div>
+        <div>
+          <dt>Icon</dt>
+          <dd>
+            <label class="switch-inline"
+              ><input type="checkbox" checked /><i></i
+            ></label>
+          </dd>
+        </div>
+        <div>
+          <dt>Width</dt>
+          <dd>Auto</dd>
+        </div>
+      </dl>
+      <div class="drawer-note">
+        <strong>Accessibility</strong>
+        <p>
+          버튼의 이름은 결과를 분명하게 설명하고, 아이콘만 사용하는 경우
+          aria-label을 제공합니다.
+        </p>
+      </div>
+      <div class="drawer-actions">
+        <button class="button outline" type="button">View code</button
+        ><button class="button primary" type="button" data-close-overlay>
+          Done
+        </button>
+      </div>
+    </aside>
+    <section
+      class="command-palette"
+      id="commandPalette"
+      role="dialog"
+      aria-modal="true"
+      aria-label="빠른 찾기"
+      hidden
+    >
+      <label
+        ><svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-4-4" /></svg
+        ><input
+          id="commandInput"
+          type="search"
+          placeholder="Type a command or search…"
+          autocomplete="off"
+        /><kbd>ESC</kbd></label
+      >
+      <div class="command-results" id="commandResults">
+        <p>Navigate</p>
+        <button type="button" data-target="actions">
+          <span>↗</span>
+          <span class="command-copy"
+            ><b>Actions</b><small>Buttons, links, controls</small></span
+          >
+          <kbd>01</kbd></button
+        ><button type="button" data-target="forms">
+          <span>⌑</span>
+          <span class="command-copy"
+            ><b>Forms</b><small>Inputs and selection</small></span
+          >
+          <kbd>02</kbd></button
+        ><button type="button" data-target="data">
+          <span>⌁</span>
+          <span class="command-copy"
+            ><b>Data display</b><small>Tables, metrics, charts</small></span
+          >
+          <kbd>04</kbd>
+        </button>
+        <p>Theme</p>
+        <button type="button" id="commandTheme">
+          <span>◐</span>
+          <span class="command-copy">
+            <b>Toggle appearance</b><small>Switch light and dark</small>
+          </span>
+          <kbd>T</kbd>
+        </button>
+      </div>
+      <footer>
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span
+        ><span><kbd>↵</kbd> select</span>
+      </footer>
+    </section>
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

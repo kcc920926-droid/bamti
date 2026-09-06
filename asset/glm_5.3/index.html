@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Lab — Ink &amp; Lime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="components2.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">Component<em>Lab</em></div>
+    <div class="brand-sub">Ink &amp; Lime · v1.0</div>
+    <nav class="side-nav" id="sideNav" aria-label="Components"></nav>
+  </aside>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <!-- ===== TOKENS ===== -->
+    <section class="section" id="tokens" data-nav-label="Design tokens">
+      <header class="section-head">
+        <div class="section-kicker">01 / foundation</div>
+        <h2 class="section-title">Design tokens</h2>
+        <p class="section-desc">Neutrals-first palette with a single lime accent. Semantic colors are desaturated so the accent stays the hero.</p>
+      </header>
+
+      <div class="demo"><div class="demo-label">Color</div>
+        <div class="swatches" id="swatchGrid"></div>
+      </div>
+
+      <div class="demo" style="margin-top:32px"><div class="demo-label">Type scale — Space Grotesk display / system body</div>
+        <div class="card card-pad">
+          <div class="type-row"><span class="type-meta">display · 48/700</span><span style="font-family:var(--font-display);font-size:var(--fs-4xl);font-weight:700;color:var(--ink-hi);letter-spacing:-0.03em;line-height:1.05">Design is thinking</span></div>
+          <div class="type-row"><span class="type-meta">h1 · 36/700</span><span style="font-family:var(--font-display);font-size:var(--fs-3xl);font-weight:700;color:var(--ink-hi);letter-spacing:-0.02em">made visual</span></div>
+          <div class="type-row"><span class="type-meta">h2 · 28/700</span><span style="font-family:var(--font-display);font-size:var(--fs-2xl);font-weight:700;color:var(--ink-hi);letter-spacing:-0.02em">Section heading</span></div>
+          <div class="type-row"><span class="type-meta">h3 · 22/700</span><span style="font-family:var(--font-display);font-size:var(--fs-xl);font-weight:700;color:var(--ink-hi)">Subsection heading</span></div>
+          <div class="type-row"><span class="type-meta">body · 15/400</span><span style="font-size:var(--fs-md)">Body text carries the reading load. Keep line length near 70 characters.</span></div>
+          <div class="type-row"><span class="type-meta">small · 13/400</span><span style="font-size:var(--fs-sm)">Secondary text, table cells, meta information.</span></div>
+          <div class="type-row"><span class="type-meta">mono · 12</span><span style="font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--accent)">const accent = "lime";</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BUTTONS ===== -->
+    <section class="section" id="buttons" data-nav-label="Buttons">
+      <header class="section-head">
+        <div class="section-kicker">02 / actions</div>
+        <h2 class="section-title">Buttons</h2>
+      </header>
+      <div class="demo"><div class="demo-label">Variants</div>
+        <div class="row">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger">Danger</button>
+        </div>
+      </div>
+      <div class="demo"><div class="demo-label">Sizes &amp; icon</div>
+        <div class="row">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Medium</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-outline btn-icon" aria-label="Add" title="Add">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <button class="btn btn-primary">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="btn btn-secondary" disabled>Loading
+            <span class="spinner"></span>
+          </button>
+        </div>
+      </div>
+      <div class="demo"><div class="demo-label">States</div>
+        <div class="row">
+          <button class="btn btn-primary" disabled>Disabled</button>
+          <button class="btn btn-secondary" aria-disabled="true">Aria-disabled</button>
+          <button class="btn btn-outline btn-sm">Small outline</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BADGES ===== -->
+    <section class="section" id="badges" data-nav-label="Badges & tags">
+      <header class="section-head">
+        <div class="section-kicker">03 / status</div>
+        <h2 class="section-title">Badges &amp; tags</h2>
+      </header>
+      <div class="demo"><div class="demo-label">Badges</div>
+        <div class="row">
+          <span class="badge badge-accent">Active</span>
+          <span class="badge badge-neutral">Draft</span>
+          <span class="badge badge-success badge-dot">Operational</span>
+          <span class="badge badge-warning badge-dot">Degraded</span>
+          <span class="badge badge-danger badge-dot">Outage</span>
+          <span class="badge badge-info badge-dot">Queued</span>
+        </div>
+      </div>
+      <div class="demo"><div class="demo-label">Removable tags</div>
+        <div class="row">
+          <span class="tag">fastapi <button aria-label="Remove fastapi">✕</button></span>
+          <span class="tag">typescript <button aria-label="Remove typescript">✕</button></span>
+          <span class="tag">design-tokens <button aria-label="Remove design-tokens">✕</button></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FORMS ===== -->
+    <section class="section" id="forms" data-nav-label="Forms & inputs">
+      <header class="section-head">
+        <div class="section-kicker">04 / input</div>
+        <h2 class="section-title">Forms &amp; inputs</h2>
+      </header>
+      <div class="row" style="align-items:stretch">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="demo"><div class="demo-label">Text input states</div>
+            <div class="field">
+              <label for="fName">Project name</label>
+              <input class="input" id="fName" placeholder="e.g. component-lab">
+              <span class="hint">Lowercase letters, numbers and dashes.</span>
+            </div>
+            <div class="field" style="margin-top:16px">
+              <label for="fEmail">Email</label>
+              <input class="input invalid" id="fEmail" value="kael@@broken" aria-invalid="true">
+              <span class="error-text">That doesn’t look like an email.</span>
+            </div>
+            <div class="field" style="margin-top:16px">
+              <label for="fSearch">Search</label>
+              <div class="input-group">
+                <span class="prefix"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.6"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+                <input class="input" id="fSearch" placeholder="Search components…">
+              </div>
+            </div>
+          </div>
+          <div class="demo"><div class="demo-label">Select &amp; textarea</div>
+            <div class="field">
+              <label for="fTier">Tier</label>
+              <select class="select" id="fTier">
+                <option>Free</option><option selected>Pro</option><option>Team</option>
+              </select>
+            </div>
+            <div class="field" style="margin-top:16px">
+              <label for="fBio">Notes</label>
+              <textarea class="textarea" id="fBio" placeholder="What is this for?"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="demo"><div class="demo-label">Checkbox &amp; radio</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label class="check"><input type="checkbox" checked><span class="box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="m2 6.5 2.6 2.5L10 3" stroke="#141401" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Email notifications</label>
+              <label class="check"><input type="checkbox"><span class="box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="m2 6.5 2.6 2.5L10 3" stroke="#141401" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Weekly digest</label>
+              <label class="check round"><input type="radio" name="plan" checked><span class="box"></span>Monthly billing</label>
+              <label class="check round"><input type="radio" name="plan"><span class="box"></span>Yearly billing <span class="badge badge-accent" style="margin-left:4px">−20%</span></label>
+            </div>
+          </div>
+          <div class="demo"><div class="demo-label">Switch &amp; segmented</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+              <div class="segmented" role="group" aria-label="Density">
+                <button aria-pressed="true">Compact</button>
+                <button aria-pressed="false">Cozy</button>
+                <button aria-pressed="false">Roomy</button>
+              </div>
+            </div>
+          </div>
+          <div class="demo"><div class="demo-label">Slider &amp; stepper</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <input type="range" class="slider" min="0" max="100" value="60" aria-label="Volume">
+              <div class="stepper">
+                <button type="button" data-step="-1" aria-label="Decrease">−</button>
+                <span class="value" id="stepperVal">3</span>
+                <button type="button" data-step="1" aria-label="Increase">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CARDS ===== -->
+    <section class="section" id="cards" data-nav-label="Cards & stats">
+      <header class="section-head">
+        <div class="section-kicker">05 / surfaces</div>
+        <h2 class="section-title">Cards &amp; stat tiles</h2>
+      </header>
+      <div class="demo"><div class="demo-label">Cards</div>
+        <div class="row">
+          <article class="card card-pad card-interact" style="width:300px">
+            <div class="card-head">
+              <div>
+                <h3 class="card-title">Usage report</h3>
+                <p class="card-desc">Monthly API consumption across all projects.</p>
+              </div>
+              <span class="badge badge-accent">New</span>
+            </div>
+            <div class="card-foot">
+              <span class="hint" style="font-size:12px;color:var(--ink-faint)">Updated 2h ago</span>
+              <button class="btn btn-ghost btn-sm">View
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </article>
+          <article class="card card-pad" style="width:300px">
+            <h3 class="card-title">Team workspace</h3>
+            <p class="card-desc">Invite teammates and assign roles. Changes apply instantly.</p>
+            <div class="card-foot">
+              <div class="avatar-stack">
+                <span class="avatar sm lime">K</span><span class="avatar sm">MJ</span><span class="avatar sm">+3</span>
+              </div>
+              <button class="btn btn-outline btn-sm">Manage</button>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="demo"><div class="demo-label">Stat tiles</div>
+        <div class="row">
+          <div class="stat" style="min-width:180px">
+            <div class="stat-label">Requests</div>
+            <div class="stat-value">1.28M</div>
+            <div class="stat-delta up">▲ 12.4%</div>
+          </div>
+          <div class="stat" style="min-width:180px">
+            <div class="stat-label">p95 latency</div>
+            <div class="stat-value">142ms</div>
+            <div class="stat-delta down">▼ 8.1%</div>
+          </div>
+          <div class="stat" style="min-width:180px">
+            <div class="stat-label">Error rate</div>
+            <div class="stat-value">0.03%</div>
+            <div class="stat-delta up" style="color:var(--ink-muted)">— flat</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ALERTS ===== -->
+    <section class="section" id="alerts" data-nav-label="Alerts">
+      <header class="section-head">
+        <div class="section-kicker">06 / feedback</div>
+        <h2 class="section-title">Alerts</h2>
+      </header>
+      <div class="demo">
+        <div class="alert alert-danger">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3 2.5 16h15L10 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14.2" r=".9" fill="currentColor"/></svg>
+          <div><div class="alert-title">Payment failed</div><div class="alert-body">Your card was declined. Update billing to restore service.</div></div>
+        </div>
+        <div class="alert alert-warning">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3 2.5 16h15L10 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14.2" r=".9" fill="currentColor"/></svg>
+          <div><div class="alert-title">Approaching limit</div><div class="alert-body">You’ve used 91% of this month’s quota.</div></div>
+        </div>
+        <div class="alert alert-success">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.6"/><path d="m6.8 10.3 2.2 2.2 4.2-4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><div class="alert-title">Deploy complete</div><div class="alert-body">v2.4.1 is live on production.</div></div>
+        </div>
+        <div class="alert alert-info">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 9v4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="6.3" r=".9" fill="currentColor"/></svg>
+          <div><div class="alert-title">Scheduled maintenance</div><div class="alert-body">API reads only on Sunday 02:00–04:00 UTC.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TOAST ===== -->
+    <section class="section" id="toast" data-nav-label="Toasts">
+      <header class="section-head">
+        <div class="section-kicker">07 / feedback</div>
+        <h2 class="section-title">Toasts</h2>
+      </header>
+      <div class="demo">
+        <div class="row">
+          <button class="btn btn-secondary" data-toast="default">Default toast</button>
+          <button class="btn btn-secondary" data-toast="success">Success</button>
+          <button class="btn btn-secondary" data-toast="error">Error</button>
+          <button class="btn btn-secondary" data-toast="info">Info</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OVERLAYS ===== -->
+    <section class="section" id="overlays" data-nav-label="Modal · tooltip · menu">
+      <header class="section-head">
+        <div class="section-kicker">08 / overlays</div>
+        <h2 class="section-title">Modal · Tooltip · Dropdown</h2>
+      </header>
+      <div class="row">
+        <button class="btn btn-primary" id="openModal">Open modal</button>
+        <span class="tooltip-wrap">
+          <button class="btn btn-outline">Hover me</button>
+          <span class="tooltip" role="tooltip">Tooltips inherit surface tokens</span>
+        </span>
+        <div class="menu-wrap" id="menuWrap">
+          <button class="btn btn-secondary" id="menuBtn" aria-haspopup="menu" aria-expanded="false">Dropdown
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="menu" role="menu">
+            <button class="menu-item" role="menuitem">Duplicate <span class="kbd-hint kbd">⌘D</span></button>
+            <button class="menu-item" role="menuitem">Rename <span class="kbd-hint kbd">⏎</span></button>
+            <div class="menu-sep"></div>
+            <button class="menu-item danger" role="menuitem">Delete <span class="kbd-hint kbd">⌫</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TABS / ACCORDION ===== -->
+    <section class="section" id="tabs" data-nav-label="Tabs & accordion">
+      <header class="section-head">
+        <div class="section-kicker">09 / navigation</div>
+        <h2 class="section-title">Tabs &amp; accordion</h2>
+      </header>
+      <div class="row" style="align-items:flex-start">
+        <div class="tabs" style="max-width:420px;flex:1">
+          <div class="tab-list" role="tablist" aria-label="Preview">
+            <button class="tab-btn" role="tab" aria-selected="true" data-tab="p1">Preview</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="p2">Code</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="p3">Logs</button>
+          </div>
+          <div class="tab-panel" id="p1" role="tabpanel">Rendered output of the component, with live tokens applied.</div>
+          <div class="tab-panel" id="p2" role="tabpanel" hidden><code>npm i @lab/ink-lime</code> — import { Button } from "@lab/ink-lime".</div>
+          <div class="tab-panel" id="p3" role="tabpanel" hidden>09:41:02 build ok · 12 modules · 380ms</div>
+        </div>
+        <div class="accordion" id="acc">
+          <div class="acc-item open">
+            <button class="acc-trigger" aria-expanded="true">What is this lab?<span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+            <div class="acc-body"><div><p>A single-file gallery of every UI primitive, driven by CSS custom properties.</p></div></div>
+          </div>
+          <div class="acc-item">
+            <button class="acc-trigger" aria-expanded="false">Can I retheme it?<span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+            <div class="acc-body"><div><p>Yes — swap the tokens in <span style="font-family:var(--font-mono);font-size:12px">:root</span> and every component follows.</p></div></div>
+          </div>
+          <div class="acc-item">
+            <button class="acc-trigger" aria-expanded="false">Any dependencies?<span class="chev"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5 6 6.5 11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+            <div class="acc-body"><div><p>None. One Google font, three stylesheets, one module of TypeScript.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TABLE ===== -->
+    <section class="section" id="table" data-nav-label="Table">
+      <header class="section-head">
+        <div class="section-kicker">10 / data</div>
+        <h2 class="section-title">Data table</h2>
+      </header>
+      <div class="tbl-wrap" style="max-width:760px">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort="0">Plan</th>
+              <th class="sortable num" data-sort="1">Accounts</th>
+              <th class="sortable num" data-sort="2">Revenue <span class="sort-ind">↓</span></th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tblBody">
+            <tr><td>Starter</td><td class="num">248</td><td class="num">$12,400</td><td><span class="badge badge-success badge-dot">Live</span></td></tr>
+            <tr class="selected"><td>Growth</td><td class="num">612</td><td class="num">$38,900</td><td><span class="badge badge-success badge-dot">Live</span></td></tr>
+            <tr><td>Scale</td><td class="num">137</td><td class="num">$51,200</td><td><span class="badge badge-accent">Beta</span></td></tr>
+            <tr><td>Enterprise</td><td class="num">22</td><td class="num">$84,000</td><td><span class="badge badge-info badge-dot">Pipeline</span></td></tr>
+            <tr><td>Legacy</td><td class="num">41</td><td class="num">$6,800</td><td><span class="badge badge-warning badge-dot">Sunset</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== LIST / CRUMBS / PAGER ===== -->
+    <section class="section" id="lists" data-nav-label="Lists & pagination">
+      <header class="section-head">
+        <div class="section-kicker">11 / data</div>
+        <h2 class="section-title">Lists, breadcrumbs &amp; pagination</h2>
+      </header>
+      <div class="row" style="align-items:flex-start">
+        <div class="list">
+          <div class="list-item">
+            <span class="avatar lime">K</span>
+            <span class="li-main"><span class="li-title">Kael</span><span class="li-sub" style="display:block">Owner · last seen 2m ago</span></span>
+            <span class="badge badge-accent">Admin</span>
+          </div>
+          <div class="list-item">
+            <span class="avatar">MJ</span>
+            <span class="li-main"><span class="li-title">Minji</span><span class="li-sub" style="display:block">Editor · last seen 1h ago</span></span>
+            <span class="li-end">⋯</span>
+          </div>
+          <div class="list-item">
+            <span class="avatar">JW</span>
+            <span class="li-main"><span class="li-title">Jiwon</span><span class="li-sub" style="display:block">Viewer · invite pending</span></span>
+            <span class="badge badge-neutral">Pending</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div class="demo"><div class="demo-label">Breadcrumb</div>
+            <nav class="crumbs" aria-label="Breadcrumb">
+              <a href="#">Home</a><span class="sep">/</span>
+              <a href="#">Projects</a><span class="sep">/</span>
+              <a href="#">component-lab</a><span class="sep">/</span>
+              <span class="current">buttons.ts</span>
+            </nav>
+          </div>
+          <div class="demo"><div class="demo-label">Pagination</div>
+            <nav class="pager" aria-label="Pages">
+              <button aria-label="Previous">‹</button>
+              <button aria-current="page">1</button>
+              <button>2</button>
+              <button>3</button>
+              <span class="ellipsis">…</span>
+              <button>12</button>
+              <button aria-label="Next">›</button>
+            </nav>
+          </div>
+          <div class="demo"><div class="demo-label">Keyboard keys</div>
+            <div class="row" style="align-items:center">
+              <span class="kbd">⌘</span><span class="kbd">K</span>
+              <span style="color:var(--ink-faint);font-size:13px">to open command palette</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROGRESS ===== -->
+    <section class="section" id="progress" data-nav-label="Progress & loading">
+      <header class="section-head">
+        <div class="section-kicker">12 / status</div>
+        <h2 class="section-title">Progress &amp; loading</h2>
+      </header>
+      <div class="row" style="align-items:center;gap:40px">
+        <div class="demo"><div class="demo-label">Bars</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div class="progress" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"><i style="width:72%"></i></div>
+            <div class="progress thin" role="progressbar" aria-valuenow="38"><i style="width:38%"></i></div>
+            <div class="progress error" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100"><i style="width:91%"></i></div>
+          </div>
+        </div>
+        <div class="demo"><div class="demo-label">Ring</div>
+          <div class="ring" style="--pct:72">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle class="track" cx="32" cy="32" r="26" stroke-width="6"/>
+              <circle class="bar" cx="32" cy="32" r="26" stroke-width="6"/>
+              <text class="ring-num" x="32" y="37" text-anchor="middle">72%</text>
+            </svg>
+          </div>
+        </div>
+        <div class="demo"><div class="demo-label">Spinners</div>
+          <div class="row" style="align-items:center">
+            <span class="spinner"></span>
+            <span class="spinner" style="width:28px;height:28px;border-width:3px"></span>
+          </div>
+        </div>
+        <div class="demo"><div class="demo-label">Skeleton</div>
+          <div class="skel-box">
+            <div class="skel avatar-sk"></div>
+            <div style="flex:1">
+              <div class="skel line w60"></div>
+              <div class="skel line w85"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STATES ===== -->
+    <section class="section" id="states" data-nav-label="Empty state">
+      <header class="section-head">
+        <div class="section-kicker">13 / states</div>
+        <h2 class="section-title">Empty state</h2>
+      </header>
+      <div class="empty">
+        <div class="glyph">{ }</div>
+        <div class="empty-title">Nothing here yet</div>
+        <p class="empty-desc">Create your first component set to start composing screens.</p>
+        <button class="btn btn-primary btn-sm">New component</button>
+      </div>
+    </section>
+
+    <!-- ===== CMDK ===== -->
+    <section class="section" id="cmdk" data-nav-label="Command palette">
+      <header class="section-head">
+        <div class="section-kicker">14 / power</div>
+        <h2 class="section-title">Command palette</h2>
+        <p class="section-desc">Press <span class="kbd">⌘</span> <span class="kbd">K</span> anywhere, or click below.</p>
+      </header>
+      <button class="btn btn-secondary" id="openCmdk">Open command palette</button>
+    </section>
+
+    <!-- ===== CALENDAR / CHART ===== -->
+    <section class="section" id="extras" data-nav-label="Calendar & chart">
+      <header class="section-head">
+        <div class="section-kicker">15 / widgets</div>
+        <h2 class="section-title">Calendar &amp; mini chart</h2>
+      </header>
+      <div class="row" style="align-items:flex-start">
+        <div class="cal">
+          <div class="cal-head">
+            <button class="cal-nav" aria-label="Previous month">‹</button>
+            <span class="cal-title">September 2026</span>
+            <button class="cal-nav" aria-label="Next month">›</button>
+          </div>
+          <div class="cal-grid">
+            <span class="cal-dow">M</span><span class="cal-dow">T</span><span class="cal-dow">W</span><span class="cal-dow">T</span><span class="cal-dow">F</span><span class="cal-dow">S</span><span class="cal-dow">S</span>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Deploys this week</div>
+          <div class="bars" id="bars"></div>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:80px"></div>
+  </main>
+</div>
+
+<!-- toast stack -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- modal -->
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h3 class="modal-title" id="modalTitle">Delete component?</h3>
+      <button class="modal-x" id="modalX" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">This will remove <strong style="color:var(--ink-hi)">button.ts</strong> and every screen using it. This action can’t be undone.</div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+      <button class="btn btn-danger" id="modalConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- command palette -->
+<div class="cmdk-backdrop" id="cmdk" hidden>
+  <div class="cmdk" role="dialog" aria-modal="true" aria-label="Command palette">
+    <input class="cmdk-input" id="cmdkInput" placeholder="Type a command or search…" autocomplete="off">
+    <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>

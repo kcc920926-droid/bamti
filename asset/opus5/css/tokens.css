@@ -1,0 +1,276 @@
+/* ============================================================
+   LEDGER — 디자인 토큰
+   전부 여기서 시작한다. 컴포넌트 CSS는 원시값을 직접 쓰지 않는다.
+   ============================================================ */
+
+:root {
+  /* ── 활자 ─────────────────────────────────────────────
+     라틴은 표시용 세리프 + 본문용 휴머니스트 산세리프,
+     한글은 각 스택 뒤에 붙여 자연스럽게 폴백시킨다. */
+  --font-display: "Iowan Old Style", "Charter", "Palatino Linotype", Palatino,
+    "Apple SD Gothic Neo", "Pretendard", Georgia, serif;
+  --font-text: "Avenir Next", "Avenir", "Segoe UI Variable Text", "Helvetica Neue",
+    "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif;
+  --font-mono: "SF Mono", "IBM Plex Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --t-2xs: 0.6875rem;  /* 11px — 표 각주, 단위 */
+  --t-xs:  0.75rem;    /* 12px — 메타, 배지 */
+  --t-sm:  0.8125rem;  /* 13px — 보조 설명, 표 본문 */
+  --t-base:0.9375rem;  /* 15px — 본문 기준 */
+  --t-md:  1.0625rem;  /* 17px — 리드 문단 */
+  --t-lg:  1.3125rem;  /* 21px — 부품 이름 */
+  --t-xl:  1.75rem;    /* 28px — 절 제목 */
+  --t-2xl: 2.375rem;   /* 38px — 장 제목 */
+  --t-3xl: clamp(2.75rem, 6vw, 4.25rem); /* 표제 */
+
+  --lh-tight: 1.12;
+  --lh-snug: 1.32;
+  --lh-base: 1.62;
+  --lh-loose: 1.78;
+
+  --tr-flat: 0;
+  --tr-wide: 0.06em;
+  --tr-wider: 0.14em;
+
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --w-bold: 700;
+
+  /* ── 간격 (4px 격자) ──────────────────────────────── */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+  --s-5: 20px;  --s-6: 24px;  --s-7: 32px;  --s-8: 40px;
+  --s-9: 48px;  --s-10: 64px; --s-11: 80px; --s-12: 96px;
+  --s-13: 128px;
+
+  /* ── 모서리 ────────────────────────────────────────
+     기본은 각이다. 둥글기는 위계를 만들 때만 쓴다. */
+  --r-none: 0;
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* ── 선 ───────────────────────────────────────────── */
+  --line-hair: 1px;
+  --line-thick: 2px;
+  --line-rule: 3px;
+
+  /* ── 색: 원장(ledger) 팔레트 ────────────────────────
+     따뜻한 종이 바닥 + 잉크 먹색 + 청록 한 점.
+     의미색은 채도를 낮춰 종이 위에서 튀지 않게 맞췄다. */
+  --paper-0: #fbf9f5;
+  --paper-1: #f4f0e8;
+  --paper-2: #ece6da;
+  --paper-3: #ded6c6;
+
+  --ink-0: #15130e;
+  --ink-1: #35302a;
+  --ink-2: #58513f;
+  --ink-3: #857c66;
+  --ink-4: #a89e86;
+
+  --teal-0: #072f2d;
+  --teal-1: #0d4f4b;
+  --teal-2: #17706a;
+  --teal-3: #cfe0dc;
+  --teal-4: #e7efec;
+
+  --clay-1: #a04e26;
+  --clay-2: #b4592c;
+  --clay-3: #f0dfd2;
+
+  --crimson-1: #94271f;
+  --crimson-2: #b03127;
+  --crimson-3: #f3dcd8;
+
+  --moss-1: #3a6132;
+  --moss-2: #4c7a41;
+  --moss-3: #e0e9d8;
+
+  --amber-1: #8a5c05;
+  --amber-2: #a87310;
+  --amber-3: #f6e6c6;
+
+  /* ── 의미 토큰 (컴포넌트가 참조하는 층) ──────────── */
+  --bg: var(--paper-0);
+  --bg-sunken: var(--paper-1);
+  --bg-raised: #ffffff;
+  --bg-inset: var(--paper-2);
+  --bg-hover: rgba(21, 19, 14, 0.045);
+  --bg-active: rgba(21, 19, 14, 0.085);
+  --bg-selected: var(--teal-4);
+
+  --fg: var(--ink-0);
+  --fg-muted: var(--ink-2);
+  --fg-subtle: var(--ink-3);
+  --fg-faint: var(--ink-4);
+  --fg-onaccent: #fbf9f5;
+
+  --border: #ddd5c5;
+  --border-strong: #c3b9a4;
+  --border-faint: #ebe4d7;
+
+  --accent: var(--teal-1);
+  --accent-hover: var(--teal-0);
+  --accent-fg: var(--teal-1);
+  --accent-bg: var(--teal-4);
+  --accent-border: var(--teal-3);
+
+  --danger: var(--crimson-2);
+  --danger-fg: var(--crimson-1);
+  --danger-bg: var(--crimson-3);
+  --success: var(--moss-2);
+  --success-fg: var(--moss-1);
+  --success-bg: var(--moss-3);
+  --warning: var(--amber-2);
+  --warning-fg: var(--amber-1);
+  --warning-bg: var(--amber-3);
+  --info: var(--clay-2);
+  --info-fg: var(--clay-1);
+  --info-bg: var(--clay-3);
+
+  --focus: var(--teal-2);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--focus);
+
+  /* ── 그림자: 종이 위 얇은 들림 ─────────────────────── */
+  --sh-1: 0 1px 1px rgba(28, 22, 8, 0.05);
+  --sh-2: 0 1px 2px rgba(28, 22, 8, 0.06), 0 4px 10px -4px rgba(28, 22, 8, 0.12);
+  --sh-3: 0 2px 4px rgba(28, 22, 8, 0.07), 0 14px 32px -12px rgba(28, 22, 8, 0.22);
+  --sh-inset: inset 0 1px 2px rgba(28, 22, 8, 0.07);
+
+  /* ── 움직임 ────────────────────────────────────────── */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-in: cubic-bezier(0.6, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.16, 1.06, 0.28, 1);
+  --dur-1: 110ms;
+  --dur-2: 180ms;
+  --dur-3: 280ms;
+  --dur-4: 460ms;
+
+  /* ── 층위 ─────────────────────────────────────────── */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-rail: 30;
+  --z-dropdown: 40;
+  --z-overlay: 50;
+  --z-toast: 60;
+
+  /* ── 치수 ─────────────────────────────────────────── */
+  --rail-w: 268px;
+  --measure: 68ch;
+  --control-h: 36px;
+  --control-h-sm: 28px;
+  --control-h-lg: 44px;
+
+  color-scheme: light;
+}
+
+/* ── 밀도: 표·목록이 많은 화면을 위한 압축 모드 ──────── */
+:root[data-density="compact"] {
+  --t-base: 0.875rem;
+  --control-h: 30px;
+  --control-h-sm: 24px;
+  --control-h-lg: 38px;
+  --lh-base: 1.5;
+}
+
+/* ── 어두운 배색 ───────────────────────────────────────
+   같은 팔레트를 밤에 옮긴 것. 색 이름이 아니라 역할만 바꾼다. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; }
+}
+:root[data-theme="dark"] { color-scheme: dark; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14130f;
+    --bg-sunken: #100f0c;
+    --bg-raised: #1c1a16;
+    --bg-inset: #24211c;
+    --bg-hover: rgba(240, 233, 216, 0.06);
+    --bg-active: rgba(240, 233, 216, 0.11);
+    --bg-selected: #16302d;
+
+    --fg: #efe9dc;
+    --fg-muted: #bdb4a1;
+    --fg-subtle: #948b78;
+    --fg-faint: #6f6857;
+    --fg-onaccent: #06201e;
+
+    --border: #35312a;
+    --border-strong: #4b463c;
+    --border-faint: #272420;
+
+    --accent: #6fb8af;
+    --accent-hover: #8fcdc5;
+    --accent-fg: #83c6bd;
+    --accent-bg: #16302d;
+    --accent-border: #2c534e;
+
+    --danger: #d9695c;
+    --danger-fg: #e78b7f;
+    --danger-bg: #38201d;
+    --success: #86ac72;
+    --success-fg: #9dbf8a;
+    --success-bg: #22301c;
+    --warning: #d1a044;
+    --warning-fg: #e0b662;
+    --warning-bg: #352a14;
+    --info: #d68b5c;
+    --info-fg: #e3a67c;
+    --info-bg: #35241a;
+
+    --focus: #7fc6bd;
+    --sh-1: 0 1px 1px rgba(0, 0, 0, 0.4);
+    --sh-2: 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 10px -4px rgba(0, 0, 0, 0.6);
+    --sh-3: 0 2px 4px rgba(0, 0, 0, 0.5), 0 14px 32px -12px rgba(0, 0, 0, 0.75);
+    --sh-inset: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14130f;
+  --bg-sunken: #100f0c;
+  --bg-raised: #1c1a16;
+  --bg-inset: #24211c;
+  --bg-hover: rgba(240, 233, 216, 0.06);
+  --bg-active: rgba(240, 233, 216, 0.11);
+  --bg-selected: #16302d;
+
+  --fg: #efe9dc;
+  --fg-muted: #bdb4a1;
+  --fg-subtle: #948b78;
+  --fg-faint: #6f6857;
+  --fg-onaccent: #06201e;
+
+  --border: #35312a;
+  --border-strong: #4b463c;
+  --border-faint: #272420;
+
+  --accent: #6fb8af;
+  --accent-hover: #8fcdc5;
+  --accent-fg: #83c6bd;
+  --accent-bg: #16302d;
+  --accent-border: #2c534e;
+
+  --danger: #d9695c;
+  --danger-fg: #e78b7f;
+  --danger-bg: #38201d;
+  --success: #86ac72;
+  --success-fg: #9dbf8a;
+  --success-bg: #22301c;
+  --warning: #d1a044;
+  --warning-fg: #e0b662;
+  --warning-bg: #352a14;
+  --info: #d68b5c;
+  --info-fg: #e3a67c;
+  --info-bg: #35241a;
+
+  --focus: #7fc6bd;
+  --sh-1: 0 1px 1px rgba(0, 0, 0, 0.4);
+  --sh-2: 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 10px -4px rgba(0, 0, 0, 0.6);
+  --sh-3: 0 2px 4px rgba(0, 0, 0, 0.5), 0 14px 32px -12px rgba(0, 0, 0, 0.75);
+  --sh-inset: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}

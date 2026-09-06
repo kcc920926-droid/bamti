@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>밤티</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+
+<header>
+  <div class="brand">밤티</div>
+  <div class="hbtns">
+    <button id="showall" class="txt" hidden title="모든 지문을 다시 표시">전체 표시</button>
+    <button id="overlay" class="txt" disabled aria-pressed="true" title="페이지에 지문 위치 표시 켬/끔">위치 표시 켬</button>
+    <button id="rescan" class="txt" title="현재 탭 다시 스캔">↻ 다시 스캔</button>
+  </div>
+</header>
+
+<main id="main">
+  <p id="status" class="status" role="status" aria-live="polite">현재 페이지를 확인하고 있습니다.</p>
+  <div id="empty" class="state">
+    <img class="empty-art" src="../../asset/illustrations/bamti-inspector.png" width="160" height="160" alt="" decoding="async">
+    <p id="emptymsg">툴바의 밤티 아이콘을 누르면 현재 페이지를 스캔합니다.<br>패널은 탭을 따라다니며 자동으로 다시 스캔합니다.</p>
+  </div>
+
+  <div id="busy" class="state" hidden><div class="spin" aria-hidden="true"></div><p>페이지의 UI 패턴을 확인하고 있어요.</p><small>분석은 이 브라우저 안에서 진행됩니다.</small></div>
+  <div id="error" class="state" hidden>
+    <div class="big">⚠️</div>
+    <p id="errmsg"></p>
+    <button id="erraction" class="action" hidden>확장 프로그램 설정 열기</button>
+    <button id="retry" class="action">다시 시도</button>
+  </div>
+
+  <div id="report" hidden>
+    <div id="stale" class="stale" hidden>페이지가 바뀌었습니다 — 다시 스캔 중…</div>
+    <div id="page" class="page"><span id="pagetext"></span><button id="allow" class="pill" hidden></button></div>
+    <p id="pageurl" class="pageurl"></p>
+    <section class="verdict">
+      <div class="gauge"><div id="score">–</div><small>/100</small></div>
+      <div class="vtext">
+        <div id="band" class="band"></div>
+        <p id="bandline"></p>
+        <small class="score-help">패턴 점수 · AI가 만들었을 확률이 아닙니다.</small>
+        <div id="meta" class="meta"></div>
+      </div>
+    </section>
+
+    <p id="coverage" class="notice" hidden></p>
+    <section class="results-tools" aria-label="결과 탐색">
+      <div class="results-heading"><h1>개선할 부분 찾기</h1><button id="copyreport" class="pill">전체 제안 복사</button></div>
+      <label class="search-label" for="search">발견 항목 검색</label>
+      <input id="search" type="search" placeholder="항목·근거·개선 방향 검색" autocomplete="off">
+      <div class="filter-heading"><span>카테고리로 좁히기</span><button id="resetfilter" class="pill" aria-pressed="true">전체</button></div>
+      <section id="cats" class="cats" aria-label="카테고리 필터"></section>
+      <div class="result-summary"><span id="resultcount"></span><button id="expandall" class="pill" aria-expanded="false">모두 펼치기</button></div>
+    </section>
+    <div id="noresults" class="noresults" hidden><p id="noresultsmsg"></p><button id="clearsearch" class="pill">검색·필터 초기화</button></div>
+    <section id="list" class="list" aria-label="발견 항목과 개선 방향"></section>
+    <details id="tastegroup" class="tastegroup" hidden><summary id="tastesummary"></summary><p class="taste-help">점수에 포함되지 않는 디자인 선택입니다. 필요할 때만 검토하세요.</p><div id="tastelist"></div></details>
+
+    <footer class="foot">
+      밤티는 “AI가 썼다”고 단정하지 않습니다. 발견된 <b>지문의 개수와 근거</b>만 보여줍니다.
+    </footer>
+  </div>
+  <details class="diagnostics"><summary>도움말·진단 정보</summary><p>아이콘 또는 단축키로 스캔을 시작하세요. 자동 스캔은 패널이 열려 있고 접근 권한이 있을 때 동작합니다.</p><button id="shortcuts" class="pill">단축키 설정</button><div id="diag" class="diag"></div></details>
+</main>
+
+<script src="panel.js"></script>
+</body>
+</html>

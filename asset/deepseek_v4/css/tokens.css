@@ -1,0 +1,149 @@
+/* ============================================================
+   BAMTI Component Lab — tokens.css
+   Design tokens: palette, type, radius, shadow, motion
+   ============================================================ */
+
+:root {
+  /* Type */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Neutrals — warm paper */
+  --bg:          oklch(0.975 0.004 95);
+  --surface:     oklch(1 0 0);
+  --surface-2:   oklch(0.958 0.006 95);
+  --surface-3:   oklch(0.93 0.008 95);
+  --ink:         oklch(0.26 0.012 120);
+  --ink-2:       oklch(0.45 0.014 120);
+  --ink-3:       oklch(0.63 0.016 120);
+  --border:      oklch(0.895 0.008 95);
+  --border-strong: oklch(0.8 0.012 95);
+
+  /* Accent — pine teal */
+  --accent:        oklch(0.55 0.115 170);
+  --accent-hover:  oklch(0.50 0.115 170);
+  --accent-active: oklch(0.45 0.105 170);
+  --accent-soft:   oklch(0.94 0.03 170);
+  --accent-softer: oklch(0.975 0.012 170);
+  --accent-ink:    oklch(0.985 0.006 170);
+  --accent-strong: oklch(0.42 0.1 170);
+
+  /* Semantic */
+  --ok:       oklch(0.58 0.13 150);
+  --ok-soft:  oklch(0.94 0.035 150);
+  --warn:     oklch(0.62 0.14 75);
+  --warn-soft: oklch(0.95 0.045 85);
+  --danger:   oklch(0.56 0.17 25);
+  --danger-soft: oklch(0.94 0.05 25);
+  --info:     oklch(0.59 0.11 245);
+  --info-soft: oklch(0.94 0.03 245);
+
+  /* Radii */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-full: 999px;
+
+  /* Elevation */
+  --sh-sm: 0 1px 2px oklch(0.3 0.02 120 / 0.06), 0 1px 3px oklch(0.3 0.02 120 / 0.05);
+  --sh-md: 0 4px 12px oklch(0.3 0.02 120 / 0.08), 0 2px 4px oklch(0.3 0.02 120 / 0.05);
+  --sh-lg: 0 12px 32px oklch(0.3 0.02 120 / 0.14), 0 4px 8px oklch(0.3 0.02 120 / 0.06);
+  --sh-overlay: 0 24px 64px oklch(0.25 0.02 120 / 0.28);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --tr-fast: 120ms;
+  --tr: 180ms;
+  --tr-slow: 320ms;
+
+  /* Layout */
+  --sidebar-w: 236px;
+  --content-max: 1080px;
+  --topbar-h: 60px;
+}
+
+[data-theme="dark"] {
+  --bg:          oklch(0.205 0.008 115);
+  --surface:     oklch(0.245 0.01 115);
+  --surface-2:   oklch(0.275 0.011 115);
+  --surface-3:   oklch(0.31 0.012 115);
+  --ink:         oklch(0.92 0.008 115);
+  --ink-2:       oklch(0.75 0.012 115);
+  --ink-3:       oklch(0.58 0.014 115);
+  --border:      oklch(0.33 0.012 115);
+  --border-strong: oklch(0.42 0.014 115);
+
+  --accent:        oklch(0.72 0.11 170);
+  --accent-hover:  oklch(0.77 0.10 170);
+  --accent-active: oklch(0.82 0.09 170);
+  --accent-soft:   oklch(0.30 0.035 170);
+  --accent-softer: oklch(0.27 0.02 170);
+  --accent-ink:    oklch(0.16 0.02 170);
+  --accent-strong: oklch(0.68 0.10 170);
+
+  --ok:       oklch(0.72 0.13 150);
+  --ok-soft:  oklch(0.30 0.035 150);
+  --warn:     oklch(0.76 0.13 85);
+  --warn-soft: oklch(0.32 0.04 85);
+  --danger:   oklch(0.70 0.16 25);
+  --danger-soft: oklch(0.32 0.05 25);
+  --info:     oklch(0.71 0.11 245);
+  --info-soft: oklch(0.30 0.035 245);
+
+  --sh-sm: 0 1px 2px oklch(0 0 0 / 0.35);
+  --sh-md: 0 4px 14px oklch(0 0 0 / 0.4);
+  --sh-lg: 0 12px 32px oklch(0 0 0 / 0.5);
+  --sh-overlay: 0 24px 64px oklch(0 0 0 / 0.6);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+code, pre, kbd { font-family: var(--font-mono); }
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* Scrollbar (webkit) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--r-full);
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Base type ---------- */
+.h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.015em; }
+.h3 { font-size: 16px; font-weight: 650; letter-spacing: -0.01em; }
+.lead { font-size: 17px; color: var(--ink-2); line-height: 1.6; }
+.muted { color: var(--ink-3); }
+.mono { font-family: var(--font-mono); font-size: 0.9em; }
+.small { font-size: 13px; }

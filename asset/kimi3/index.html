@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimi3 Component Gallery</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="page-header">
+  <h1>🎨 Component Gallery</h1>
+  <p class="subtitle">Every component I could think of — HTML + TS + CSS</p>
+</header>
+
+<!-- ============ BUTTONS ============ -->
+<section class="gallery-section">
+  <h2>Buttons</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="button">
+      <h3>Basic Buttons</h3>
+      <div class="demo">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn" disabled>Disabled</button>
+      </div>
+    </div>
+    <div class="component-card" data-component="button-sizes">
+      <h3>Button Sizes</h3>
+      <div class="demo">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+    </div>
+    <div class="component-card" data-component="icon-button">
+      <h3>Icon Buttons</h3>
+      <div class="demo">
+        <button class="icon-btn" title="Like">❤️</button>
+        <button class="icon-btn" title="Share">🔗</button>
+        <button class="icon-btn" title="Delete">🗑️</button>
+        <button class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </div>
+    <div class="component-card" data-component="loading-button">
+      <h3>Loading Button</h3>
+      <div class="demo">
+        <button class="btn btn-primary" id="loadingBtn">Click to Load</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMS ============ -->
+<section class="gallery-section">
+  <h2>Forms</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="input">
+      <h3>Text Input</h3>
+      <div class="demo">
+        <label class="field">
+          <span class="field-label">Username</span>
+          <input type="text" class="input" placeholder="Enter username">
+        </label>
+        <label class="field">
+          <span class="field-label">Disabled</span>
+          <input type="text" class="input" disabled value="Can't touch this">
+        </label>
+        <label class="field">
+          <span class="field-label">With Error</span>
+          <input type="text" class="input input-error" value="bad value">
+          <span class="field-error-msg">Something went wrong</span>
+        </label>
+      </div>
+    </div>
+    <div class="component-card" data-component="textarea">
+      <h3>Textarea</h3>
+      <div class="demo">
+        <textarea class="input" rows="3" placeholder="Write something..."></textarea>
+      </div>
+    </div>
+    <div class="component-card" data-component="select">
+      <h3>Select</h3>
+      <div class="demo">
+        <select class="input">
+          <option>Option A</option>
+          <option>Option B</option>
+          <option>Option C</option>
+        </select>
+      </div>
+    </div>
+    <div class="component-card" data-component="checkbox">
+      <h3>Checkbox & Radio</h3>
+      <div class="demo">
+        <label class="check"><input type="checkbox" checked> Checked</label>
+        <label class="check"><input type="checkbox"> Unchecked</label>
+        <label class="check"><input type="radio" name="r1" checked> Radio A</label>
+        <label class="check"><input type="radio" name="r1"> Radio B</label>
+      </div>
+    </div>
+    <div class="component-card" data-component="toggle">
+      <h3>Toggle Switch</h3>
+      <div class="demo">
+        <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+    <div class="component-card" data-component="range">
+      <h3>Range Slider</h3>
+      <div class="demo">
+        <input type="range" class="range" min="0" max="100" value="40">
+      </div>
+    </div>
+    <div class="component-card" data-component="search">
+      <h3>Search Box</h3>
+      <div class="demo">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Search...">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARDS ============ -->
+<section class="gallery-section">
+  <h2>Cards</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="basic-card">
+      <h3>Basic Card</h3>
+      <div class="demo">
+        <div class="card">
+          <h4>Card Title</h4>
+          <p>Some quick example text to build on the card title.</p>
+          <button class="btn btn-primary btn-sm">Action</button>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="image-card">
+      <h3>Image Card</h3>
+      <div class="demo">
+        <div class="card">
+          <div class="card-img">🖼️</div>
+          <h4>Image Card</h4>
+          <p>With a placeholder image area.</p>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="profile-card">
+      <h3>Profile Card</h3>
+      <div class="demo">
+        <div class="card profile-card">
+          <div class="avatar">👤</div>
+          <h4>Kael</h4>
+          <p class="muted">@kael</p>
+          <button class="btn btn-secondary btn-sm">Follow</button>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="stat-card">
+      <h3>Stat Card</h3>
+      <div class="demo">
+        <div class="card stat-card">
+          <span class="stat-label">Revenue</span>
+          <span class="stat-value">$12,400</span>
+          <span class="stat-delta up">▲ 12%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ALERTS & FEEDBACK ============ -->
+<section class="gallery-section">
+  <h2>Alerts & Feedback</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="alerts">
+      <h3>Alerts</h3>
+      <div class="demo">
+        <div class="alert alert-info">ℹ️ Info alert</div>
+        <div class="alert alert-success">✅ Success alert</div>
+        <div class="alert alert-warning">⚠️ Warning alert</div>
+        <div class="alert alert-error">❌ Error alert</div>
+      </div>
+    </div>
+    <div class="component-card" data-component="badges">
+      <h3>Badges</h3>
+      <div class="demo">
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-warning">Warning</span>
+        <span class="badge badge-error">Error</span>
+        <span class="badge badge-outline">Outline</span>
+      </div>
+    </div>
+    <div class="component-card" data-component="progress">
+      <h3>Progress</h3>
+      <div class="demo">
+        <div class="progress"><div class="progress-bar" style="width: 70%"></div></div>
+        <div class="progress"><div class="progress-bar bar-success" style="width: 45%"></div></div>
+        <div class="progress"><div class="progress-bar bar-error" style="width: 90%"></div></div>
+      </div>
+    </div>
+    <div class="component-card" data-component="spinner">
+      <h3>Spinners & Skeleton</h3>
+      <div class="demo">
+        <div class="row">
+          <div class="spinner"></div>
+          <div class="spinner spinner-lg"></div>
+        </div>
+        <div class="skeleton skeleton-text" style="width: 60%"></div>
+        <div class="skeleton skeleton-text" style="width: 80%"></div>
+        <div class="skeleton skeleton-rect"></div>
+      </div>
+    </div>
+    <div class="component-card" data-component="toast">
+      <h3>Toast</h3>
+      <div class="demo">
+        <button class="btn btn-primary" id="toastBtn">Show Toast</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NAVIGATION ============ -->
+<section class="gallery-section">
+  <h2>Navigation</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="navbar">
+      <h3>Navbar</h3>
+      <div class="demo">
+        <nav class="navbar">
+          <span class="navbar-brand">Brand</span>
+          <a href="#" class="navbar-link active">Home</a>
+          <a href="#" class="navbar-link">About</a>
+          <a href="#" class="navbar-link">Contact</a>
+        </nav>
+      </div>
+    </div>
+    <div class="component-card" data-component="tabs">
+      <h3>Tabs</h3>
+      <div class="demo">
+        <div class="tabs" id="tabsDemo">
+          <button class="tab active" data-tab="t1">Tab 1</button>
+          <button class="tab" data-tab="t2">Tab 2</button>
+          <button class="tab" data-tab="t3">Tab 3</button>
+        </div>
+        <div class="tab-panel" id="t1">Panel 1 content</div>
+        <div class="tab-panel hidden" id="t2">Panel 2 content</div>
+        <div class="tab-panel hidden" id="t3">Panel 3 content</div>
+      </div>
+    </div>
+    <div class="component-card" data-component="breadcrumbs">
+      <h3>Breadcrumbs</h3>
+      <div class="demo">
+        <nav class="breadcrumbs">
+          <a href="#">Home</a>
+          <span>/</span>
+          <a href="#">Library</a>
+          <span>/</span>
+          <span class="current">Data</span>
+        </nav>
+      </div>
+    </div>
+    <div class="component-card" data-component="pagination">
+      <h3>Pagination</h3>
+      <div class="demo">
+        <div class="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn">1</button>
+          <button class="page-btn active">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="sidebar">
+      <h3>Sidebar</h3>
+      <div class="demo">
+        <div class="sidebar">
+          <a href="#" class="sidebar-item active">📊 Dashboard</a>
+          <a href="#" class="sidebar-item">📁 Files</a>
+          <a href="#" class="sidebar-item">⚙️ Settings</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERLAYS ============ -->
+<section class="gallery-section">
+  <h2>Overlays</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="modal">
+      <h3>Modal</h3>
+      <div class="demo">
+        <button class="btn btn-primary" id="modalBtn">Open Modal</button>
+      </div>
+    </div>
+    <div class="component-card" data-component="tooltip">
+      <h3>Tooltip</h3>
+      <div class="demo">
+        <button class="btn btn-secondary tooltip-trigger">Hover me
+          <span class="tooltip">I'm a tooltip!</span>
+        </button>
+      </div>
+    </div>
+    <div class="component-card" data-component="dropdown">
+      <h3>Dropdown</h3>
+      <div class="demo">
+        <div class="dropdown">
+          <button class="btn btn-secondary" id="dropdownBtn">Menu ▾</button>
+          <div class="dropdown-menu hidden" id="dropdownMenu">
+            <a href="#">Item 1</a>
+            <a href="#">Item 2</a>
+            <a href="#">Item 3</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="accordion">
+      <h3>Accordion</h3>
+      <div class="demo">
+        <div class="accordion">
+          <button class="accordion-header" data-accordion="a1">Section 1 <span>▾</span></button>
+          <div class="accordion-body" id="a1">Content of section 1.</div>
+          <button class="accordion-header" data-accordion="a2">Section 2 <span>▾</span></button>
+          <div class="accordion-body hidden" id="a2">Content of section 2.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATA DISPLAY ============ -->
+<section class="gallery-section">
+  <h2>Data Display</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="table">
+      <h3>Table</h3>
+      <div class="demo">
+        <table class="table">
+          <thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Alice</td><td>Admin</td><td><span class="badge badge-success">Active</span></td></tr>
+            <tr><td>Bob</td><td>User</td><td><span class="badge badge-warning">Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="component-card" data-component="list">
+      <h3>List</h3>
+      <div class="demo">
+        <ul class="list">
+          <li class="list-item"><span class="avatar avatar-sm">A</span> Alice <span class="muted">— admin</span></li>
+          <li class="list-item"><span class="avatar avatar-sm">B</span> Bob <span class="muted">— user</span></li>
+          <li class="list-item"><span class="avatar avatar-sm">C</span> Carol <span class="muted">— guest</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="component-card" data-component="timeline">
+      <h3>Timeline</h3>
+      <div class="demo">
+        <div class="timeline">
+          <div class="timeline-item"><span class="timeline-dot"></span><div><strong>Step 1</strong><p class="muted">Completed</p></div></div>
+          <div class="timeline-item"><span class="timeline-dot"></span><div><strong>Step 2</strong><p class="muted">In progress</p></div></div>
+          <div class="timeline-item"><span class="timeline-dot"></span><div><strong>Step 3</strong><p class="muted">Pending</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="avatar-group">
+      <h3>Avatars</h3>
+      <div class="demo">
+        <div class="avatar-group">
+          <span class="avatar">A</span>
+          <span class="avatar">B</span>
+          <span class="avatar">C</span>
+          <span class="avatar avatar-more">+5</span>
+        </div>
+        <div class="row">
+          <span class="avatar avatar-lg">LG</span>
+          <span class="avatar">MD</span>
+          <span class="avatar avatar-sm">SM</span>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="empty-state">
+      <h3>Empty State</h3>
+      <div class="demo">
+        <div class="empty-state">
+          <span class="empty-icon">🗂️</span>
+          <p>No data found</p>
+          <button class="btn btn-primary btn-sm">Create New</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAYOUT ============ -->
+<section class="gallery-section">
+  <h2>Layout</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="grid-layout">
+      <h3>Grid</h3>
+      <div class="demo">
+        <div class="grid-3">
+          <div class="grid-col">1</div><div class="grid-col">2</div><div class="grid-col">3</div>
+          <div class="grid-col">4</div><div class="grid-col">5</div><div class="grid-col">6</div>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="divider">
+      <h3>Dividers</h3>
+      <div class="demo">
+        <p>Above the divider</p>
+        <hr class="divider">
+        <p>Below the divider</p>
+        <hr class="divider divider-dashed">
+        <p>Dashed variant</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAT / MISC ============ -->
+<section class="gallery-section">
+  <h2>Chat & Misc</h2>
+  <div class="component-grid">
+    <div class="component-card" data-component="chat">
+      <h3>Chat Bubbles</h3>
+      <div class="demo">
+        <div class="chat">
+          <div class="chat-msg incoming"><span class="avatar avatar-sm">K</span><div class="bubble">Hello! 👋</div></div>
+          <div class="chat-msg outgoing"><div class="bubble">Hi Kael!</div></div>
+          <div class="chat-msg incoming"><span class="avatar avatar-sm">K</span><div class="bubble">How's it going?</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="component-card" data-component="kbd">
+      <h3>KBD & Code</h3>
+      <div class="demo">
+        <p>Press <kbd class="kbd">Cmd</kbd> + <kbd class="kbd">K</kbd> to search.</p>
+        <code class="code-inline">const x = 42;</code>
+        <pre class="code-block">function greet() {
+  return "hello";
+}</pre>
+      </div>
+    </div>
+    <div class="component-card" data-component="stepper">
+      <h3>Stepper</h3>
+      <div class="demo">
+        <div class="stepper">
+          <button class="stepper-btn" id="stepDown">−</button>
+          <input class="input stepper-input" id="stepValue" value="1" readonly>
+          <button class="stepper-btn" id="stepUp">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fixed overlays -->
+<div class="toast-container" id="toastContainer"></div>
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h4>Modal Title</h4>
+      <button class="icon-btn" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">This is the modal body. You can put anything here.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+      <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

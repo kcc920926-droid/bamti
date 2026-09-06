@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Vite + React</title>
+<style>
+  :root { --r: 16px; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color:#0f172a; background:#f9fafb; }
+  .wrap { max-width:1280px; margin:0 auto; padding:0 24px; }
+  section { padding-top:80px; padding-bottom:80px; text-align:center; }
+  h1 { font-size:3rem; margin:16px 0;
+       background-image:linear-gradient(90deg, #7c3aed 0%, #3b82f6 100%);
+       -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .pill { display:inline-block; border-radius:9999px; background:#ede9fe; color:#7c3aed;
+          padding:6px 14px; font-size:13px; }
+  .btn { display:inline-block; border-radius:var(--r); padding:12px 24px; text-decoration:none;
+         background-image:linear-gradient(90deg,#8b5cf6,#3b82f6); color:#f8fafc; }
+  .btn2 { border-radius:var(--r); padding:12px 24px; border:1px solid #e2e8f0; background:#fff; color:#334155; }
+  .grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:24px; }
+  .card { border-radius:var(--r); border:1px solid #e5e7eb; background:#fff; padding:24px; }
+  .tier { border-radius:var(--r); border:1px solid #cbd5e1; padding:24px; background:#fff; }
+  .ico { color:#6366f1; }
+</style></head>
+<body>
+<section id="hero"><div class="wrap">
+  <span class="pill">✨ Introducing Bamti v2</span>
+  <h1>Ship your product faster than ever</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Your Company helps teams move quickly.</p>
+  <a class="btn" href="#">Get Started</a>
+  <button class="btn2">Learn More</button>
+  <p>Trusted by 10,000+ teams worldwide</p>
+</div></section>
+
+<section id="features"><div class="wrap"><h2>Features</h2>
+  <div class="grid">
+    <div class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><h3>Lightning Fast</h3><p>Built for speed and scale.</p></div>
+    <div class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/></svg><h3>Secure by Default</h3><p>Enterprise-grade security.</p></div>
+    <div class="card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg><h3>Global Scale</h3><p>Deploy anywhere instantly.</p></div>
+  </div>
+  <div class="grid" style="margin-top:24px">
+    <div><span>🚀</span><h4>Fast</h4></div><div><span>⚡</span><h4>Simple</h4></div><div><span>🔒</span><h4>Safe</h4></div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap"><h2>Pricing</h2>
+  <div class="grid">
+    <div class="tier"><h3>Starter</h3><p>$0</p><a class="btn" href="#">Get Started</a></div>
+    <div class="tier"><h3>Pro — Most Popular</h3><p>$29</p><a class="btn" href="#">Get Started</a></div>
+    <div class="tier"><h3>Enterprise</h3><p>Contact us</p><a class="btn" href="#">Get Started</a></div>
+  </div>
+</div></section>
+
+<section id="testimonials"><div class="wrap"><h2>Testimonials</h2>
+  <div class="grid">
+    <div class="card"><img src="https://i.pravatar.cc/64?img=1" width="64" height="64" alt=""><p>"Game changer."</p></div>
+    <div class="card"><img src="https://i.pravatar.cc/64?img=2" width="64" height="64" alt=""><p>"Incredible tool."</p></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1" width="64" height="64" alt=""><p>"Love it."</p></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="wrap"><h2>FAQ</h2>
+  <div class="card"><h3>How does it work?</h3><p>It just works.</p></div>
+</div></section>
+
+<footer><div class="wrap">
+  <a href="#">About</a> <a href="#">Blog</a> <a href="#">Careers</a> <a href="#">Privacy</a>
+  <a href="#">Terms</a> <a href="#">Docs</a> <a href="#">Support</a> <a href="#">Contact</a>
+  <button aria-label="Toggle dark mode">🌙</button>
+</div></footer>
+</body></html>

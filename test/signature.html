@@ -1,0 +1,117 @@
+<!doctype html><meta charset="utf-8"><title>밤티 시그니처 분석</title>
+<style>body{font:12px ui-monospace,monospace;margin:12px}pre{white-space:pre-wrap}</style>
+<pre id="out">분석 중…</pre>
+<script>
+const AI = ['deepseek_v4','glm_5.3','gpt_luna','kimi3','opus5','qwen_3.8']
+  .map(n => ({ n, group:'AI', url:`/asset/${n}/index.html` }));
+const HU = ['bootstrap','polaris','carbon','atlassian','basecamp','stripe']
+  .map(n => ({ n, group:'사람', url:`/test/mirror/${n}.html` }));
+const TARGETS = [...AI, ...HU];
+
+/* 렌더링 결과에서 뽑는 특징 — 익스텐션이 실제로 볼 수 있는 것만 */
+function profile(doc, win) {
+  const els = [...doc.body.querySelectorAll('*')].slice(0, 6000);
+  const cache = new WeakMap();
+  const S = el => { let v = cache.get(el); if (!v) { v = win.getComputedStyle(el); cache.set(el, v); } return v; };
+  const U = a => [...new Set(a)];
+  const N = els.length || 1;
+
+  let rules = 0, mq = 0, props = 0, sheets = 0;
+  for (const sh of doc.styleSheets) {
+    let rs; try { rs = sh.cssRules; } catch { continue; }
+    sheets++;
+    (function walk(list){ for (const r of list) { rules++;
+      if (r.type === 4) { mq++; if (r.cssRules) walk(r.cssRules); }
+      else if (r.style) { for (const p of r.style) if (p.startsWith('--')) props++; }
+    }})(rs);
+  }
+
+  const fams  = U(els.map(e => S(e).fontFamily.split(',')[0].replace(/["']/g,'').trim().toLowerCase())).filter(Boolean);
+  const sizes = U(els.map(e => S(e).fontSize));
+  const radii = U(els.map(e => S(e).borderTopLeftRadius).filter(r => r && r !== '0px'));
+  const pads  = U(els.flatMap(e => [S(e).paddingTop, S(e).paddingLeft]).filter(p => p && p !== '0px'));
+  const wts   = U(els.map(e => S(e).fontWeight));
+  const shadows = U(els.map(e => S(e).boxShadow).filter(s => s && s !== 'none'));
+  const colors = U(els.map(e => S(e).color));
+  const bgs = U(els.map(e => S(e).backgroundColor).filter(c => c && !/rgba\(0, 0, 0, 0\)/.test(c)));
+
+  const cls = els.flatMap(e => (e.getAttribute('class')||'').split(/\s+/)).filter(Boolean);
+  const uCls = U(cls);
+  const hashed = uCls.filter(c => /^[a-z]*[-_][a-zA-Z0-9]{5,}$/.test(c) || /[a-f0-9]{6,}/i.test(c)).length;
+  const utility = uCls.filter(c => /^(m|p)[trblxy]?-|^(flex|grid|text|bg|w|h|gap|rounded|border|shadow|items|justify)-/.test(c)).length;
+  const bem = uCls.filter(c => /__|--/.test(c)).length;
+
+  const px = v => parseFloat(v) || 0;
+  const spacings = pads.map(px).filter(v => v > 0).sort((a,b)=>a-b);
+  const div4 = spacings.filter(v => v % 4 === 0).length;
+
+  return {
+    dom: els.length,
+    sheets, rules, mq, props,
+    mqPer100: +(mq / Math.max(rules,1) * 100).toFixed(2),
+    propsPer100: +(props / Math.max(rules,1) * 100).toFixed(1),
+    fams: fams.length, sizes: sizes.length, wts: wts.length,
+    radii: radii.length, pads: pads.length, shadows: shadows.length,
+    colors: colors.length, bgs: bgs.length,
+    sizesPerK: +(sizes.length / N * 1000).toFixed(1),
+    radiiPerK: +(radii.length / N * 1000).toFixed(1),
+    uClsPerK:  +(uCls.length / N * 1000).toFixed(1),
+    hashedPct: +(hashed / Math.max(uCls.length,1) * 100).toFixed(0),
+    utilPct:   +(utility / Math.max(uCls.length,1) * 100).toFixed(0),
+    bemPct:    +(bem / Math.max(uCls.length,1) * 100).toFixed(0),
+    div4Pct:   +(div4 / Math.max(spacings.length,1) * 100).toFixed(0),
+    ariaPct:   +(els.filter(e => [...e.attributes].some(a=>a.name.startsWith('aria-'))).length / N * 100).toFixed(1),
+    svgPerK:   +(doc.querySelectorAll('svg').length / N * 1000).toFixed(1),
+    imgPerK:   +(doc.querySelectorAll('img').length / N * 1000).toFixed(1),
+    depth: els.reduce((m,e)=>{let d=0,n=e;while(n&&n!==doc.body){d++;n=n.parentElement}return Math.max(m,d)},0),
+  };
+}
+
+function load(url) {
+  return new Promise(res => {
+    const f = document.createElement('iframe');
+    f.style.cssText = 'width:1280px;height:900px;position:absolute;left:-9999px';
+    f.src = url;
+    f.onload = () => setTimeout(() => {
+      let p = null;
+      try { p = profile(f.contentDocument, f.contentWindow); } catch (e) { p = { err: String(e.message) }; }
+      f.remove(); res(p);
+    }, 350);
+    document.body.append(f);
+  });
+}
+
+(async () => {
+  const rows = [];
+  for (const t of TARGETS) rows.push({ ...t, ...(await load(t.url)) });
+  const keys = Object.keys(rows[0]).filter(k => typeof rows[0][k] === 'number');
+
+  // 특징별 분리도: AI 범위와 사람 범위가 안 겹치면 깨끗한 분리자
+  const sep = [];
+  for (const k of keys) {
+    const a = rows.filter(r=>r.group==='AI').map(r=>r[k]).filter(v=>v!=null);
+    const h = rows.filter(r=>r.group==='사람').map(r=>r[k]).filter(v=>v!=null);
+    if (a.length < 5 || h.length < 5) continue;
+    const aMin=Math.min(...a), aMax=Math.max(...a), hMin=Math.min(...h), hMax=Math.max(...h);
+    const clean = aMax < hMin || hMax < aMin;
+    const gap = clean ? (aMax < hMin ? hMin - aMax : aMin - hMax) : 0;
+    const mid = clean ? (aMax < hMin ? (aMax+hMin)/2 : (hMax+aMin)/2) : null;
+    sep.push({ k, clean, gap:+gap.toFixed(2), thr:mid, ai:`${aMin}~${aMax}`, hu:`${hMin}~${hMax}`,
+               dir: clean ? (aMax < hMin ? 'AI가 낮음' : 'AI가 높음') : '' });
+  }
+  sep.sort((x,y)=> (y.clean-x.clean) || (y.gap-x.gap));
+
+  let s = '【 대상별 프로파일 】\n';
+  s += 'name'.padEnd(14)+'grp'.padEnd(5)+keys.slice(0,9).map(k=>k.padStart(9)).join('')+'\n';
+  for (const r of rows) s += r.n.padEnd(14)+r.group.padEnd(4)+keys.slice(0,9).map(k=>String(r[k]).padStart(9)).join('')+'\n';
+
+  s += '\n【 완전 분리 특징 (AI 범위와 사람 범위가 안 겹침) 】\n';
+  const clean = sep.filter(x=>x.clean);
+  s += clean.length ? clean.map(x=>`  ✅ ${x.k.padEnd(13)} AI ${x.ai.padEnd(14)} 사람 ${x.hu.padEnd(14)} ${x.dir}  임계 ${x.thr}`).join('\n')
+                    : '  (없음)';
+  s += '\n\n【 겹치는 특징 상위 8 】\n';
+  s += sep.filter(x=>!x.clean).slice(0,8).map(x=>`  · ${x.k.padEnd(13)} AI ${x.ai.padEnd(14)} 사람 ${x.hu}`).join('\n');
+  document.getElementById('out').textContent = s;
+  window.__done = true;
+})();
+</script>
