@@ -290,30 +290,39 @@
     },
     {
       id: 'headline-terminal-period', kind: 'taste', cat: 'visual', weight: 5,
-      get label() { return tr('대제목 끝 마침표'); },
-      get hint() { return tr('"Small parts. Clear systems." 처럼 짧은 대제목에 찍는 마침표는 편집디자인 흉내로 읽힙니다. 헤드라인은 문장이 아니라 표지라서 종지부가 필요 없습니다. 빼세요.'); },
+      get label() { return tr('짧은 문구 끝 마침표 검토'); },
+      get hint() { return tr('짧게 독립 배치된 UI 문구 끝에 마침표가 붙어 있습니다. 완결된 문장이어도 마침표를 생략해 화면의 읽는 흐름을 가볍게 만들어보세요. 여러 문장이 이어지는 본문, 약어·숫자·브랜드 표기는 별도로 판단하세요. 문법 오류나 AI 작성 판정은 아닙니다.'); },
       detect(ctx) {
-        const ABBR = /\b(inc|ltd|co|corp|etc|vs|jr|sr|dr|mr|ms|st|no|ex|e\.g|i\.e)\.$/i;
+        const excluded = 'nav,footer,form,table,dl,time,code,pre,kbd,blockquote,q,cite,[role="navigation"],[role="feed"],[role="menu"],[role="status"],[contenteditable]:not([contenteditable="false"])';
+        const ABBR = /\b(?:inc|ltd|co|corp|etc|vs|jr|sr|dr|mr|mrs|ms|st|no|ex|e\.g|i\.e)\./i;
+        const parts = text => text.split(/[.．。!?！？]\s*/).map(s => s.trim()).filter(Boolean);
         const hits = [];
-        for (const h of ctx.query('h1')) {   // 대제목만 — h2 소제목은 문장일 수 있다
-          const t = (h.innerText || h.textContent || '').replace(/\s+/g, ' ').trim();
-          if (!t || t.length > 80) continue;
-          if (!/[.．。]$/.test(t) || /\.{2,}$/.test(t) || ABBR.test(t)) continue;
-
-          // 이 장치의 핵심형: 짧은 조각을 마침표로 끊어 나열
-          const frags = t.split(/[.．。]\s*/).filter(Boolean);
-          const isStacked = frags.length >= 2 && frags.every(f => f.length <= 30);
-          const isTerse   = t.length <= 30;
-          if (!isStacked && !isTerse) continue;             // 완결된 문장형 헤드라인은 통과
-
-          hits.push(t);
+        for (const h of ctx.query('h1,h2,h3,h4,h5,h6,p,small,span,a,button,[role="button"]')) {
+          if (h.closest(excluded) || h.querySelector('h1,h2,h3,h4,h5,h6,p,div,section,article,ul,ol')) continue;
+          const raw = (h.innerText || h.textContent || '').trim();
+          const t = raw.replace(/\s+/g, ' ');
+          const explicitLines = !!h.querySelector('br');
+          if (!t || t.length > (explicitLines ? 160 : 80)) continue;
+          if (!/[.．。]$/.test(t) || /\.{2,}|…|[．。]{2,}/.test(t) || ABBR.test(t)) continue;
+          // Numbers, addresses and dotted identifiers are not decorative stops.
+          if (/\d[.．]\d|[\p{L}\d]\.[\p{L}\d]|https?:|www\.|@/u.test(t)) continue;
+          const heading = h.matches('h1,h2,h3,h4,h5,h6');
+          // Grammar is not the gate: complete sentences can be UI microcopy.
+          // Keep continuous multi-sentence prose, including inline span children.
+          const paragraph = h.parentElement?.closest('p,[role="paragraph"]');
+          if (paragraph && !paragraph.querySelector('br') && parts(paragraph.innerText || paragraph.textContent || '').length > 1) continue;
+          const frags = parts(t);
+          if (!frags.length || frags.some(f => !/[\p{L}]/u.test(f))) continue;
+          if (!heading && !explicitLines && frags.length > 1) continue;
+          if (explicitLines && raw.split(/\n+/).some(line => line.trim().length > 80 || parts(line).length > 1)) continue;
+          if (hits.some(x => x.node.contains(h))) continue;
+          hits.push({ node: h, text: t });
         }
         if (!hits.length) return null;
         return {
-          ev: hits.slice(0, 3).map(t => `"${t.slice(0, 34)}"`).join(', ')
+          ev: hits.slice(0, 3).map(x => `"${x.text.slice(0, 64)}"`).join(', ')
               + (hits.length > 3 ? tr` 외 ${hits.length - 3}개` : ''),
-          nodes: ctx.query('h1').filter(h =>
-            hits.includes((h.innerText || h.textContent || '').replace(/\s+/g, ' ').trim())),
+          nodes: hits.map(x => x.node),
         };
       }
     },

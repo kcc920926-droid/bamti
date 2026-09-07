@@ -446,8 +446,9 @@ function renderList() {
   const query = $('search').value.trim().toLocaleLowerCase();
   const matches = s => `${s.label} ${s.evidence} ${s.hint}`.toLocaleLowerCase().includes(query);
   const tells = r.signals.filter(s => (category === 'all' || s.cat === category) && matches(s));
-  const labelReviews = (r.taste || []).filter(s => s.id === 'eyebrow-microlabel' && (category === 'all' || category === s.cat) && matches(s));
-  const tastes = (r.taste || []).filter(s => s.id !== 'eyebrow-microlabel' && category === 'all' && matches(s));
+  const inlineReview = s => ['eyebrow-microlabel', 'headline-terminal-period'].includes(s.id);
+  const labelReviews = (r.taste || []).filter(s => inlineReview(s) && (category === 'all' || category === s.cat) && matches(s));
+  const tastes = (r.taste || []).filter(s => !inlineReview(s) && category === 'all' && matches(s));
   const prose = proseFindings(r).filter(s => category === 'all' && matches(s));
   $('prosesummary').textContent = tr`문체 검사 · ${proseFindings(r).length}개 항목`;
   $('jumpprose').textContent = $('prosesummary').textContent + ' ↓';
@@ -475,7 +476,7 @@ function renderList() {
   }
 
   if (labelReviews.length) {
-    frag.append(group(tr('레이블·제목 구조 검토 · 점수 제외')));
+    frag.append(group(tr('표현·구조 검토 · 점수 제외')));
     for (const s of labelReviews) frag.append(row(s, false));
   }
   $('list').replaceChildren(frag);

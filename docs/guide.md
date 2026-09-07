@@ -28,7 +28,7 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 | 근거와 위치 | 원문·개선 방향을 읽고 **이 항목만 표시**로 요소나 문단 확인 |
 | 복사 | 개별 제안, 전체 제안, JSON 리포트 복사. JSON에는 요소 셀렉터·HTML 일부 포함 |
 
-**레이블·제목 구조 검토**는 기본 결과 목록에서 바로 표시하며 점수에는 넣지 않습니다.
+**표현·구조 검토**는 기본 결과 목록에서 바로 표시하며 점수에는 넣지 않습니다.
 `brand-tagline`, `service-name` 같은 클래스명을 검색하는 대신, 작은 레이블과 그 아래
 제목의 위치·글자 크기·주변 구조를 검사합니다. 중간의 작은 화살표와 제목 래퍼도 처리합니다.
 한 곳부터 검토하며, 서로 다른 제목 3곳 이상에 반복되면 반복 사용으로 표시합니다.
@@ -39,6 +39,16 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 내비게이션·폼·표·날짜·상태 정보와 서비스형 화면은 제외합니다. 클래스명이나 사용 횟수만으로
 AI 작성 여부 또는 불필요한 장식이라고 확정하지 않습니다. JSON에서는 기존 호환성을 위해
 `taste`의 `eyebrow-microlabel` 항목을 사용하며, 전체 제안 복사와 개별 위치 표시를 지원합니다.
+
+**짧은 문구 끝 마침표 검토**는 제목·라벨·짧은 안내·버튼의 끝 마침표를 한 곳부터
+검토합니다. 문법이 아니라 UI 카피의 읽는 흐름을 보는 규칙이므로, “복습하세요.”나
+“확인합니다.”처럼 완결된 문장도 독립 배치되면 생략을 제안합니다.
+일반 문구는 80자 이하이며 `.`, `．`, `。`를 지원합니다. `<br>`로 명시적으로 나뉜
+문구는 전체 160자·각 줄 80자 이하에서 검사합니다. 여러 문장이 한 문단에 이어지는
+본문은 제외하며, 그 본문의 일부만 감싼 인라인 요소도 별도 문구로 오인하지 않습니다.
+약어·소수·버전·주소·말줄임표·인용·메뉴·입력 영역 제외는 유지합니다.
+레이아웃에 대한 휴리스틱이므로 누락·오탐은 가능하며, 문법 오류나 AI 작성 판정은
+아닙니다. JSON의 기존 `taste/headline-terminal-period` ID는 유지합니다.
 
 **0점은 현재 규칙이 놓친 패턴이 없다는 보장이 아닙니다.** 엔진은 정해진 시그니처를
 검사하며, 화면 인상을 평가하는 LLM은 아직 연결되지 않았습니다. 분모가 전체 규칙의
@@ -218,6 +228,7 @@ npx playwright install chromium
 |---|---|
 | `node test/engine-precision.cjs` | UI 오탐·누락 31검사, `--live`로 공개 URL 추가 확인 |
 | `node test/label-review.cjs` | 레이블·제목 연결·장식 반복·한영 패널 25검사 |
+| `node test/period-review.cjs` | 독립 UI 문구 마침표·이어지는 본문·기호 제외·한영 패널 34검사 |
 | `node test/prose.cjs` | 한영 문체·문단 간 반복·제외 영역·패널 75검사 |
 | `node test/prose-fragments.cjs` | 단일 표현·분절된 DOM·제안 구분·패널 46검사 |
 | `node mcp/report.test.mjs` | 문체 요약·단일 표현·문맥 구분·제한·호환성 20검사 |
@@ -231,6 +242,7 @@ npx playwright install chromium
 테스트 페이지:
 [패널 프리뷰](../test/panel-preview.html), [한영 예문](../test/fixtures/prose-bilingual.html), [문단 간 반복 예문](../test/fixtures/prose-distributed.html),
 [레이블 구조 예문](../test/fixtures/label-review.html),
+[마침표 검토 예문](../test/fixtures/period-review.html),
 [짧은 표현 예문](../test/fixtures/prose-fragments.html),
 [UI 회귀](../test/regression.html), [홍보용 재현 데모](../asset/viral/README.md).
 프리뷰·MCP 모의 테스트는 실제 사용자 프로필의 연결 성공을 증명하지 않습니다.
@@ -295,6 +307,14 @@ more distinct heading locations are marked as repeated use. Service identifiers
 and audience labels are contextual information, not automatic deletion advice.
 Navigation, forms, tables, dates, status indicators and application screens are
 excluded. JSON keeps this review under `taste` with ID `eyebrow-microlabel`.
+
+Short, separately presented headings, labels, descriptions and button copy ending
+in a period are reviewed in the main results (`taste/headline-terminal-period`).
+Complete sentences are eligible: this checks UI reading flow, not grammatical
+correctness. Continuous multi-sentence paragraphs remain excluded. Explicit `<br>`
+lines can be treated as separate copy; abbreviations, numbers, versions, addresses,
+ellipses and quotations remain excluded. This is optional style advice, not an
+AI-authorship verdict.
 
 Additional writing evidence covers individual paragraphs and nearby groups (up to 5 blocks /
 2,400 characters). Real prose inside linked cards is included. Cross-paragraph

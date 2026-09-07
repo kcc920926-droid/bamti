@@ -3,6 +3,9 @@
 (() => {
   const B = (globalThis.BAMTI ||= {});
   B.EN = {
+    '짧은 문구 끝 마침표 검토': 'Review periods after short phrases',
+    '짧게 독립 배치된 UI 문구 끝에 마침표가 붙어 있습니다. 완결된 문장이어도 마침표를 생략해 화면의 읽는 흐름을 가볍게 만들어보세요. 여러 문장이 이어지는 본문, 약어·숫자·브랜드 표기는 별도로 판단하세요. 문법 오류나 AI 작성 판정은 아닙니다.': 'A short, separately presented UI message ends in a period. Even for a complete sentence, consider omitting the period for a lighter reading flow. Treat continuous multi-sentence prose, abbreviations, numbers and brand styling separately. This is not a grammar error or an AI-authorship verdict.',
+    '표현·구조 검토 · 점수 제외': 'Wording and structure review · Not scored',
     '제목 위 작은 레이블 검토': 'Review small labels above headings',
     '장식 레이블 반복 사용 검토': 'Review repeated decorative labels',
     '서비스 식별명과 대상 구분은 필요한 정보일 수 있습니다. 이름은 유지하고 제목과 겹치는 비유·슬로건만 줄일지 검토하세요. 레이블이 여러 영역에서 반복되면 일부 영역은 제목부터 시작해 위계를 단순하게 만들어보세요.': 'Service names and audience labels may be useful information. Keep identifying names and consider trimming metaphors or slogans that duplicate the heading. If labels repeat across areas, let some areas start directly with a heading to simplify the hierarchy.',
