@@ -75,6 +75,66 @@
 
   const txt = el => (el.textContent || '').trim().toLowerCase();
 
+  // Small labels above headings, matched by rendered structure, not class names.
+  function labelReviews(ctx) {
+    if (ctx.pageType.key === 'application') return [];
+    const excluded = 'nav,footer,form,table,dl,label,legend,time,button,[role="status"],[role="alert"],[role="navigation"],[role="feed"],[role="tablist"],[role="menu"],[role="dialog"]';
+    const visible = new Set(ctx.els);
+    const heads = ctx.query('h1,h2,h3,h4').filter(el => !el.closest(excluded));
+    const headingSet = new Set(heads);
+    const decorative = el => {
+      if (!visible.has(el)) return !heads.some(h => el.contains(h));
+      const r = el.getBoundingClientRect();
+      return !el.matches('a,button,input') && r.width <= 64 && r.height <= 48
+        && (el.tagName.toLowerCase() === 'svg' || !/[\p{L}\p{N}]/u.test(el.textContent || ''));
+    };
+    const leadingHeading = (el, depth = 0) => {
+      if (headingSet.has(el)) return el;
+      if (depth >= 3 || el.closest(excluded)) return null;
+      for (const node of el.childNodes) {
+        if (node.nodeType === 3 && /[\p{L}\p{N}]/u.test(node.textContent)) return null;
+        if (node.nodeType !== 1 || decorative(node)) continue;
+        return leadingHeading(node, depth + 1);
+      }
+      return null;
+    };
+    const nextHeading = label => {
+      let current = label;
+      for (let level = 0; current && level < 4; level++) {
+        let next = current.nextElementSibling;
+        for (let n = 0; next && n < 4; n++, next = next.nextElementSibling) {
+          if (decorative(next)) continue;
+          return leadingHeading(next);
+        }
+        const parent = current.parentElement;
+        if (!parent || parent.matches('section,article,main,body,a') || parent.closest(excluded)) return null;
+        // A label below this card's heading must not attach to the next card.
+        if (heads.some(h => parent.contains(h) && (h.compareDocumentPosition(label) & 4))) return null;
+        current = parent;
+      }
+      return null;
+    };
+    const matched = new Map();
+    for (const el of ctx.els) {
+      if (!el.matches('p,span,div,small') || el.closest(excluded)) continue;
+      if ([...el.children].some(c => !c.matches('span,strong,em,b,i,small,svg') && !decorative(c))) continue;
+      const text = (el.textContent || '').trim();
+      if (!text || text.length > 64 || !/[\p{L}]/u.test(text) || /^h[1-6]$/i.test(text)) continue;
+      const size = parseFloat(ctx.cs(el).fontSize);
+      if (!size || size > 15) continue;
+      const heading = nextHeading(el);
+      if (!heading || parseFloat(ctx.cs(heading).fontSize) / size < 1.4) continue;
+      const r = el.getBoundingClientRect(), h = heading.getBoundingClientRect();
+      if (h.top < r.bottom - 4 || h.top - r.bottom > 100 || Math.min(r.right, h.right) <= Math.max(r.left, h.left)) continue;
+      const old = matched.get(heading);
+      if (old && old.el.contains(el)) continue;
+      const contextual = /^(for\s+|대상\s*[:：]|(?:개발자|사용자|제작자|고객|판매자)용(?:\s|$))/i.test(text)
+        || /^[A-Z][A-Z\d.-]{1,15}(?:\s|$)/.test(text) || /^[\p{L}\d.-]{1,24}$/u.test(text);
+      matched.set(heading, { el, heading, text, contextual });
+    }
+    return [...matched.values()];
+  }
+
   /* ── 시그널 ───────────────────────────────────────────────────── */
   B.SIGNALS = [
 
@@ -214,55 +274,17 @@
 
     {
       id: 'eyebrow-microlabel', kind: 'taste', cat: 'visual', weight: 7,
-      get label() { return tr('올캡스 자간 마이크로 레이블 (eyebrow)'); },
-      get hint() { return tr('"INTERFACE INVENTORY · 2026" 류의 장식 레이블입니다. 정보를 거의 안 나르면서 헤드라인의 첫인상을 가로막습니다. 지우고 헤드라인부터 시작하세요. 꼭 필요한 정보면 헤드라인이나 본문 안으로 넣으세요.'); },
+      get label() { return tr('제목 위 작은 레이블 검토'); },
+      get hint() { return tr('서비스 식별명과 대상 구분은 필요한 정보일 수 있습니다. 이름은 유지하고 제목과 겹치는 비유·슬로건만 줄일지 검토하세요. 레이블이 여러 영역에서 반복되면 일부 영역은 제목부터 시작해 위계를 단순하게 만들어보세요.'); },
       detect(ctx) {
-        // 시맨틱 라벨은 장식이 아니라 라벨링이다 — 제외
-        const SEMANTIC = /^(DT|TH|LABEL|LEGEND|CAPTION|OPTION|TIME|KBD)$/;
-        // <span class="kicker"><i></i>TEXT</span> 처럼 장식용 빈 자식은 허용
-        const leafish = el => el.children.length === 0
-          || [...el.children].every(c => !(c.textContent || '').trim());
-
-        // eyebrow의 정의적 특징: "바로 뒤에 헤딩이 온다"
-        const headingAfter = el => {
-          let nx = el.nextElementSibling;
-          if (!nx && el.parentElement && el === el.parentElement.lastElementChild)
-            nx = el.parentElement.nextElementSibling;
-          return nx && /^H[1-3]$/.test(nx.tagName) ? nx : null;
-        };
-
-        const micro = [], eyebrows = [];
-        for (const el of ctx.els) {
-          if (SEMANTIC.test(el.tagName) || !leafish(el)) continue;
-          const t = (el.textContent || '').trim();
-          if (!t || t.length > 42 || /^[\d,.]+$/.test(t)) continue;
-          if (/^h[1-6]$/i.test(t)) continue;            // 타이포 견본의 "H1" 라벨
-
-          const cs = ctx.cs(el);
-          const fs = parseFloat(cs.fontSize) || 16;
-          if (fs > 15) continue;                                   // 마이크로 사이즈만
-
-          const ls = parseFloat(cs.letterSpacing);
-          const spaced = !isNaN(ls) && ls / fs >= 0.04;            // 자간 4% 이상
-          const upper  = cs.textTransform === 'uppercase'
-                      || (/[A-Za-z]/.test(t) && t === t.toUpperCase());
-          if (!spaced && !upper) continue;
-          micro.push(el);
-
-          const h = headingAfter(el);
-          if (!h) continue;
-          // 크기 대비가 없으면 eyebrow가 아니라 그냥 소제목이다
-          if ((parseFloat(ctx.cs(h).fontSize) || 16) / fs < 1.6) continue;
-          eyebrows.push({ el, t });
-        }
-
-        if (eyebrows.length < 2) return null;
-        const sample = eyebrows.slice(0, 3).map(e => `"${e.t.slice(0, 26)}"`).join(', ');
-        const rest = micro.length - eyebrows.length;
+        const pairs = labelReviews(ctx);
+        if (!pairs.length) return null;
+        const repeated = pairs.length >= 3;
         return {
-          ev: tr`헤드라인 위 ${eyebrows.length}개 — ${sample}`
-              + (rest > 0 ? tr` · 마이크로 레이블 ${rest}개는 헤딩 앞이 아니라 제외` : ''),
-          nodes: eyebrows.map(e => e.el),
+          label: repeated ? tr('장식 레이블 반복 사용 검토') : tr('제목 위 작은 레이블 검토'),
+          ev: (repeated ? tr`서로 다른 제목 ${pairs.length}곳 위에서 같은 레이블 구조 반복` : tr('레이블 한 곳부터 검토 · 점수 제외')) + ' · '
+            + pairs.slice(0, 6).map(p => (p.contextual ? tr('문맥 확인') : tr('장식 여부 검토')) + `: “${p.text}” → “${(p.heading.textContent || '').trim().slice(0, 64)}”`).join(' / '),
+          nodes: pairs.map(p => p.el),
         };
       }
     },

@@ -28,6 +28,18 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 | 근거와 위치 | 원문·개선 방향을 읽고 **이 항목만 표시**로 요소나 문단 확인 |
 | 복사 | 개별 제안, 전체 제안, JSON 리포트 복사. JSON에는 요소 셀렉터·HTML 일부 포함 |
 
+**레이블·제목 구조 검토**는 기본 결과 목록에서 바로 표시하며 점수에는 넣지 않습니다.
+`brand-tagline`, `service-name` 같은 클래스명을 검색하는 대신, 작은 레이블과 그 아래
+제목의 위치·글자 크기·주변 구조를 검사합니다. 중간의 작은 화살표와 제목 래퍼도 처리합니다.
+한 곳부터 검토하며, 서로 다른 제목 3곳 이상에 반복되면 반복 사용으로 표시합니다.
+서비스명·대상 구분처럼 필요한 정보일 수 있는 항목은 문맥 확인으로 안내합니다.
+
+현재 범위는 레이블 64자·15px 이하, 제목 크기 비율 1.4배 이상, 세로 간격 100px 이하입니다.
+가로 위치가 겹쳐야 하며 탐색 깊이는 제한됩니다. 다른 카드의 제목, 숨긴 내용,
+내비게이션·폼·표·날짜·상태 정보와 서비스형 화면은 제외합니다. 클래스명이나 사용 횟수만으로
+AI 작성 여부 또는 불필요한 장식이라고 확정하지 않습니다. JSON에서는 기존 호환성을 위해
+`taste`의 `eyebrow-microlabel` 항목을 사용하며, 전체 제안 복사와 개별 위치 표시를 지원합니다.
+
 **0점은 현재 규칙이 놓친 패턴이 없다는 보장이 아닙니다.** 엔진은 정해진 시그니처를
 검사하며, 화면 인상을 평가하는 LLM은 아직 연결되지 않았습니다. 분모가 전체 규칙의
 가중치 합이므로 새 규칙을 추가하면 같은 페이지의 점수도 달라질 수 있습니다.
@@ -205,6 +217,7 @@ npx playwright install chromium
 | 명령 | 범위 |
 |---|---|
 | `node test/engine-precision.cjs` | UI 오탐·누락 31검사, `--live`로 공개 URL 추가 확인 |
+| `node test/label-review.cjs` | 레이블·제목 연결·장식 반복·한영 패널 25검사 |
 | `node test/prose.cjs` | 한영 문체·문단 간 반복·제외 영역·패널 75검사 |
 | `node test/prose-fragments.cjs` | 단일 표현·분절된 DOM·제안 구분·패널 46검사 |
 | `node mcp/report.test.mjs` | 문체 요약·단일 표현·문맥 구분·제한·호환성 20검사 |
@@ -217,6 +230,7 @@ npx playwright install chromium
 
 테스트 페이지:
 [패널 프리뷰](../test/panel-preview.html), [한영 예문](../test/fixtures/prose-bilingual.html), [문단 간 반복 예문](../test/fixtures/prose-distributed.html),
+[레이블 구조 예문](../test/fixtures/label-review.html),
 [짧은 표현 예문](../test/fixtures/prose-fragments.html),
 [UI 회귀](../test/regression.html), [홍보용 재현 데모](../asset/viral/README.md).
 프리뷰·MCP 모의 테스트는 실제 사용자 프로필의 연결 성공을 증명하지 않습니다.
@@ -273,6 +287,14 @@ gate. Headings, short descriptions, buttons and link text are included. Wording
 suggestions are distinguished from context checks for ordinary or technical terms;
 neither determines AI authorship. Navigation, input values, code and quotations
 remain excluded.
+
+Small labels above headings also appear directly in the results, without affecting
+the UI score. Matching uses rendered structure, not class names; small arrows and
+heading wrappers are supported. Even a single label is reviewable, and three or
+more distinct heading locations are marked as repeated use. Service identifiers
+and audience labels are contextual information, not automatic deletion advice.
+Navigation, forms, tables, dates, status indicators and application screens are
+excluded. JSON keeps this review under `taste` with ID `eyebrow-microlabel`.
 
 Additional writing evidence covers individual paragraphs and nearby groups (up to 5 blocks /
 2,400 characters). Real prose inside linked cards is included. Cross-paragraph

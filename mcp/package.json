@@ -1,6 +1,6 @@
 {
   "name": "bamti-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "밤티 확장 ↔ 로컬 AI 에이전트 브리지. MCP(stdio) 서버이자 WebSocket 서버.",

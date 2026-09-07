@@ -75,7 +75,7 @@
         id: sig.id, cat: sig.cat, weight: sig.weight,
         kind: sig.kind || 'tell',
         scope: sig.scope || 'element',
-        label: sig.label, hint: sig.hint,
+        label: res.label || sig.label, hint: sig.hint,
         evidence: res.ev,
         count: res.nodes ? res.nodes.length : 0,
       });

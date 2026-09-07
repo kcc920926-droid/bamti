@@ -446,7 +446,8 @@ function renderList() {
   const query = $('search').value.trim().toLocaleLowerCase();
   const matches = s => `${s.label} ${s.evidence} ${s.hint}`.toLocaleLowerCase().includes(query);
   const tells = r.signals.filter(s => (category === 'all' || s.cat === category) && matches(s));
-  const tastes = (r.taste || []).filter(s => category === 'all' && matches(s));
+  const labelReviews = (r.taste || []).filter(s => s.id === 'eyebrow-microlabel' && (category === 'all' || category === s.cat) && matches(s));
+  const tastes = (r.taste || []).filter(s => s.id !== 'eyebrow-microlabel' && category === 'all' && matches(s));
   const prose = proseFindings(r).filter(s => category === 'all' && matches(s));
   $('prosesummary').textContent = tr`문체 검사 · ${proseFindings(r).length}개 항목`;
   $('jumpprose').textContent = $('prosesummary').textContent + ' ↓';
@@ -462,7 +463,7 @@ function renderList() {
   document.querySelectorAll('[data-category]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.category === category)));
   $('resetfilter').setAttribute('aria-pressed', String(category === 'all'));
   $('resultcount').textContent = tr`UI ${tells.length} / ${r.firedCount}개 항목`;
-  $('expandall').disabled = !tells.length && !prose.length;
+  $('expandall').disabled = !tells.length && !prose.length && !labelReviews.length;
   $('expandall').textContent = expanded ? tr('모두 접기') : tr('모두 펼치기');
   $('expandall').setAttribute('aria-expanded', String(expanded));
   const frag = document.createDocumentFragment();
@@ -473,11 +474,15 @@ function renderList() {
     for (const s of items) frag.append(row(s, k === 'unfinished'));
   }
 
+  if (labelReviews.length) {
+    frag.append(group(tr('레이블·제목 구조 검토 · 점수 제외')));
+    for (const s of labelReviews) frag.append(row(s, false));
+  }
   $('list').replaceChildren(frag);
   $('tastegroup').hidden = !tastes.length;
   $('tastesummary').textContent = tr`참고 패턴 ${tastes.length}개 · 점수 제외`;
   $('tastelist').replaceChildren(...tastes.map(s => row(s, false)));
-  $('noresults').hidden = !!tells.length || !!prose.length;
+  $('noresults').hidden = !!tells.length || !!prose.length || !!labelReviews.length;
   const filtering = !!query || category !== 'all';
   $('noresultsmsg').textContent = filtering ? tr('이 조건에 맞는 개선 항목이 없습니다.') : tr('현재 규칙에서 발견한 지문이 없습니다. 실제 동작과 화면도 함께 확인해주세요.');
   $('clearsearch').hidden = !filtering;

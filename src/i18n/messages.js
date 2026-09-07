@@ -3,6 +3,14 @@
 (() => {
   const B = (globalThis.BAMTI ||= {});
   B.EN = {
+    '제목 위 작은 레이블 검토': 'Review small labels above headings',
+    '장식 레이블 반복 사용 검토': 'Review repeated decorative labels',
+    '서비스 식별명과 대상 구분은 필요한 정보일 수 있습니다. 이름은 유지하고 제목과 겹치는 비유·슬로건만 줄일지 검토하세요. 레이블이 여러 영역에서 반복되면 일부 영역은 제목부터 시작해 위계를 단순하게 만들어보세요.': 'Service names and audience labels may be useful information. Keep identifying names and consider trimming metaphors or slogans that duplicate the heading. If labels repeat across areas, let some areas start directly with a heading to simplify the hierarchy.',
+    '서로 다른 제목 {0}곳 위에서 같은 레이블 구조 반복': 'The same label structure repeats above {0} different headings',
+    '레이블 한 곳부터 검토 · 점수 제외': 'Review even a single label · Not scored',
+    '문맥 확인': 'Check context',
+    '장식 여부 검토': 'Review decorative role',
+    '레이블·제목 구조 검토 · 점수 제외': 'Label and heading review · Not scored',
     '문맥 확인: {0}': 'Check context: {0}',
     '표현 제안: {0}': 'Wording suggestion: {0}',
     '단일 표현 검사 · {0}회 · {1}개 위치 · AI 작성 판정 아님': 'Individual expression · {0} occurrences · {1} locations · Not an AI authorship verdict',

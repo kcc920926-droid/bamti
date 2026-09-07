@@ -94,7 +94,7 @@ const text = obj => ({ content: [{ type: 'text', text: typeof obj === 'string' ?
 const fail = e => ({ content: [{ type: 'text', text: `오류: ${e.message}` }], isError: true });
 
 /* ── MCP 도구 ─────────────────────────────────────────────────────── */
-const server = new McpServer({ name: 'bamti', version: '0.2.0' });
+const server = new McpServer({ name: 'bamti', version: '0.3.0' });
 
 server.tool('bamti_status',
   '밤티 확장과의 연결 상태, 마지막 리포트 요약(점수·시각·URL)을 반환한다. 다른 도구가 실패하면 먼저 이걸 호출해 원인을 본다.',
