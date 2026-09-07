@@ -41,6 +41,16 @@ Chrome 내부 페이지와 웹스토어 같은 제한된 페이지는 검사할 
 브라우저용으로 적용한 것입니다. 전체 LLM 윤문 엔진이나 학습된 작성자 판별 모델이 아닙니다.
 [원본 출처와 MIT 고지](../THIRD_PARTY_NOTICES.md), [임계값·검사 제외 영역](../src/prose/README.md)을 참고하세요.
 
+문체의 기본 결과에는 **한 번만 나온 단어나 어구도 표시**합니다. 제목·짧은 설명·버튼·링크
+문구를 글자 수나 반복 횟수 제한 없이 검사해 **표현 제안** 또는 **문맥 확인**으로 나눕니다.
+`~를 통해`, `robust`처럼 자연스러울 수도 있는 표현은 문맥 확인이며, 고쳐야 한다거나
+AI가 썼다는 뜻이 아닙니다. 메뉴·피드·인용·입력값·숨겨진 텍스트는 제외합니다.
+
+추가 근거로 문단별 검사와 **최대 5개 인접 문단·2,400자 묶음 검사**를 함께 수행합니다.
+짧더라도 실제 설명 문단이면 묶음에 포함하며, 링크 카드 안의 본문도 검사합니다.
+문단 간 반복은 근거에 따로 표시하고 원래 문단 위치를 강조합니다. 메뉴·피드·인용·서로
+다른 기사는 합산하지 않으며, 겹치는 묶음에서 발견한 같은 표현은 중복 집계하지 않습니다.
+
 패널 상단 **언어 / Language**에서 한국어·English·브라우저 언어를 선택할 수 있습니다.
 본문 검사 언어는 표시 언어와 별개이며, 페이지의 원문은 번역하지 않습니다.
 
@@ -139,14 +149,19 @@ npm ci --prefix mcp
 | `bamti_show_all` | 전체 표시 복원 |
 | `bamti_clear_highlight` | 페이지 표시 지우기 |
 
-**현재 주의점: 새 문체 검사 결과는 MCP 기본 요약에서 누락됩니다.**
-`bamti_scan` 또는 `bamti_get_report`를 `{"full": true}`로 호출하고
-`prose.signals`를 확인하세요. UI 결과는 `signals`, 참고 결과는 `taste`입니다.
+**MCP 기본 요약에도 문체 결과가 포함됩니다.**
+`bamti_scan`, `bamti_get_report`, `bamti_wait_for_report`에서
+반복 근거는 `prose.signals`, 단일 표현 제안·문맥 확인은 `prose.fragments.signals`를
+확인하세요. UI 결과는 `signals`, 참고 결과는 `taste`입니다.
+요약은 항목당 예문 2개·셀렉터 3개를 포함하며 실제 발견 횟수는 유지합니다.
+`prose.counts`는 반복 패턴·표현 제안·문맥 확인을 따로 셉니다. 문체의 가중치 0은
+개선할 표현이 없다는 뜻이 아닙니다. `{"full": true}`는 전체 예문과 요소 HTML·좌표가 필요할 때 사용하세요.
+요약의 `prose.status`는 두 검사 경로를 합친 상태이며, 원래 문단 검사 상태는 `paragraphStatus`입니다.
 
 에이전트에게 보낼 요청 예시:
 
 > 밤티 연결 상태를 확인하고 현재 탭을 full: true로 검사해줘.
-> UI와 prose.signals를 구분해 설명하고, 수정 전에 어떤 파일을 바꿀지 알려줘.
+> UI, prose.signals, prose.fragments.signals를 구분해 설명하고, 수정 전에 어떤 파일을 바꿀지 알려줘.
 
 리포트에는 페이지의 URL·원문·요소 HTML 일부가 포함됩니다.
 MCP를 연결하면 이 정보가 로컬 에이전트로 전달되며, 에이전트가 원격 모델에
@@ -190,7 +205,9 @@ npx playwright install chromium
 | 명령 | 범위 |
 |---|---|
 | `node test/engine-precision.cjs` | UI 오탐·누락 31검사, `--live`로 공개 URL 추가 확인 |
-| `node test/prose.cjs` | 한영 문체·제외 영역·패널 47검사 |
+| `node test/prose.cjs` | 한영 문체·문단 간 반복·제외 영역·패널 75검사 |
+| `node test/prose-fragments.cjs` | 단일 표현·분절된 DOM·제안 구분·패널 46검사 |
+| `node mcp/report.test.mjs` | 문체 요약·단일 표현·문맥 구분·제한·호환성 20검사 |
 | `node test/panel-ux.cjs` | 사용성·권한 오류·화면 크기·14개 UI 코퍼스 |
 | `node test/site-access.cjs` | 와일드카드 입력·권한 승인/거절·삭제·동기화·한영 UI |
 | `node test/i18n.cjs` | 한영 전환, 네이티브 확장 메타데이터·저장 |
@@ -199,7 +216,8 @@ npx playwright install chromium
 | `node test/readme.cjs` | README 링크·SVG XML·라이트/다크·모바일·글자 경계 |
 
 테스트 페이지:
-[패널 프리뷰](../test/panel-preview.html), [한영 예문](../test/fixtures/prose-bilingual.html),
+[패널 프리뷰](../test/panel-preview.html), [한영 예문](../test/fixtures/prose-bilingual.html), [문단 간 반복 예문](../test/fixtures/prose-distributed.html),
+[짧은 표현 예문](../test/fixtures/prose-fragments.html),
 [UI 회귀](../test/regression.html), [홍보용 재현 데모](../asset/viral/README.md).
 프리뷰·MCP 모의 테스트는 실제 사용자 프로필의 연결 성공을 증명하지 않습니다.
 
@@ -233,9 +251,12 @@ AI authorship, and it does not edit the page or project files.
 5. Copy the server token into the panel’s **Agent** section and connect to its
    port (default 8765). Prefer a long random `BAMTI_TOKEN`; authentication still
    needs hardening. Do not expose the server publicly.
-6. Use `bamti_status` to check the connection. Use `bamti_scan` with
-   `{"full": true}` for writing findings in `prose.signals`: the default summary
-   currently omits them.
+6. Use `bamti_status` to check the connection. Default scan/get/wait summaries
+   include repeated writing findings in `prose.signals` and single-expression
+   advice in `prose.fragments.signals`, with separate counts and review levels.
+   Summaries keep two examples and three selectors per item; `{"full": true}`
+   returns all stored examples and element details. A writing weight of zero
+   means excluded from the UI score, not that no editing suggestions exist.
 
 Reports may include page text and HTML excerpts. The optional agent receives
 those reports; any subsequent model sharing depends on the agent configuration.
@@ -246,6 +267,17 @@ A zero score only means the current rules found no scored patterns. The new
 glass-panel rule checks repeated large translucent, blurred, rounded content
 surfaces, not AI authorship. Thresholds are heuristic, and scores are not
 calibrated probabilities or directly comparable across different rule versions.
+
+Single expressions are shown by default, even once, with no length or repetition
+gate. Headings, short descriptions, buttons and link text are included. Wording
+suggestions are distinguished from context checks for ordinary or technical terms;
+neither determines AI authorship. Navigation, input values, code and quotations
+remain excluded.
+
+Additional writing evidence covers individual paragraphs and nearby groups (up to 5 blocks /
+2,400 characters). Real prose inside linked cards is included. Cross-paragraph
+findings retain their original locations and deduplicate overlapping matches;
+navigation, feeds, quotations and separate articles are not pooled.
 
 Open **Auto-scan allowed sites** to manage persistent Chrome host access.
 Use `*.*` for all HTTP/HTTPS sites, `*.example.com` for a domain and its subdomains,

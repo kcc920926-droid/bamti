@@ -64,6 +64,68 @@ const esc = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('
     r = await page.evaluate(() => BAMTI.scan());
     check('open shadow-root prose is detected', r.prose.signals.some(s => s.language === 'en'));
 
+    const distributedKo = [
+      '자료를 통해 지난달 주문 내역과 변경된 수량을 확인합니다.',
+      '알림을 통해 담당자에게 오늘 처리할 업무의 순서를 전달합니다.',
+      '기록을 통해 다음 회의에서 확인할 질문과 답변을 정리합니다.',
+    ];
+    const distributedEn = [
+      'Our cutting-edge workspace brings your team together.',
+      'Enjoy seamless connections across all your daily tasks.',
+      'This transformative approach changes how your group works.',
+      'Our team will elevate the way you manage projects.',
+    ];
+    const paragraphs = texts => texts.map((text, i) => `<p id="part-${i}">${text}</p>`).join('');
+    r = await scan('<article>' + paragraphs(distributedKo) + '</article>');
+    let multi = r.prose.signals.find(s => s.id === 'prose-ko-A-2');
+    check('Korean repetition spread over three short paragraphs is found', multi?.occurrences === 3 && multi.count === 3 && multi.analysisScopes.includes('nearby-paragraphs'));
+    check('cross-paragraph examples retain original offsets and paragraph locations', multi?.examples.every(e => distributedKo[e.block - 1].slice(e.start, e.end) === e.text) && multi.targets.map(t => t.selector).join(',') === '#part-0,#part-1,#part-2');
+    check('short semantic paragraphs are counted in coverage', r.prose.inspectedBlocks === 3 && r.prose.crossParagraphWindows > 0 && r.prose.version === 3);
+    r = await scan('<article>' + paragraphs(distributedEn) + '</article>', 'en');
+    multi = r.prose.signals.find(s => s.language === 'en');
+    check('English stock phrases spread across short paragraphs are found', multi?.occurrences === 4 && multi.count === 4 && multi.evidence.includes('Cross-paragraph repetition'));
+    check('distributed English advice and note are localized', !/[가-힣]/.test(multi.hint + r.prose.note));
+    check('each distributed paragraph alone stays below the old threshold', await page.evaluate(texts => texts.every(t => !BAMTI.PROSE.analyzeBlock(t).findings.length), [...distributedKo, ...distributedEn]));
+    const overlayMulti = await page.evaluate(() => { const s = BAMTI.scan('en').prose.signals.find(x => x.language === 'en'); BAMTI.highlight(s.id, s); return BAMTI._nodes.get(s.id).map(n => n.id); });
+    check('real highlights use all original paragraphs, not a synthetic merged node', overlayMulti.join(',') === 'part-0,part-1,part-2,part-3');
+    r = await scan('<article>' + paragraphs([...distributedKo, '보고서를 통해 부서별 진행 상황과 이번 주의 일정을 전달합니다.', '화면을 통해 담당자가 제출한 자료와 검토 의견을 찾아봅니다.']) + '</article>');
+    multi = r.prose.signals.find(s => s.id === 'prose-ko-A-2');
+    check('overlapping windows count each source occurrence only once', multi?.occurrences === 5 && multi.count === 5 && multi.examples.length === 5);
+    r = await scan(distributedKo.map(text => '<article><p>' + text + '</p></article>').join(''));
+    check('unrelated articles never pool their matches', !r.prose.signals.length);
+    r = await scan(distributedEn.map(text => '<div role="article"><p>' + text + '</p></div>').join(''));
+    check('ARIA article cards are separate analysis regions', !r.prose.signals.length);
+    r = await scan('<nav>' + paragraphs(distributedEn) + '</nav><div role="feed">' + paragraphs(distributedKo) + '</div>');
+    check('short navigation and feed prose stays excluded from aggregation', !r.prose.signals.length && r.prose.inspectedBlocks === 0);
+    r = await scan(paragraphs(distributedKo.map(text => '“' + text + '”')));
+    check('quoted distributed phrases cannot satisfy aggregate gates', !r.prose.signals.length);
+    r = await scan(paragraphs(Array(5).fill(distributedKo[0])));
+    check('identical responsive/duplicated paragraph copies do not inflate repetition', !r.prose.signals.length);
+    const sparseBase = '회의는 목요일 오후 두 시에 시작합니다. 담당자는 출고 수량과 배송 일정을 확인했습니다. 변경한 항목은 파란색으로 표시했습니다. 누락된 주문 두 건은 다음 회의에서 논의합니다. ';
+    r = await scan(paragraphs(distributedKo.map(text => text + sparseBase.repeat(4))));
+    check('rare Korean constructions scattered through long paragraphs do not become a cluster', !r.prose.signals.some(s => s.id === 'prose-ko-A-2'));
+    r = await scan(paragraphs(['The test harness records the state of our worker threads.', 'A robust mutex protects the queue during concurrent updates.', 'Workers unlock the queue after completing each write operation.', 'We leverage existing test fixtures to verify recovery behavior.']));
+    check('distributed ambiguous technical English words remain unflagged', !r.prose.signals.length);
+    r = await scan(paragraphs([ko, normalKo]));
+    check('a strong local paragraph does not drag normal neighboring prose into its finding', r.prose.signals.find(s => s.id === 'prose-ko-A-2')?.count === 1);
+    r = await scan(paragraphs([en, normalEn]));
+    check('a strong English block does not inflate the normal neighbor count', r.prose.signals.find(s => s.language === 'en')?.count === 1);
+    r = await scan('<a href="/tool"><h2>' + en + '</h2><div><p id="linked-copy">' + ko + '</p><span>' + en + '</span></div></a>');
+    check('linked cards retain their real prose without pulling in title or label text', r.prose.inspectedBlocks === 1 && r.prose.signals.every(s => s.language === 'ko' && s.targets[0].selector === '#linked-copy'));
+    r = await scan('<a href="/hidden" style="display:none"><p>' + en + '</p></a><nav><a href="/nav"><p>' + en + '</p></a></nav>');
+    check('hidden and navigation linked paragraphs are still excluded', !r.prose.signals.length && r.prose.inspectedBlocks === 0);
+    r = await scan(distributedKo.map((text, i) => `<a href="/tool-${i}"><h2>Tool ${i}</h2><p>${text}</p></a>`).join(''));
+    check('real descriptions in linked tool cards can expose distributed repetition', r.prose.signals.find(s => s.id === 'prose-ko-A-2')?.count === 3);
+    r = await scan(paragraphs(['또한 오늘 접수한 자료를 담당자에게 전달하고 내용을 정리합니다.', '나아가 다음 회의에서 확인할 일정과 질문을 다시 검토합니다.', '아울러 변경된 항목을 기록하고 모두에게 검토 결과를 알립니다.']));
+    check('sentence-opening connectors at separate paragraph starts are counted', r.prose.signals.find(s => s.id === 'prose-ko-H-1')?.occurrences === 3);
+    const neutral = 'We saved each record and checked it against the latest export.';
+    r = await scan(paragraphs([distributedEn[0], neutral, distributedEn[1], distributedEn[2], neutral + ' All rows matched.', distributedEn[3]]));
+    check('distant English hits outside the five-block window are not pooled', !r.prose.signals.length);
+    r = await scan(paragraphs(['Our design report describes the selected cutting-', 'edge of the table next to the office window.', ...distributedEn.slice(1)]));
+    check('phrases are never synthesized across paragraph boundaries', !r.prose.signals.length);
+    r = await scan(paragraphs([neutral.repeat(24), (neutral + ' The data is saved.').repeat(20)]));
+    check('aggregate windows respect their 2400-character budget', r.prose.crossParagraphWindows === 0);
+
     // Positive fixture for every Korean pattern family and at/below-threshold check.
     const examples = [
       ['A-1', '자료에 대해 설명합니다.', 3], ['A-2', '자료를 통해 설명합니다.', 3],
@@ -107,9 +169,10 @@ const esc = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('
     await panel.waitForFunction(() => !document.getElementById('rescan').disabled);
     check('panel exposes both language results and nearby jump link', await panel.locator('#proselist .sig').count() >= 4 && /Writing style/.test(await panel.locator('#jumpprose').innerText()));
     await panel.locator('#jumpprose').click();
-    await panel.locator('#proselist .sig').last().locator('summary').click();
-    check('panel displays upstream attribution and verbatim excerpts', await panel.locator('#proselist .sig').last().locator('.prose-source').getAttribute('href') === 'https://github.com/hwajongpark/slop-gate' && await panel.locator('#proselist .sig').last().locator('.prose-examples li').count() > 0);
-    await panel.locator('#proselist .sig').last().getByRole('button', { name: /Highlight/ }).click();
+    const englishCluster = panel.locator('[data-signal-id="prose-en-vocabulary"]');
+    await englishCluster.locator('summary').click();
+    check('panel displays upstream attribution and verbatim excerpts', await englishCluster.locator('.prose-source').getAttribute('href') === 'https://github.com/hwajongpark/slop-gate' && await englishCluster.locator('.prose-examples li').count() > 0);
+    await englishCluster.getByRole('button', { name: /Highlight/ }).click();
     check('panel highlight sends prose ID to the real scanner route', (await panel.evaluate(() => __lastMsg.signalId)) === 'prose-en-vocabulary');
     await panel.locator('#copyreport').click();
     const copied = await panel.evaluate(() => navigator.clipboard.readText());
@@ -130,6 +193,19 @@ const esc = s => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('
     await panel.waitForFunction(() => document.documentElement.lang === 'en' && typeof lastReport !== 'undefined' && lastReport?.locale === 'en');
     await panel.locator('#jumpprose').click();
     await panel.screenshot({ path: '/tmp/bamti-prose-en.png' });
+    await panel.locator('#pick').selectOption('prose-distributed');
+    await panel.waitForFunction(() => typeof lastReport !== 'undefined' && lastReport?.url.endsWith('/prose-distributed.html') && !document.getElementById('rescan').disabled);
+    check('panel renders exactly the two distributed writing findings', await panel.locator('#proselist .sig').count() === 2 && (await panel.locator('#proselist').innerText()).includes('Cross-paragraph repetition'));
+    await panel.locator('#copyreport').click();
+    check('full report copy explains cross-paragraph evidence', (await panel.evaluate(() => navigator.clipboard.readText())).includes('Cross-paragraph repetition'));
+    await panel.locator('#proselist .sig').first().locator('summary').click();
+    await panel.locator('#proselist .sig').first().getByRole('button', { name: /Highlight/ }).click();
+    check('panel requests highlights for the distributed Korean finding', (await panel.evaluate(() => __lastMsg.signalId)) === 'prose-ko-A-2');
+    await panel.locator('#language').selectOption('ko');
+    await panel.waitForFunction(() => document.documentElement.lang === 'ko' && typeof lastReport !== 'undefined' && lastReport?.locale === 'ko');
+    check('Korean panel labels cross-paragraph evidence', (await panel.locator('#proselist').innerText()).includes('문단 간 반복'));
+    await panel.locator('#jumpprose').click();
+    await panel.screenshot({ path: '/tmp/bamti-prose-distributed-ko.png' });
     console.log(passed + ' writing-style checks passed');
   } finally { await browser.close(); }
 })().catch(e => { console.error(e); process.exitCode = 1; });

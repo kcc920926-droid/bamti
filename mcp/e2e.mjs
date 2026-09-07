@@ -9,6 +9,7 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import WebSocket from 'ws';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import assert from 'node:assert/strict';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');   // 레포 루트
@@ -27,6 +28,8 @@ out('connected', 'mcp stdio');
 const tools = (await client.listTools()).tools.map(t => t.name);
 out('tools', tools);
 
+let panelToClose;
+try {
 if (!WAIT) {
   // 1) 잘못된 토큰은 거절되어야 한다
   await new Promise(r => setTimeout(r, 300));
@@ -37,10 +40,12 @@ if (!WAIT) {
     w.on('error', e => res('error:' + e.message));
   });
   out('bad token →', badMsg);
+  assert.equal(badMsg, 'error');
 
   // 2) 패널 없이 scan 은 안내 메시지와 함께 실패해야 한다
   const noPanel = await client.callTool({ name: 'bamti_scan', arguments: {} });
   out('scan w/o panel', { isError: !!noPanel.isError, text: parse(noPanel).slice(0, 40) });
+  assert.equal(noPanel.isError, true);
 
   // 3) 가짜 패널: hello → scan 요청에 가짜 리포트로 응답
   const fake = {
@@ -50,8 +55,14 @@ if (!WAIT) {
     signals: [{ id: 'dead-links', cat: 'unfinished', weight: 12, label: '죽은 링크', evidence: '링크 26개 중 26개가 href="#"', count: 26, hint: '최우선 수정',
                 targets: [{ selector: 'footer .cols > div:nth-of-type(2) > a:nth-of-type(3)', text: 'Careers', html: '<a href="#">Careers</a>' }] }],
     taste: [],
+    prose: { status: 'insufficient', signals: [], languages: [], inspectedBlocks: 0,
+      fragments: { status: 'checked', languages: ['en'], inspectedBlocks: 2, signals: [
+        { id: 'prose-fragment-en-cutting-edge', label: 'Wording suggestion: cutting-edge', language: 'en', reviewLevel: 'suggestion', analysisScopes: ['fragment'], weight: 0, count: 1, occurrences: 1, hint: 'Describe what is new.', evidence: 'Single expression', targets: [{ selector: '#hero', html: '<h1>Cutting-edge</h1>' }], examples: [{ text: 'Cutting-edge', excerpt: 'Cutting-edge', start: 0, end: 12, block: 1, ruleId: 'cutting-edge' }] },
+        { id: 'prose-fragment-en-robust', label: 'Check context: robust', language: 'en', reviewLevel: 'context', weight: 0, count: 1, occurrences: 1, hint: 'Keep a correct technical term.', targets: [{ selector: '#technical' }] },
+      ] } },
   };
   const panel = new WebSocket(`ws://127.0.0.1:${PORT}`);
+  panelToClose = panel;
   await new Promise(res => {
     panel.on('open', () => panel.send(JSON.stringify({ type: 'hello', token: TOKEN, client: 'fake-panel', version: 'e2e' })));
     panel.on('message', b => {
@@ -71,21 +82,32 @@ if (!WAIT) {
 
   const sum = parse(await client.callTool({ name: 'bamti_scan', arguments: {} }));
   out('scan summary', { score: sum.score, fired: sum.fired, firstSignal: sum.signals?.[0]?.id, targets: sum.signals?.[0]?.targets });
+  assert.equal(sum.prose.status, 'checked');
+  assert.equal(sum.prose.paragraphStatus, 'insufficient');
+  assert.deepEqual(sum.prose.counts, { repeatedPatterns: 0, wordingSuggestions: 1, contextChecks: 1 });
+  assert.equal(sum.prose.fragments.signals[0].targets[0], '#hero');
+  assert.equal(sum.prose.fragments.signals[1].reviewLevel, 'context');
 
   const full = parse(await client.callTool({ name: 'bamti_scan', arguments: { full: true } }));
   out('scan full', { hasHtml: !!full.signals?.[0]?.targets?.[0]?.html, title: full.title });
+  assert.deepEqual(full.prose, fake.prose);
 
   const hl = parse(await client.callTool({ name: 'bamti_highlight', arguments: { signal_id: 'dead-links' } }));
   out('highlight', hl);
+  const fragmentHighlight = parse(await client.callTool({ name: 'bamti_highlight', arguments: { signal_id: sum.prose.fragments.signals[0].id } }));
+  assert.equal(fragmentHighlight.signal, 'prose-fragment-en-cutting-edge');
 
   const got = parse(await client.callTool({ name: 'bamti_get_report', arguments: {} }));
   out('get_report', { score: got.score });
+  assert.deepEqual(got.prose, sum.prose);
 
   // 4) wait_for_report: 1.5초 뒤 패널이 새 리포트를 푸시하면 깨어나야 한다
   setTimeout(() => panel.send(JSON.stringify({ type: 'report', report: { ...fake, score: 12, bandLabel: '깨끗함', firedCount: 2 } })), 1500);
   const t0 = Date.now();
   const waited = parse(await client.callTool({ name: 'bamti_wait_for_report', arguments: { timeout_s: 10 } }));
   out('wait_for_report', { score: waited.score, ms: Date.now() - t0 });
+  assert.deepEqual(waited.prose, sum.prose);
+  out('writing assertions', 'PASS: summary/full/get/wait retain fragment advice and context; highlight routes the fragment ID');
 
   panel.close();
   await new Promise(r => setTimeout(r, 200));
@@ -109,5 +131,8 @@ if (!WAIT) {
     out('real highlight', hl);
   }
 }
-await client.close();
+} finally {
+  panelToClose?.terminate();
+  await client.close();
+}
 process.exit(0);

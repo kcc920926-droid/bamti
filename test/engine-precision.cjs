@@ -115,7 +115,7 @@ const shell = body => `<!doctype html><html><head>${chrome}${style}</head><body>
         await live.waitForTimeout(2000);
         for (const source of sources) await live.evaluate(source);
         const report = await live.evaluate(() => { BAMTI._nodes = new Map(); return BAMTI.run({ doc: document }); });
-        console.log(JSON.stringify({ url, title: report.title, score: report.score, type: report.pageType, signals: tells(report), references: report.taste.map(s => s.id), prose: { status: report.prose.status, blocks: report.prose.inspectedBlocks, signals: report.prose.signals.map(s => s.id), limited: report.prose.limited }, errors: report.errors }, null, 2));
+        console.log(JSON.stringify({ url, title: report.title, score: report.score, type: report.pageType, signals: tells(report), references: report.taste.map(s => s.id), prose: { status: report.prose.status, blocks: report.prose.inspectedBlocks, signals: report.prose.signals.map(s => s.id), fragments: report.prose.fragments && { blocks: report.prose.fragments.inspectedBlocks, signals: report.prose.fragments.signals.map(s => ({ id: s.id, level: s.reviewLevel, occurrences: s.occurrences })) }, limited: report.prose.limited }, errors: report.errors }, null, 2));
         await live.close();
       }
     }

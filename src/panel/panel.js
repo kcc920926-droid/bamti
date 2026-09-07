@@ -1,4 +1,5 @@
 const tr = BAMTI.I18N.t;
+const proseFindings = r => [...(r.prose?.signals || []), ...(r.prose?.fragments?.signals || [])];
 /* 밤티 — 사이드패널 컨트롤러 */
 
 const $ = id => document.getElementById(id);
@@ -30,7 +31,7 @@ function paintOverlayBtn() {
   b.dataset.on = overlayOn ? '1' : '0';
 }
 function overlayItems(r) {
-  return [...r.signals, ...(r.prose?.signals || [])].filter(x => x.count > 0).map(x => ({ id: x.id, label: x.label, cat: x.cat, weight: x.weight }));
+  return [...r.signals, ...proseFindings(r)].filter(x => x.count > 0).map(x => ({ id: x.id, label: x.label, cat: x.cat, weight: x.weight }));
 }
 function pushOverlay() {
   if (!currentTab || !lastReport || reportStale || $('report').hidden) return;
@@ -122,7 +123,7 @@ async function handleAgentRequest(m) {
     if (m.action === 'highlight') {
       if (!currentTab || !lastReport || reportStale) throw new Error(tr('표시할 리포트가 없습니다 — 먼저 scan 하세요'));
       const sid = m.params?.signal_id;
-      const sg = [...(lastReport.signals || []), ...(lastReport.taste || []), ...(lastReport.prose?.signals || [])].find(x => x.id === sid);
+      const sg = [...(lastReport.signals || []), ...(lastReport.taste || []), ...proseFindings(lastReport)].find(x => x.id === sid);
       if (!sg) throw new Error(tr`리포트에 없는 시그널: ${sid}`);
       focusedSignal = sid; paintOverlayBtn();
       await sendHighlight({ type: 'bamti:highlight', signalId: sid, meta: { id: sg.id, label: sg.label, cat: sg.kind === 'taste' ? 'taste' : sg.cat, weight: sg.weight } });
@@ -446,16 +447,16 @@ function renderList() {
   const matches = s => `${s.label} ${s.evidence} ${s.hint}`.toLocaleLowerCase().includes(query);
   const tells = r.signals.filter(s => (category === 'all' || s.cat === category) && matches(s));
   const tastes = (r.taste || []).filter(s => category === 'all' && matches(s));
-  const prose = (r.prose?.signals || []).filter(s => category === 'all' && matches(s));
-  $('prosesummary').textContent = tr`문체 검사 · ${r.prose?.signals?.length || 0}개 패턴`;
+  const prose = proseFindings(r).filter(s => category === 'all' && matches(s));
+  $('prosesummary').textContent = tr`문체 검사 · ${proseFindings(r).length}개 항목`;
   $('jumpprose').textContent = $('prosesummary').textContent + ' ↓';
   $('prosenote').textContent = r.prose?.note || '';
   $('prosestatus').textContent = !r.prose || r.prose.status === 'error'
     ? tr('문체 검사를 완료하지 못했습니다. 다시 스캔해주세요.')
-    : r.prose.status === 'insufficient'
-      ? tr('검사할 한·영 본문이 부족합니다. 짧은 메뉴·제목만으로는 판정하지 않습니다.')
-      : tr`${r.prose.languages.map(x => x.toUpperCase()).join(' / ')} · ${r.prose.inspectedBlocks}개 본문 블록 검사` + ' · ' +
-        (prose.length ? tr`${prose.length}개 문체 패턴 표시` : tr('현재 조건에서 발견한 문체 패턴이 없습니다. AI 작성 여부는 알 수 없습니다.'));
+    : r.prose.status === 'insufficient' && r.prose.fragments?.status !== 'checked'
+      ? tr('검사할 한·영 텍스트가 없습니다. 숨겨진 내용·메뉴·입력창·인용은 제외합니다.')
+      : tr`텍스트 영역 ${r.prose.fragments?.inspectedBlocks ?? r.prose.inspectedBlocks}개 검사 · ${prose.length}개 항목 표시` +
+        (prose.length ? '' : ' · ' + tr('현재 조건에서 발견한 문체 패턴이 없습니다. AI 작성 여부는 알 수 없습니다.'));
   if (r.prose?.limited) $('prosestatus').textContent += ' ' + tr('본문 일부만 검사했습니다. 결과에 누락이 있을 수 있습니다.');
   $('proselist').replaceChildren(...prose.map(s => row(s, false)));
   document.querySelectorAll('[data-category]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.category === category)));
@@ -528,8 +529,8 @@ $('copyreport').onclick = () => {
   const text = [tr`밤티 UI 검토: ${r.title}`, r.url, tr`검사 시각: ${r.scannedAt}`, tr`패턴 점수 ${r.score}/100 · AI 생성 확률이 아닙니다.`,
     ...r.signals.map(suggestionText),
     ...(r.prose ? [tr('문체 검사 · UI 점수 제외'), r.prose.note || '',
-      ...(r.prose.signals || []).map(suggestionText),
-      ...(r.prose.status === 'insufficient' ? [tr('검사할 한·영 본문이 부족합니다. 짧은 메뉴·제목만으로는 판정하지 않습니다.')] : []),
+      ...proseFindings(r).map(suggestionText),
+      ...(r.prose.status === 'insufficient' && r.prose.fragments?.status !== 'checked' ? [tr('검사할 한·영 텍스트가 없습니다. 숨겨진 내용·메뉴·입력창·인용은 제외합니다.')] : []),
       ...(r.prose.status === 'error' ? [tr('문체 검사를 완료하지 못했습니다. 다시 스캔해주세요.')] : []),
       ...(r.prose.limited ? [tr('본문 일부만 검사했습니다. 결과에 누락이 있을 수 있습니다.')] : [])] : []),
     ...(r.pageType ? [tr`검사 범위: ${r.pageType.label} · ${r.scopeNote}`] : []),
@@ -549,6 +550,7 @@ function row(s, crit) {
   const d = document.createElement('details');
   d.open = expanded;
   d.className = 'sig' + (crit ? ' crit' : '') + (s.kind === 'taste' ? ' taste' : '');
+  d.dataset.signalId = s.id;
 
   const sum = document.createElement('summary');
   sum.innerHTML = `<span class="w" title="${s.kind === 'prose' ? tr('문체 검사 · UI 점수 제외') : s.kind === 'taste' ? tr('점수에 포함되지 않는 참고 패턴') : tr('규칙 가중치 (심각도 아님)')}">${s.kind === 'prose' ? esc(s.language.toUpperCase()) : s.kind === 'taste' ? tr('참고') : s.weight}</span>

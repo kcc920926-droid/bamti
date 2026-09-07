@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="736" height="1956" viewBox="0 0 736 1956" role="img" aria-labelledby="bamti-ko-d-title bamti-ko-d-desc" xml:lang="ko">
 <title id="bamti-ko-d-title">밤티, 어떻게 작동하나요?</title>
-<desc id="bamti-ko-d-desc">검사관처럼 페이지를 살피고, 고칠 곳에 포스트잇을 붙입니다. 코드에 있음: Chrome MV3 + 선택형 로컬 MCP. 관찰: 문체 47 / UI 정밀 19 검사 통과. MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증 요약에서 prose 누락: 문체는 full: true로 조회; 리포트는 메모리 스냅샷: 재시작 시 소실 · 연결 해제 시 오래될 수 있음; 6자리 HEX 기본 토큰: 요청 제한도 없어 인증 보강 필요</desc>
+<desc id="bamti-ko-d-desc">검사관처럼 페이지를 살피고, 고칠 곳에 포스트잇을 붙입니다. 코드에 있음: Chrome MV3 + 선택형 로컬 MCP. 관찰: 문체 121 / UI 정밀 31 검사 통과. MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증 표현 제안 ≠ AI 작성 판정: 문맥 확인 항목은 수정이 필수가 아님; 리포트는 메모리 스냅샷: 재시작 시 소실 · 연결 해제 시 오래될 수 있음; 6자리 HEX 기본 토큰: 요청 제한도 없어 인증 보강 필요</desc>
 <style>svg{--bg:#f7faf8;--card:#fff;--fg:#172e28;--muted:#52665d;--line:#cfddd5;--accent:#087254;--wash:#e7f3eb;--risk:#fff4e6;--risk-fg:#865020;--edge:#668375;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}@media(prefers-color-scheme:dark){svg{--bg:#101c17;--card:#192a22;--fg:#edf5ee;--muted:#bbcec0;--line:#3e5749;--accent:#80ddb0;--wash:#1d3829;--risk:#34291e;--risk-fg:#f0c691;--edge:#98b8a5}}text{fill:var(--fg)}.secondary{fill:var(--muted)}.accent,.kicker{fill:var(--accent)}.headline,.node-title,.section,.risk-title{font-weight:650}.kicker{letter-spacing:1.8px}.node{fill:var(--card);stroke:var(--line)}.source,.state{fill:var(--wash);stroke:var(--line)}.boundary{fill:none;stroke:var(--line)}.edge{fill:none;stroke:var(--edge);stroke-width:1.5;stroke-linejoin:round}.arrow{fill:var(--edge)}.label-bg{fill:var(--bg)}.edge-label,.center{text-anchor:middle}.edge-label{fill:var(--muted)}.risk{fill:var(--risk)}.risk-title{fill:var(--risk-fg)}.planned{fill:none;stroke:var(--edge);stroke-dasharray:5 5}</style>
 <defs><marker id="bamti-ko-d-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 1 L7 4 L0 7" class="arrow"/></marker></defs>
 <rect width="736" height="1956" fill="var(--bg)"/>
@@ -76,8 +76,8 @@
 <text x="493.3333333333333" y="1318" class="secondary" font-size="14"><tspan x="493.3333333333333" dy="0">클릭 또는 사용자가 허용한 출처</tspan></text>
 <text x="24" y="1372" class="section" font-size="15"><tspan x="24" dy="0">03 / 지금 알아둘 한계</tspan></text>
 <rect x="24" y="1390" width="688" height="66" rx="8" class="risk"/>
-<text x="38" y="1413" class="risk-title" font-size="14"><tspan x="38" dy="0">요약에서 prose 누락</tspan></text>
-<text x="38" y="1435" class="secondary" font-size="14"><tspan x="38" dy="0">문체는 full: true로 조회</tspan></text>
+<text x="38" y="1413" class="risk-title" font-size="14"><tspan x="38" dy="0">표현 제안 ≠ AI 작성 판정</tspan></text>
+<text x="38" y="1435" class="secondary" font-size="14"><tspan x="38" dy="0">문맥 확인 항목은 수정이 필수가 아님</tspan></text>
 <rect x="24" y="1464" width="688" height="66" rx="8" class="risk"/>
 <text x="38" y="1487" class="risk-title" font-size="14"><tspan x="38" dy="0">리포트는 메모리 스냅샷</tspan></text>
 <text x="38" y="1509" class="secondary" font-size="14"><tspan x="38" dy="0">재시작 시 소실 · 연결 해제 시 오래될 수 있음</tspan></text>
@@ -86,10 +86,10 @@
 <text x="38" y="1583" class="secondary" font-size="14"><tspan x="38" dy="0">요청 제한도 없어 인증 보강 필요</tspan></text>
 <text x="24" y="1636" class="section" font-size="15"><tspan x="24" dy="0">04 / 다음 세 가지</tspan></text>
 <text x="24" y="1663" class="" font-size="14"><tspan x="24" dy="0">1  MCP 인증 길이·연결 제한 강화</tspan></text>
-<text x="24" y="1693" class="" font-size="14"><tspan x="24" dy="0">2  문체 요약 포함 + 낡은 리포트 표시</tspan></text>
+<text x="24" y="1693" class="" font-size="14"><tspan x="24" dy="0">2  낡은 리포트 표시 보강</tspan></text>
 <text x="24" y="1723" class="" font-size="14"><tspan x="24" dy="0">3  실제 연결·단축키 + 장르별 오탐 검증</tspan></text>
 <rect x="24" y="1763" width="688" height="66" rx="10" class="planned"/>
 <text x="38" y="1786" class="secondary" font-size="14"><tspan x="38" dy="0">계획만 있음 · LLM 정밀 분석 / OAuth</tspan><tspan x="38" dy="21">현재 실행 경로와 연결되지 않음</tspan></text>
-<text x="24" y="1855" class="secondary" font-size="14"><tspan x="24" dy="0">관찰: 문체 47 / UI 정밀 19 검사 통과</tspan><tspan x="24" dy="21">MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증</tspan></text>
-<text x="24" y="1915" class="secondary" font-size="14"><tspan x="24" dy="0">소스 7e0f0a5 · 확인 2026-09-06 · 실선: 코드 경로 / 점선: 계획</tspan></text>
+<text x="24" y="1855" class="secondary" font-size="14"><tspan x="24" dy="0">관찰: 문체 121 / UI 정밀 31 검사 통과</tspan><tspan x="24" dy="21">MCP 모의 왕복 확인 · 실제 에이전트 연결은 미검증</tspan></text>
+<text x="24" y="1915" class="secondary" font-size="14"><tspan x="24" dy="0">로컬 소스 · 확인 2026-09-07 · 실선: 코드 경로 / 점선: 계획</tspan></text>
 </svg>

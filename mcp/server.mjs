@@ -15,6 +15,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { summarize } from './report.mjs';
 
 const PORT = Number(process.env.BAMTI_PORT || 8765);
 const log = (...a) => console.error('[bamti-mcp]', ...a);
@@ -89,23 +90,6 @@ function request(action, params = {}, timeoutMs = 30000) {
   });
 }
 
-/* ── 리포트 요약: 에이전트가 처음 받아 볼 형태. full 은 요소 12개까지 전부 ── */
-function summarize(r) {
-  if (!r) return null;
-  return {
-    url: r.url, title: r.title, scannedAt: r.scannedAt,
-    score: r.score, band: r.bandLabel, verdict: r.bandLine,
-    fired: `${r.firedCount}/${r.totalSignals}`,
-    byCat: Object.fromEntries(Object.entries(r.byCat || {}).map(([k, v]) => [k, `${v.name} ${v.count}`])),
-    signals: (r.signals || []).map(s => ({
-      id: s.id, weight: s.weight, cat: s.cat, scope: s.scope, label: s.label,
-      evidence: s.evidence, count: s.count, fix: s.hint,
-      targets: (s.targets || []).slice(0, 3).map(t => t.selector),
-    })),
-    taste: (r.taste || []).map(s => ({ id: s.id, label: s.label, evidence: s.evidence, fix: s.hint })),
-    note: '가중치(weight)가 높은 것부터 고치세요. unfinished 카테고리는 취향이 아니라 결함입니다. full=true 로 요소별 selector·text·outerHTML 을 받을 수 있습니다.',
-  };
-}
 const text = obj => ({ content: [{ type: 'text', text: typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2) }] });
 const fail = e => ({ content: [{ type: 'text', text: `오류: ${e.message}` }], isError: true });
 
@@ -123,6 +107,7 @@ server.tool('bamti_status',
 
 server.tool('bamti_scan',
   '크롬의 현재 탭을 밤티로 스캔해 AI slop 지문 리포트를 반환한다. 각 signal 에 label(무엇), evidence(근거), fix(어떻게 고칠지), targets(요소 CSS 셀렉터)가 있다. ' +
+  '기본 요약에도 prose.signals(반복 근거)와 prose.fragments.signals(한 번 나온 표현 제안)가 포함된다. 문체는 UI 점수와 별개이며 context 항목은 일반 표현일 수 있다. ' +
   'full=true 면 요소별 selector·text·outerHTML·좌표를 12개까지 포함한다 — 소스에서 해당 요소를 찾아 고칠 때 쓴다. ' +
   '수정 후 개발 서버가 리로드되면 패널이 자동 재스캔하니 bamti_wait_for_report 로 새 점수를 받아 확인하라.',
   { full: z.boolean().optional().describe('true: 요소 상세 포함 전체 리포트. 기본 false: 요약') },
@@ -147,8 +132,8 @@ server.tool('bamti_wait_for_report',
   });
 
 server.tool('bamti_highlight',
-  '특정 시그널의 요소들만 페이지 위에 강조 표시한다. signal_id 는 리포트의 signals[].id.',
-  { signal_id: z.string().describe('예: dead-links, value-sprawl') },
+  '특정 항목의 요소를 페이지 위에 강조 표시한다. signal_id는 signals, prose.signals 또는 prose.fragments.signals의 id다.',
+  { signal_id: z.string().describe('예: dead-links, prose-ko-A-2, prose-fragment-en-cutting-edge') },
   async ({ signal_id }) => { try { return text(await request('highlight', { signal_id })); } catch (e) { return fail(e); } });
 
 server.tool('bamti_show_all',
